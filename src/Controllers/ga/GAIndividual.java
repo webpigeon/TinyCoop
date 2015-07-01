@@ -1,5 +1,8 @@
 package Controllers.ga;
 
+import FastGame.Action;
+import FastGame.CoopGame;
+
 import java.util.Random;
 
 /**
@@ -9,13 +12,13 @@ import java.util.Random;
  */
 public class GAIndividual
 {
-    public int[] m_genome;
+    public Action[] m_genome;
     public double m_fitness;
     public final double MUTATION_PROB = 0.2; //0.834=5/6   //0.2;
 
     public GAIndividual(int a_genomeLength)
     {
-        m_genome = new int[a_genomeLength];
+        m_genome = new Action[a_genomeLength];
         m_fitness = 0;
     }
 
@@ -23,24 +26,28 @@ public class GAIndividual
     {
         for(int i = 0; i < m_genome.length; ++i)
         {
-            m_genome[i] = /*3+*/ a_rnd.nextInt(a_numActions);
+            m_genome[i] = Action.getRandom();
         }
     }
 
-    public Game evaluate(Game a_gameState, GameEvaluator a_gameEvaluator)
+    public CoopGame evaluate(CoopGame a_gameState, boolean isFirst)
     {
-        Game thisGameCopy = a_gameState.getCopy();
+        CoopGame thisGameCopy = a_gameState.getClone();
         boolean end = false;
         for(int i = 0; i < m_genome.length; ++i)
         {
-            int thisAction = m_genome[i];
-            for(int j =0; !end && j < GameEvaluator.MACRO_ACTION_LENGTH; ++j)
+            Action thisAction = m_genome[i];
+            for(int j =0; !end && j < GAConstants.MACRO_ACTION_LENGTH; ++j)
             {
-                thisGameCopy.tick(thisAction);
-                end = a_gameEvaluator.isEndGame(thisGameCopy);
+                if (isFirst) {
+                    thisGameCopy.update(thisAction, Action.getRandom());
+                } else {
+                    thisGameCopy.update(Action.getRandom(), thisAction);
+                }
+                end = thisGameCopy.hasWon();
             }
         }
-        m_fitness = a_gameEvaluator.scoreGame(thisGameCopy);
+        m_fitness = thisGameCopy.getScore();
         return thisGameCopy;
     }
 
@@ -49,12 +56,8 @@ public class GAIndividual
         for (int i = 0; i < m_genome.length; i++) {
             if(a_rnd.nextDouble() < MUTATION_PROB)
             {
-                if(a_rnd.nextDouble() < 0.5)  //mutate thrust
-                    m_genome[i] = MacroAction.mutateThrust(m_genome[i]);
-                else  //mutate steering
-                    m_genome[i] = MacroAction.mutateSteer(m_genome[i], a_rnd.nextDouble()>0.5);
+                m_genome[i] = Action.getRandom();
             }
-
         }
     }
 

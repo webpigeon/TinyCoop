@@ -1,5 +1,8 @@
 package Controllers.ga;
 
+import FastGame.Action;
+import FastGame.CoopGame;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -16,48 +19,40 @@ public class GA
     public final int ELITISM = 2;
     public ArrayList<MacroAction> m_actionList;             //List of available actions to govern the ship.
     public Random m_rnd;                                    //Random number generator
-    public GameEvaluator m_gameEvaluator;                   //Game evaluator (score and end-game states)
     public int m_numGenerations;
 
     public GAIndividual[] m_individuals;
 
-    public GA(Game a_gameState, GameEvaluator a_gameEvaluator)
+    public GA()
     {
         m_rnd = new Random();
-        m_gameEvaluator = a_gameEvaluator;
-        m_actionList = new ArrayList<MacroAction>();
 
-        // Create actions
-        for(int i = Controller.ACTION_NO_FRONT; i <= Controller.ACTION_THR_RIGHT; ++i)
-        //for(int i = Controller.ACTION_THR_FRONT; i <= Controller.ACTION_THR_RIGHT; ++i)
-        {
-            boolean t = Controller.getThrust(i);
-            int s = Controller.getTurning(i);
-            m_actionList.add(new MacroAction(t, s, GameEvaluator.MACRO_ACTION_LENGTH));
+        m_actionList = new ArrayList<MacroAction>();
+        for (Action action : Action.allActions) {
+            m_actionList.add(new MacroAction(action, GAConstants.MACRO_ACTION_LENGTH));
         }
+
         m_individuals = new GAIndividual[NUM_INDIVIDUALS];
-        init(a_gameState);
+        //init(a_gameState);
     }
 
-    public void init(Game a_gameState)
+    public void init(CoopGame a_gameState, boolean first)
     {
-        //System.out.println(" --------- Starting GA --------- ");
-        m_gameEvaluator.updateNextWaypoints(a_gameState, 2);
+        System.out.println(" --------- Starting GA --------- ");
         m_numGenerations = 0;
         for(int i = 0; i < NUM_INDIVIDUALS; ++i)
         {
             m_individuals[i] = new GAIndividual(NUM_ACTIONS_INDIVIDUAL);
             m_individuals[i].randomize(m_rnd, m_actionList.size());
-            m_individuals[i].evaluate(a_gameState, m_gameEvaluator);
-            //System.out.format("individual i: " + i + ", fitness: %.3f, actions: %s \n", m_individuals[i].m_fitness, m_individuals[i].toString());
+            m_individuals[i].evaluate(a_gameState, first);
+            System.out.format("individual i: " + i + ", fitness: %.3f, actions: %s \n", m_individuals[i].m_fitness, m_individuals[i].toString());
         }
 
         sortPopulationByFitness();
     }
 
-    public MacroAction run(Game a_gameState, long a_timeDue)
+    public MacroAction run(CoopGame a_gameState, long a_timeDue, boolean first)
     {
-        m_gameEvaluator.updateNextWaypoints(a_gameState, 2);
         double remaining = (a_timeDue-System.currentTimeMillis());
 
         while(remaining > 10)
@@ -77,7 +72,7 @@ public class GA
                 nextPop[i] = breed(); // m_individuals[i-ELITISM].copy();
                 nextPop[i].mutate(m_rnd);
                 //System.out.print("c-m: " + nextPop[i].toString());
-                nextPop[i].evaluate(a_gameState,m_gameEvaluator);
+                nextPop[i].evaluate(a_gameState, first);
                 //System.out.println(", " + nextPop[i].m_fitness);
             }
 
@@ -103,7 +98,7 @@ public class GA
                  System.out.format("individual i: " + i + ", fitness: %.3f, actions: %s \n", m_individuals[i].m_fitness, m_individuals[i].toString());
          */
 
-        return new MacroAction(m_individuals[0].m_genome[0],GameEvaluator.MACRO_ACTION_LENGTH);
+        return new MacroAction(m_individuals[0].m_genome[0],GAConstants.MACRO_ACTION_LENGTH);
     }
 
 
