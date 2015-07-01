@@ -131,18 +131,18 @@ public class AStar extends Controller {
     }
 
     public Action get(CoopGame game) {
-        System.out.println("started");
+        //System.out.println("started");
 
         ActionNode start = new ActionNode(Action.NOOP, Action.NOOP, game, 0);
         Queue<Action> actionPath = AStar.getPath(game, start, isFirst);
 
         if (actionPath.isEmpty()) {
-            System.out.println("bail out");
+            //System.out.println("bail out");
             return Action.NOOP;
         }
 
         //A star (thinks) it is finding solutions but they all start with no-op and so don't go very well.
-        System.out.println(actionPath);
+        //System.out.println(actionPath);
         actionPath.poll();
         return actionPath.poll();
     }

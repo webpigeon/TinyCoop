@@ -86,8 +86,7 @@ public class GA
             currGen++;
         }
 
-
-        System.out.println("number of generations this tick: "+currGen);
+        //System.out.println("number of generations this tick: "+currGen);
 
         //Return the first macro action of the best individual.
        /* System.out.println(m_numGenerations);

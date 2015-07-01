@@ -17,11 +17,12 @@ public class FastGameMain {
         WASDController wasd = new WASDController();
         ArrowController arrows = new ArrowController();
 
-        Controller c1 = new GAController(true);
-//        Controller c1 = new MCTS(true, 500);
+//        Controller c1 = new GAController(true);
+        Controller c1 = new MCTS(true, 500);
 //        Controller c1 = new RandomController();
 //        Controller c1 = wasd;
-        Controller c2 = new AStar(false);
+//        Controller c2 = new AStar(false);
+            Controller c2 = new GAController(false);
 //        Controller c2 = new RandomController();
 //        Controller c2 = arrows;
 
