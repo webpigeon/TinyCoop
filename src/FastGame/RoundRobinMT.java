@@ -16,7 +16,7 @@ import java.util.concurrent.*;
  * Created by jwalto on 01/07/2015.
  */
 public class RoundRobinMT {
-    private final static Integer REPEATS = 5;
+    private final static Integer REPEATS = 10;
     private final static Integer MAX_TICKS = 2000;
 
     public static void main(String[] args) throws FileNotFoundException, InterruptedException, ExecutionException {
@@ -57,7 +57,7 @@ public class RoundRobinMT {
             }
         }
 
-        System.out.println("calculating results");
+        System.out.println("calculating results ("+tasks.size()+" tasks)");
         List<Future<Result>> results = service.invokeAll(tasks);
 
         System.out.println("Processing results");
