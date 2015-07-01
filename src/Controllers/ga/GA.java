@@ -14,7 +14,7 @@ import java.util.Random;
 public class GA
 {
     public final int NUM_INDIVIDUALS = 10;
-    static public int NUM_ACTIONS_INDIVIDUAL = 8;
+    static public int NUM_ACTIONS_INDIVIDUAL = 15;
     static public int TOURNAMENT_SIZE = 3;
     public final int ELITISM = 2;
     public ArrayList<MacroAction> m_actionList;             //List of available actions to govern the ship.
@@ -38,24 +38,23 @@ public class GA
 
     public void init(CoopGame a_gameState, boolean first)
     {
-        System.out.println(" --------- Starting GA --------- ");
+        //System.out.println(" --------- Starting GA --------- ");
         m_numGenerations = 0;
         for(int i = 0; i < NUM_INDIVIDUALS; ++i)
         {
             m_individuals[i] = new GAIndividual(NUM_ACTIONS_INDIVIDUAL);
             m_individuals[i].randomize(m_rnd, m_actionList.size());
             m_individuals[i].evaluate(a_gameState, first);
-            System.out.format("individual i: " + i + ", fitness: %.3f, actions: %s \n", m_individuals[i].m_fitness, m_individuals[i].toString());
+            //System.out.format("individual i: " + i + ", fitness: %.3f, actions: %s \n", m_individuals[i].m_fitness, m_individuals[i].toString());
         }
 
         sortPopulationByFitness();
     }
 
-    public MacroAction run(CoopGame a_gameState, long a_timeDue, boolean first)
+    public MacroAction run(CoopGame a_gameState, int generations, boolean first)
     {
-        double remaining = (a_timeDue-System.currentTimeMillis());
-
-        while(remaining > 10)
+        int currGen = 0;
+        while(currGen < generations)
         {
             GAIndividual[] nextPop = new GAIndividual[m_individuals.length];
             //System.out.println(" --------- New generation " + m_numGenerations + " --------- ");
@@ -84,9 +83,11 @@ public class GA
 
 
             m_numGenerations++;
-            remaining = (a_timeDue-System.currentTimeMillis());
+            currGen++;
         }
 
+
+        System.out.println("number of generations this tick: "+currGen);
 
         //Return the first macro action of the best individual.
        /* System.out.println(m_numGenerations);

@@ -10,7 +10,7 @@ import FastGame.CoopGame;
  * Created by jwalto on 01/07/2015.
  */
 public class GAController extends Controller {
-    private static final long TIME_BUDGET = 60;
+    private static final Integer GENERATIONS = 10;
     private static final MacroAction NOOP = new MacroAction(Action.NOOP, GAConstants.MACRO_ACTION_LENGTH);
 
     private GA ga;
@@ -32,7 +32,6 @@ public class GAController extends Controller {
     @Override
     public Action get(CoopGame game) {
         MacroAction nextAction = NOOP;
-        long timeDue = TIME_BUDGET + System.currentTimeMillis();
 
         if (startOfGame) {
             currentAction = NOOP;
@@ -46,11 +45,11 @@ public class GAController extends Controller {
                 if (reset) {
                     ga.init(game, first);
                 }
-                ga.run(game, timeDue, first);
+                ga.run(game, GENERATIONS, first);
                 macroPos--;
             } else if (macroPos == 0) {
                 nextAction = currentAction;
-                MacroAction gaBestAction = ga.run(game, timeDue, first);
+                MacroAction gaBestAction = ga.run(game, GENERATIONS, first);
                 if (gaBestAction != null) {
                     currentAction = gaBestAction;
                 }
