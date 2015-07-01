@@ -69,6 +69,7 @@ public class RoundRobinMT {
     }
 
     static class Matchup implements Callable<RoundRobinMT.Result> {
+        static int count =0;
         Controller p1;
         Controller p2;
         String map;
@@ -79,6 +80,7 @@ public class RoundRobinMT {
             this.p2 = p2;
             this.map = map;
             this.trialID = trialID;
+            count++;
         }
 
         @Override
@@ -100,7 +102,8 @@ public class RoundRobinMT {
             r.score = game.getScore();
             r.timeTaken = ticksTaken;
 
-            System.out.println("game complete");
+            count--;
+            System.out.println("game complete ("+count+" left)");
             return r;
         }
     }
