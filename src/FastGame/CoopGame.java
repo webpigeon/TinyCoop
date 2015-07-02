@@ -3,9 +3,7 @@ package FastGame;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.TreeMap;
+import java.util.*;
 
 import static FastGame.GroundTypes.WALKABLE;
 import static FastGame.ObjectTypes.*;
@@ -60,6 +58,7 @@ public class CoopGame {
         other.maxIDs = new int[this.maxIDs.length];
         System.arraycopy(this.maxIDs, 0, other.maxIDs, 0, this.maxIDs.length);
         other.score = this.score;
+        other.playerPos = new TreeMap<>(this.playerPos);
         return other;
     }
 
@@ -248,6 +247,9 @@ public class CoopGame {
                         int x = Integer.parseInt(lineParts[1]);
                         int y = Integer.parseInt(lineParts[2]);
                         set(x, y, objectType, value);
+                        if (objectType == AGENT) {
+                            playerPos.put(objectID, new Point(x, y));
+                        }
                     }
                 }
                 lineNumber++;

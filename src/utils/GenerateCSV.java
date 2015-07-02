@@ -12,7 +12,7 @@ public class GenerateCSV {
     private PrintStream fout;
 
     public GenerateCSV(String filename) throws FileNotFoundException {
-        this.fout = new PrintStream(new FileOutputStream(filename));
+        this.fout = new PrintStream(new FileOutputStream(filename, true));
     }
 
     public void writeLine(Object ... values) {
