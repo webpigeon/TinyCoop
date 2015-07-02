@@ -7,27 +7,51 @@ import FastGame.CoopGame;
 import java.util.Random;
 
 /**
- *
  * Do a 1 + 1 ES
  * Created by Piers on 01/07/2015.
  */
 public class VariGA extends Controller {
 
-    int iterations;
+    private int iterations;
+    private double numChance = 0.1;
+    private double lengthChance = 0.3;
+    private double actionChance = 0.1;
+    private ActionSequence currentBest;
+    private int currentUsage = 0;
+    private ActionSequence parent;
+    private double parentFitness;
 
-    public VariGA(int iterations) {
+
+    boolean first;
+    public VariGA(boolean first, int iterations) {
+        this.first = first;
         this.iterations = iterations;
     }
 
     @Override
     public Action get(CoopGame game) {
-        ActionSequence parent = new ActionSequence(3, 10, 1, 10);
-//        ActionSequence child = parent.mutate();
-        for(int i = 0; i < iterations; i++){
-            CoopGame workingGame = game.getClone();
-
+        if(currentUsage >= currentBest.getTotalLength()){
+            parent = null;
         }
+        calculate(game);
+        return currentBest.getActionAt(currentUsage++);
+    }
 
+    private void calculate(CoopGame game) {
+        if(parent == null) {
+            parent = new ActionSequence(3, 10, 1, 10);
+            parentFitness = parent.evaluate(game.getClone(), first);
+        }
+        for (int i = 0; i < iterations; i++) {
+            ActionSequence child = parent.getClone();
+            child.mutate(numChance, lengthChance, actionChance);
+            CoopGame workingGame = game.getClone();
+            double childFitness = child.evaluate(workingGame, first);
+            if(childFitness > parentFitness){
+                parent = child;
+                parentFitness = childFitness;
+            }
+        }
     }
 }
 
@@ -54,6 +78,25 @@ class ActionSequence {
         randomize();
     }
 
+    private ActionSequence() {
+
+    }
+
+    public ActionSequence getClone() {
+        ActionSequence other = new ActionSequence();
+        other.numberOfActions = this.numberOfActions;
+        other.lengths = new int[numberOfActions];
+        System.arraycopy(this.lengths, 0, other.lengths, 0, numberOfActions);
+        other.actions = new int[numberOfActions];
+        System.arraycopy(this.actions, 0, other.actions, 0, numberOfActions);
+        other.minLength = this.minLength;
+        other.maxLength = this.maxLength;
+        other.minNum = this.minNum;
+        other.maxNum = this.maxNum;
+
+        return other;
+    }
+
     private void randomize() {
         numberOfActions = random.nextInt(maxNum - minNum) + minNum;
         lengths = new int[numberOfActions];
@@ -63,6 +106,18 @@ class ActionSequence {
             lengths[i] = random.nextInt(maxLength - minLength) + minLength;
             actions = new int[random.nextInt(Action.allActions.length)];
         }
+    }
+
+    public double evaluate(CoopGame state, boolean first){
+        int totalLength = getTotalLength();
+        for(int i = 0; !state.hasWon() || i < totalLength; i++){
+            if(first) {
+                state.update(getActionAt(i), Action.getRandom());
+            }else{
+                state.update(Action.getRandom(), getActionAt(i));
+            }
+        }
+        return state.getScore();
     }
 
     /**
@@ -88,18 +143,18 @@ class ActionSequence {
             }
         }
 
-        for(int i = 0; i < numberOfActions; i++){
-            if(random.nextDouble() > lengthChance){
+        for (int i = 0; i < numberOfActions; i++) {
+            if (random.nextDouble() > lengthChance) {
                 // mutate it
-                if(lengths[i] == maxLength) {
+                if (lengths[i] == maxLength) {
                     lengths[i]--;
-                }else if(lengths[i] == minLength){
+                } else if (lengths[i] == minLength) {
                     lengths[i]++;
-                }else{
-                    lengths[i] += (random.nextBoolean())? 1 : -1;
+                } else {
+                    lengths[i] += (random.nextBoolean()) ? 1 : -1;
                 }
             }
-            if(random.nextDouble() > actionChance){
+            if (random.nextDouble() > actionChance) {
                 actions[i] = random.nextInt(Action.allActions.length);
             }
         }
@@ -118,6 +173,24 @@ class ActionSequence {
         int[] newLengths = new int[numberOfActions];
         System.arraycopy(lengths, 0, newLengths, 0, newLengths.length);
         lengths = newLengths;
+    }
+
+    public int getTotalLength(){
+        int total = 0;
+        for(int length : lengths){
+            total += length * numberOfActions;
+        }
+
+        return total;
+    }
+
+    public Action getActionAt(int position){
+        int runningTotal = 0;
+        for(int i = 0; i < numberOfActions; i++){
+            runningTotal += lengths[i] * numberOfActions;
+            if(position < runningTotal) return Action.allActions[lengths[i]];
+        }
+        return Action.NOOP;
     }
 
 
