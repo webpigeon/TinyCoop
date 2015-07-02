@@ -8,6 +8,8 @@ import FastGame.CoopGame;
  */
 public abstract class Controller {
 
+    public Controller getClone() { return this; }
+
     public Action get(CoopGame game) {
         return Action.NOOP;
     }

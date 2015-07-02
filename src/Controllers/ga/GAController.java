@@ -30,6 +30,12 @@ public class GAController extends Controller {
     }
 
     @Override
+    public Controller getClone() {
+        GAController other = new GAController(first);
+        return other;
+    }
+
+    @Override
     public Action get(CoopGame game) {
         MacroAction nextAction = NOOP;
 
@@ -38,9 +44,8 @@ public class GAController extends Controller {
             nextAction = currentAction;
             reset = true;
             macroPos = GAConstants.MACRO_ACTION_LENGTH-1;
-            startOfGame = false; //TODO need to reliably detect the start of the next game
+            startOfGame = false;
         } else {
-            //TODO handle start of game
             if (macroPos > 0) {
                 if (reset) {
                     ga.init(game, first);
@@ -57,7 +62,7 @@ public class GAController extends Controller {
                 if (currentAction != null) {
                     macroPos = GAConstants.MACRO_ACTION_LENGTH - 1;
                 }
-
+                reset = true;
             }
         }
 
