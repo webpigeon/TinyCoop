@@ -10,6 +10,7 @@
 \newacronym{mcts}{MCTS}{Monte-Carlo Tree Search}
 \newacronym{uct}{UCT}{Uniform Cost applied to Trees}
 \newacronym{ggp}{GGP}{General Game Playing}
+\newacronym{ga}{GA}{Genetic Algorithm}
 
 \begin{document}
 \maketitle
@@ -61,8 +62,11 @@ The random controller simply chooses one of the possible 5 actions. This is one 
 The keyboard controller takes input from the keyboard and translates that into a single Action. Once an action is polled, it is reset to the No Op action unless the keyboard is used again. 
 \subsubsection{\gls{mcts}}
 The \gls{mcts} controller is a simple implementation of \gls{uct} - with a fixed iteration, \gls{uct} Border and rollout border. No knowledge about the game is provided and the assumption is made that the other player will play randomly. The fixed rollout border makes a significant improvement in iterations per decision (On the machine from 1-3 to 500-600 in 40ms). This greatly improves the ability of \gls{mcts} to make informed decisions. The score at the end of a rollout is taken from the game state - so if \gls{mcts} doesn't see any player reach a goal, all branches will be equal.
-\subsubsection{A Star}
+\subsubsection{A*}
 An intelligent agent was required that could provide comparison to how the MCTS is performing. A Star was selected and written to view the problem as selecting the shortest path of actions that would result in reaching the goals.
+\subsubsection{Macro Action Genetic Algorithm}
+The \gls{ga} algorithm was selected for its simplicity and had Macro Actions added in order to improve the forward search capability.
+\subsubsection{Variable Macro Action Genetic Algorithm}
 
 \subsection{Methodology}
 Initially, observations were made to see how \gls{mcts} handled the problem. At first, with a short computational budget it seemed like \gls{mcts} would perform poorly, with near random movement seeming to emerge.

@@ -59,7 +59,7 @@ public class VariGA extends Controller {
     private void calculate(CoopGame game) {
 //        System.out.println("Gets here");
         if (parent == null) {
-            parent = new ActionSequence(3, 6, 1, 5);
+            parent = new ActionSequence(5, 10, 1, 5);
             parentFitness = parent.evaluate(fastForwardedGame.getClone(), first);
         }
         for (int i = 0; i < iterations; i++) {
