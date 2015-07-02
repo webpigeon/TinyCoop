@@ -41,12 +41,12 @@ public class RoundRobinMT {
 
         Controller[] player2List = new Controller[] {
                 new MCTS(false, 500, 5, 30),
-               // new MCTS(false, 200),
-               // new GAController(false),
+                new MCTS(false, 200),
+                new GAController(false),
                 //new AStar(false),
-              //  new VariGA(false, 500),
+                new VariGA(false, 500),
               //  new VariGA(false, 200)
-               //new RandomController()
+                new RandomController()
         };
 
         while(!Thread.interrupted()) {
