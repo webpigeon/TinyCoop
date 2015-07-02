@@ -27,25 +27,28 @@ public class RoundRobinMT {
         String[] maps = {
                 "data/maps/level1.txt",
                 "data/maps/level2.txt",
-                "data/maps/level3.txt"
+                "data/maps/level3.txt",
+                "data/maps/level4.txt",
+                "data/maps/level5.txt",
+                "data/maps/level6.txt",
+                "data/maps/level1E.txt"
         };
 
         Controller[] player1List = new Controller[]{
-                new MCTS(true, 500, 5, 30),
+                new MCTS(true, 500, 10, 45),
+                new MCTS(true, 75, 3, 15),
                 new MCTS(true, 200),
+                new VariGA(true, 500),
                 new GAController(true),
-                //new AStar(true),
-                new RandomController(),
-                new VariGA(true, 500)
+                new RandomController()
         };
 
         Controller[] player2List = new Controller[] {
-                new MCTS(false, 500, 5, 30),
+                new MCTS(false, 500, 10, 45),
+                new MCTS(false, 75, 3, 15),
                 new MCTS(false, 200),
-                new GAController(false),
-                //new AStar(false),
                 new VariGA(false, 500),
-              //  new VariGA(false, 200)
+                new GAController(true),
                 new RandomController()
         };
 
