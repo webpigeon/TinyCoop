@@ -1,6 +1,10 @@
 package FastGame;
 
-import Controllers.*;
+import Controllers.ArrowController;
+import Controllers.Controller;
+import Controllers.MCTS;
+import Controllers.VariGA.VariGA;
+import Controllers.WASDController;
 import Controllers.ga.GAController;
 
 import javax.swing.*;
@@ -22,7 +26,9 @@ public class FastGameMain {
 //        Controller c1 = new RandomController();
 //        Controller c1 = wasd;
 //        Controller c2 = new AStar(false);
-            Controller c2 = new GAController(false);
+//        Controller c2 = new GAController(false);
+        Controller c2 = new VariGA(false, 20);
+
 //        Controller c2 = new RandomController();
 //        Controller c2 = arrows;
 
