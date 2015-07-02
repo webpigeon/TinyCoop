@@ -19,7 +19,7 @@ public class VariGA extends Controller {
     private double actionChance = 0.1;
     private ActionSequence currentBest;
     private int currentUsage = 0;
-    private ActionSequence parent  = new ActionSequence(1, 4, 1, 5);
+    private ActionSequence parent = getNewParent();
     private double parentFitness;
     private CoopGame fastForwardedGame;
 
@@ -31,6 +31,10 @@ public class VariGA extends Controller {
     public VariGA getClone(){
         VariGA other = new VariGA(this.first, this.iterations);
         return other;
+    }
+
+    private ActionSequence getNewParent(){
+        return new ActionSequence(5, 10, 1, 5);
     }
 
     @Override
@@ -59,7 +63,7 @@ public class VariGA extends Controller {
     private void calculate(CoopGame game) {
 //        System.out.println("Gets here");
         if (parent == null) {
-            parent = new ActionSequence(5, 10, 1, 5);
+            parent = getNewParent();
             parentFitness = parent.evaluate(fastForwardedGame.getClone(), first);
         }
         for (int i = 0; i < iterations; i++) {
@@ -72,6 +76,11 @@ public class VariGA extends Controller {
                 parentFitness = childFitness;
             }
         }
+    }
+
+    @Override
+    public String getSimpleName() {
+        return "VariGA + (" + iterations + ";" + getNewParent().toString() + ")";
     }
 }
 
@@ -100,6 +109,16 @@ class ActionSequence {
 
     private ActionSequence() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "params{" +
+                "minLength=" + minLength +
+                "; maxLength=" + maxLength +
+                "; minNum=" + minNum +
+                "; maxNum=" + maxNum +
+                '}';
     }
 
     public ActionSequence getClone() {

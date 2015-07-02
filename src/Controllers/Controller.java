@@ -13,4 +13,8 @@ public abstract class Controller {
     public Action get(CoopGame game) {
         return Action.NOOP;
     }
+
+    public String getSimpleName(){
+        return this.getClass().getSimpleName();
+    }
 }
