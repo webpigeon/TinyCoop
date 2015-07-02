@@ -28,6 +28,11 @@ public class VariGA extends Controller {
         this.iterations = iterations;
     }
 
+    public VariGA getClone(){
+        VariGA other = new VariGA(this.first, this.iterations);
+        return other;
+    }
+
     @Override
     public Action get(CoopGame game) {
         if (currentBest == null || currentUsage >= currentBest.getTotalLength()) {
