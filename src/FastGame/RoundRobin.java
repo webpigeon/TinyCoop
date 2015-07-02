@@ -59,8 +59,11 @@ public class RoundRobin {
         }
     }
 
-    private static Result runTrial(Controller p1, Controller p2, String map, int tid) {
+    private static Result runTrial(Controller player1, Controller player2, String map, int tid) {
         CoopGame game = new CoopGame(map);
+
+        Controller p1 = player1.getClone();
+        Controller p2 = player2.getClone();
 
         int ticksTaken = 0;
         while (ticksTaken < MAX_TICKS && !game.hasWon()) {

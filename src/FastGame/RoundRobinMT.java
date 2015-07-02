@@ -76,8 +76,8 @@ public class RoundRobinMT {
         int trialID;
 
         Matchup(Controller p1, Controller p2, String map, int trialID) {
-            this.p1 = p1;
-            this.p2 = p2;
+            this.p1 = p1.getClone();
+            this.p2 = p2.getClone();
             this.map = map;
             this.trialID = trialID;
             count++;
@@ -85,26 +85,38 @@ public class RoundRobinMT {
 
         @Override
         public Result call() throws Exception {
-            System.out.println("Running game");
-            CoopGame game = new CoopGame(map);
+            try {
+                CoopGame game = new CoopGame(map);
 
-            int ticksTaken = 0;
-            while (ticksTaken < MAX_TICKS && !game.hasWon()) {
-                game.update(p1.get(game.getClone()), p2.get(game.getClone()));
-                ticksTaken++;
+                int ticksTaken = 0;
+                while (ticksTaken < MAX_TICKS && !game.hasWon()) {
+                    game.update(p1.get(game.getClone()), p2.get(game.getClone()));
+                    ticksTaken++;
+                }
+
+                Result r = new Result();
+                r.p1 = p1;
+                r.p2 = p2;
+                r.map = map;
+                r.trialID = trialID;
+                r.score = game.getScore();
+                r.timeTaken = ticksTaken;
+
+                count--;
+                System.out.println("game complete (" + count + " left)");
+                return r;
+            } catch (Exception ex) {
+                System.err.println("Error: "+ex);
+                count--;
+                Result r = new Result();
+                r.p1 = p1;
+                r.p2 = p2;
+                r.map = map;
+                r.trialID = trialID;
+                r.score = -1;
+                r.timeTaken = -1;
+                return r;
             }
-
-            Result r = new Result();
-            r.p1 = p1;
-            r.p2 = p2;
-            r.map = map;
-            r.trialID = trialID;
-            r.score = game.getScore();
-            r.timeTaken = ticksTaken;
-
-            count--;
-            System.out.println("game complete ("+count+" left)");
-            return r;
         }
     }
 
