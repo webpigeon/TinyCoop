@@ -2,6 +2,7 @@ package FastGame;
 
 import Controllers.*;
 import Controllers.VariGA.VariGA;
+import Controllers.astar.AStarBetter;
 import Controllers.ga.GAController;
 
 import javax.swing.*;
@@ -20,9 +21,10 @@ public class FastGameMain {
 
 //        Controller c1 = new GAController(true);
 //        Controller c1 = new VariGA(true, 500);
-        Controller c1 = new RandomController();
+        //Controller c1 = new RandomController();
+          Controller c1 = new NoOp();
 //        Controller c1 = wasd;
-        Controller c2 = new AStar(false);
+        Controller c2 = new AStarBetter(false);
 //        Controller c2 = new GAController(false);
 //        Controller c2 = new VariGA(false, 500);
 

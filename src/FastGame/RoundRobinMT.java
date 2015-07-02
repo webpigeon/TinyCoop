@@ -4,6 +4,7 @@ import Controllers.AStar;
 import Controllers.Controller;
 import Controllers.MCTS;
 import Controllers.RandomController;
+import Controllers.VariGA.VariGA;
 import Controllers.ga.GAController;
 import utils.GenerateCSV;
 
@@ -16,7 +17,7 @@ import java.util.concurrent.*;
  * Created by jwalto on 01/07/2015.
  */
 public class RoundRobinMT {
-    private final static Integer REPEATS = 10;
+    private final static Integer REPEATS = 5;
     private final static Integer MAX_TICKS = 2000;
 
     public static void main(String[] args) throws FileNotFoundException, InterruptedException, ExecutionException {
@@ -31,18 +32,20 @@ public class RoundRobinMT {
 
         Controller[] player1List = new Controller[]{
                 new MCTS(true, 500),
-                new MCTS(true, 200),
+                //new MCTS(true, 200),
                 new GAController(true),
-                new AStar(true),
-                new RandomController()
+                //new AStar(true),
+                new RandomController(),
+                new VariGA(true, 500)
         };
 
         Controller[] player2List = new Controller[] {
                 new MCTS(false, 500),
-                new MCTS(false, 200),
+                //new MCTS(false, 200),
                 new GAController(false),
-                new AStar(false),
-                new RandomController()
+                //new AStar(false),
+                new RandomController(),
+                new VariGA(false, 500)
         };
 
         System.out.println("generating matchups");

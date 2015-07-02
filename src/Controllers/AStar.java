@@ -21,14 +21,14 @@ public class AStar extends Controller {
         Map<ActionNode, ActionNode> cameFrom = new HashMap<>();
         Map<ActionNode, Double> gScores = new HashMap<>();
         Map<ActionNode, Double> fScores = new HashMap<>();
-        Queue<ActionNode> openSet = new PriorityQueue<ActionNode>(new fScoreMetric(fScores));
+        List<ActionNode> openSet = new ArrayList<ActionNode>();
         openSet.add(start);
 
         while(!openSet.isEmpty()) {
-            ActionNode current = openSet.poll();
+            ActionNode current = openSet.get(0);
             //System.out.println("open: "+openSet);
             //System.out.println("closed: "+closedSet);
-            if (current.game.hasWon()) {
+            if (current.game.hasWon() || current.game.getScore() == 0.5) {
                 return buildPath(current, cameFrom, isFirst);
             }
             openSet.remove(current);
@@ -95,7 +95,8 @@ public class AStar extends Controller {
     public static List<ActionNode> getAvailableMoves(ActionNode current, boolean isFirst){
         List<ActionNode> nextActions = new ArrayList<>();
         for (FastGame.Action action : Action.allActions) {
-            Action other = Action.getRandom();
+            //Action other = Action.getRandom();
+            Action other = Action.NOOP;
             CoopGame clone = current.game.getClone();
 
             // so that's what the isFirst is for ;P
@@ -122,7 +123,7 @@ public class AStar extends Controller {
             total += goal.distanceSq(myPos); //TODO where am i? o.O
         }
 
-        return -start.game.getScore() + total;
+        return total;
     }
 
     private boolean isFirst;
@@ -137,12 +138,12 @@ public class AStar extends Controller {
         Queue<Action> actionPath = AStar.getPath(game, start, isFirst);
 
         if (actionPath.isEmpty()) {
-            //System.out.println("bail out");
+            System.out.println("bail out");
             return Action.NOOP;
         }
 
         //A star (thinks) it is finding solutions but they all start with no-op and so don't go very well.
-        //System.out.println(actionPath);
+        System.out.println(actionPath);
         actionPath.poll();
         return actionPath.poll();
     }
