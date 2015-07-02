@@ -4,6 +4,7 @@ import Controllers.AStar;
 import Controllers.Controller;
 import Controllers.MCTS;
 import Controllers.RandomController;
+import Controllers.VariGA.VariGA;
 import Controllers.ga.GAController;
 import utils.GenerateCSV;
 
@@ -30,19 +31,23 @@ public class RoundRobinMT {
         };
 
         Controller[] player1List = new Controller[]{
-                new MCTS(true, 500),
+                new MCTS(true, 500, 5, 30),
                 new MCTS(true, 200),
                 new GAController(true),
-                new AStar(true),
-                new RandomController()
+//                new AStar(true),
+                new VariGA(true, 500),
+                new VariGA(true, 200)
+//                new RandomController()
         };
 
         Controller[] player2List = new Controller[] {
-                new MCTS(false, 500),
+                new MCTS(false, 500, 5, 30),
                 new MCTS(false, 200),
                 new GAController(false),
-                new AStar(false),
-                new RandomController()
+//                new AStar(false),
+                new VariGA(false, 500),
+                new VariGA(false, 200)
+//                new RandomController()
         };
 
         System.out.println("generating matchups");
@@ -61,11 +66,13 @@ public class RoundRobinMT {
         List<Future<Result>> results = service.invokeAll(tasks);
 
         System.out.println("Processing results");
-        GenerateCSV csv = new GenerateCSV("results-mt.csv");
+        GenerateCSV csv = new GenerateCSV("results-mtp.csv");
         for (Future<Result> resultf : results) {
             Result result = resultf.get();
             csv.writeLine(result.getP1(), result.getP2(), result.map, result.trialID, result.score, result.timeTaken);
         }
+        csv.close();
+        service.shutdown();
     }
 
     static class Matchup implements Callable<RoundRobinMT.Result> {
@@ -129,11 +136,11 @@ public class RoundRobinMT {
         int timeTaken;
 
         public String getP1() {
-            return p1.getClass().getSimpleName();
+            return p1.getSimpleName();
         }
 
         public String getP2() {
-            return p2.getClass().getSimpleName();
+            return p2.getSimpleName();
         }
     }
 }

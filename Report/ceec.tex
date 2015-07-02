@@ -53,7 +53,9 @@ All levels are defined by a simple text file format.
 
 The problems are designed to require Agents to co-operate in order to achieve their goals. Unlike other environments where \gls{mcts} can charge off achieving its own goals, this domain requires the agents to sometimes sit patiently on a button for another Agent to do something else.
 
+
 \subsection{AI Controllers}
+A small set of AI Controllers were created in order to attempt to solve the problem domain. None of the agents have the ability to communicate with another agent.
 \subsubsection{Random}
 The random controller simply chooses one of the possible 5 actions. This is one of the simplest to implement and run.
 \subsubsection{Keyboard}
@@ -66,12 +68,14 @@ An intelligent agent was required that could provide comparison to how the MCTS 
 The \gls{ga} algorithm was selected for its simplicity and had Macro Actions added in order to improve the forward search capability.
 \subsubsection{Variable Macro Action Genetic Algorithm}
 
-\subsection{Methodology}
+\subsection{Initial Testing}
 Initially, observations were made to see how \gls{mcts} handled the problem. At first, with a small computational budget it seemed like \gls{mcts} would perform poorly, with near random movement seeming to emerge.
 
 This changed, when an agent (Agent 1 say) got near a \emph{Button} or \emph{Door}. When Agent 1 reached an item like this - Agent 2 would seemingly gain some purpose and typically head for the other items. When Agent 1 got on the \emph{Button}, Agent 2 would head straight through the open \emph{Door} and to the \emph{Goal}. Behaviour would then typically go back towards a more random approach, unless the Agent 1 got near the \emph{Door} - typically causing Agent 2 to head more purposefully towards the \emph{Button} that would allow Agent 1 to reach the \emph{Goal}.
 
 With this observation made - the computational budget was increased ten-fold, and the \gls{mcts} agents performed significantly better. Typical behaviour would be near optimal with significantly less random sections of movement. This can likely be attributed to the increased rollout and uct border depths allowing more foresight on such a small puzzle.
+\subsection{Tournament}
+A round robin tournament with three maps and the assembled Agents with various parameters was run - allowing each Agent to be paired with every other Agent (including itself) and play the game ten times per level.
 \bibliographystyle{IEEEtran}
 \bibliography{ceec}
 

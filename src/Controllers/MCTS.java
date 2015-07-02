@@ -58,6 +58,11 @@ public class MCTS extends Controller {
     public boolean isFirst() {
         return first;
     }
+
+    @Override
+    public String getSimpleName() {
+        return "MCTS: (" + iterationLimit + ";" + maxUCTDepth + ";" + maxRolloutDepth + ")";
+    }
 }
 
 class MCTSNode {

@@ -1,0 +1,4 @@
+MCTS: (500;5;30),MCTS: (500;5;30),data/maps/level1.txt,0,1.0,153
+MCTS: (500;5;30),VariGA + (200;params{minLength=1; maxLength=5; minNum=5; maxNum=10}),data/maps/level1.txt,0,1.0,696
+VariGA + (200;params{minLength=1; maxLength=5; minNum=5; maxNum=10}),MCTS: (500;5;30),data/maps/level1.txt,0,1.0,515
+VariGA + (200;params{minLength=1; maxLength=5; minNum=5; maxNum=10}),VariGA + (200;params{minLength=1; maxLength=5; minNum=5; maxNum=10}),data/maps/level1.txt,0,0.0,2000
