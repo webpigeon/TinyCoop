@@ -14,9 +14,9 @@ public class VariGA extends Controller {
 
     boolean first;
     private int iterations;
-    private double numChance = 0.1;
-    private double lengthChance = 0.3;
-    private double actionChance = 0.1;
+    private double numChance = 0.25;
+    private double lengthChance = 0.8;
+    private double actionChance = 0.75;
     private ActionSequence currentBest;
     private int currentUsage = 0;
     private ActionSequence parent = getNewParent();
@@ -32,19 +32,19 @@ public class VariGA extends Controller {
         VariGA other = new VariGA(this.first, this.iterations);
         return other;
     }
-
+    // int minNum, int maxNum, int minLength, int maxLength
     private ActionSequence getNewParent(){
-        return new ActionSequence(5, 10, 1, 5);
+        return new ActionSequence(3, 10, 1, 5);
     }
 
     @Override
     public Action get(CoopGame game) {
-        if (currentBest == null || currentUsage >= currentBest.getTotalLength()) {
+        if (currentBest == null || currentUsage >= currentBest.getFirstActionLength()) {
             currentBest = parent;
             parent = null;
             // Fast forward the fast forward to the right place
             fastForwardedGame = game.getClone();
-            for(int i = 0 ;!fastForwardedGame.hasWon() &&  i < currentBest.getTotalLength(); i++){
+            for(int i = 0 ;!fastForwardedGame.hasWon() &&  i < currentBest.getFirstActionLength(); i++){
                 if(first){
                     fastForwardedGame.update(currentBest.getActionAt(i), Action.getRandom());
                 }else{
@@ -71,7 +71,7 @@ public class VariGA extends Controller {
             ActionSequence child = parent.getClone();
             child.mutate(numChance, lengthChance, actionChance);
             double childFitness = child.evaluate(fastForwardedGame.getClone(), first);
-            if (childFitness > parentFitness) {
+            if (childFitness > parentFitness || (childFitness == parentFitness && Math.random() > 0.75)) {
                 parent = child;
                 parentFitness = childFitness;
             }
@@ -148,15 +148,21 @@ class ActionSequence {
     }
 
     public double evaluate(CoopGame state, boolean first) {
+        int totalScore = 0;
         int totalLength = getTotalLength();
-        for (int i = 0; !state.hasWon() && i < totalLength; i++) {
-            if (first) {
-                state.update(getActionAt(i), Action.getRandom());
-            } else {
-                state.update(Action.getRandom(), getActionAt(i));
+
+        for(int j = 0; j < 3; j++) {
+            CoopGame game = state.getClone();
+            for (int i = 0; !game.hasWon() && i < totalLength; i++) {
+                if (first) {
+                    game.update(getActionAt(i), Action.getRandom());
+                } else {
+                    game.update(Action.getRandom(), getActionAt(i));
+                }
             }
+            totalScore += game.getScore();
         }
-        return state.getScore();
+        return totalScore / 3.0;
     }
 
     /**
@@ -227,6 +233,10 @@ class ActionSequence {
             total += length;
         }
         return total;
+    }
+
+    public int getFirstActionLength(){
+        return lengths[0];
     }
 
     public Action getActionAt(int position) {
