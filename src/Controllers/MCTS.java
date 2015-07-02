@@ -11,13 +11,20 @@ import java.util.Random;
 public class MCTS extends Controller {
 
     protected Random random = new Random();
-    private int maxUCTDepth = 3;
-    private int maxRolloutDepth = 20;
+    private int maxUCTDepth = 5;
+    private int maxRolloutDepth = 30;
     private int iterationLimit = 0;
 
     private boolean first;
 
-    public MCTS(boolean first, int iterationLimit) {
+    public MCTS(boolean first, int iterationLimit, int maxUCTDepth, int maxRolloutDepth) {
+        this.first = first;
+        this.iterationLimit = iterationLimit;
+        this.maxUCTDepth = maxUCTDepth;
+        this.maxRolloutDepth = maxRolloutDepth;
+    }
+
+    public MCTS(boolean first, int iterationLimit){
         this.first = first;
         this.iterationLimit = iterationLimit;
     }
