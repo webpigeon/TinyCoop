@@ -42,9 +42,6 @@ public class GameNode implements Comparable<GameNode> {
         if (!actions.equals(gameNode.actions)) return false;
         if (!gameEquals(game, gameNode.game)) return false;
 
-
-        if (!game.equals(gameNode.game)) return false;
-
         return true;
     }
 
@@ -53,5 +50,9 @@ public class GameNode implements Comparable<GameNode> {
         int result = game.hashCode();
         result = 31 * result + actions.hashCode();
         return result;
+    }
+
+    public String toString() {
+        return actions.toString()+" "+game.getScore()+","+game.getPos(0)+","+game.getPos(1);
     }
 }

@@ -12,6 +12,9 @@ package Controllers.astar;
  */
 public class PathFind {
     private Function<GameNode, Double> heristic;
+    Map<GameNode, GameNode> cameFrom = new HashMap<>();
+    Map<GameNode, Double> gScores = new HashMap<>();
+    Map<GameNode, Double> fScores = new HashMap<>();
 
     public PathFind(Function<GameNode, Double> heristic) {
         this.heristic = heristic;
@@ -19,15 +22,20 @@ public class PathFind {
 
     public List<MovePair> getPath(CoopGame game, GameNode start) {
         List<GameNode> closedSet = new ArrayList<GameNode>();
-        List<GameNode> openSet = new ArrayList<GameNode>();
-        openSet.add(start);
-        Map<GameNode, GameNode> cameFrom = new HashMap<>();
-        Map<GameNode, Double> gScores = new HashMap<>();
-        Map<GameNode, Double> fScores = new HashMap<>();
+        Queue<GameNode> openSet = new PriorityQueue<GameNode>(new Comparator<GameNode>() {
 
+            @Override
+            public int compare(GameNode o1, GameNode o2) {
+                System.out.println(o1);
+                System.out.println(o2);
+                return Double.compare(fScores.getOrDefault(o1, 0.0),fScores.getOrDefault(o2, 0.0)) * -1;
+            }
+        });
+        openSet.add(start);
 
         while(!openSet.isEmpty()) {
-            GameNode current = openSet.get(0);
+            GameNode current = openSet.poll();
+            System.out.println(current);
             if (current.isTerminal()) {
                 return buildPath(current, cameFrom);
             }
@@ -48,7 +56,7 @@ public class PathFind {
                 }
                 gScore += 1;
 
-                if ( !openSet.contains(neighbor) || gScore > gScores.get(neighbor) ) {
+                if ( !openSet.contains(neighbor) || gScore > gScores.getOrDefault(neighbor, 0.0) ) {
                     cameFrom.put(neighbor, current);
                     gScores.put(neighbor, gScore);
                     fScores.put(neighbor, gScore + heristic.apply(neighbor));

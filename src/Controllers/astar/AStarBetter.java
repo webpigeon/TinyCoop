@@ -30,6 +30,7 @@ public class AStarBetter extends Controller {
 
     @Override
     public Action get(CoopGame game) {
+        System.out.println("requested move");
         GameNode start = new GameNode(game, lastMove);
         List<MovePair> pairs = find.getPath(game, start);
 
@@ -39,9 +40,11 @@ public class AStarBetter extends Controller {
         }
 
         if (pairs.size() == 1) {
+            System.out.println();
             return Action.NOOP;
         }
 
+        System.out.println(pairs);
         // this assumes the move the opponent played last was the "perfect" move, but it probably wasn't.
         lastMove = pairs.get(1);
         return isFirst?lastMove.p1Move:lastMove.p2Move;

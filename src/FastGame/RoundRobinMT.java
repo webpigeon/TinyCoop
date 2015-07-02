@@ -35,7 +35,7 @@ public class RoundRobinMT {
                 //new MCTS(true, 200),
                 new GAController(true),
                 //new AStar(true),
-                new RandomController(),
+                //new RandomController(),
                 new VariGA(true, 500)
         };
 
@@ -44,7 +44,7 @@ public class RoundRobinMT {
                 //new MCTS(false, 200),
                 new GAController(false),
                 //new AStar(false),
-                new RandomController(),
+                //new RandomController(),
                 new VariGA(false, 500)
         };
 
