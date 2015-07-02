@@ -30,6 +30,12 @@ public class GAController extends Controller {
     }
 
     @Override
+    public Controller getClone() {
+        GAController other = new GAController(first);
+        return other;
+    }
+
+    @Override
     public Action get(CoopGame game) {
         MacroAction nextAction = NOOP;
 
