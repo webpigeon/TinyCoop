@@ -67,6 +67,7 @@ With this observation made - the computational budget was increased ten-fold, an
 \subsection{Tournament}
 For the main data collection, we ran a round robin tournament of maps and Agents.
 
+\subsubsection{Maps}
 The 7 maps that were included in the tournament were as follows:
 \begin{itemize}
 \item{\emph{level1.txt} This map is the same as the map in \ref{InitialState}}
@@ -80,11 +81,11 @@ The 7 maps that were included in the tournament were as follows:
 
 \subsubsection{\gls{ai} Controllers}
 A small set of \gls{ai} Controllers were created in order to attempt to solve the problem domain. None of the agents have the ability to communicate with another agent.
-\subsubsection*{Random}
+\paragraph{Random}
 The random controller simply chooses one of the possible 5 actions. This is one of the simplest to implement and run.
-\subsubsection*{Keyboard}
+\paragraph{Keyboard}
 The keyboard controller takes input from the keyboard and translates that into a single Action. Once an action is polled, it is reset to the No Op action unless the keyboard is used again. 
-\subsubsection*{\gls{mcts}}
+\paragraph{\gls{mcts}}
 The \gls{mcts} controller is a simple implementation of \gls{uct} - with a fixed iteration, \gls{uct} Border and rollout border. No knowledge about the game is provided and the assumption is made that the other player will play randomly. The fixed rollout border makes a significant improvement in iterations per decision (On the machine from 1-3 to 500-600 in 40ms). This greatly improves the ability of \gls{mcts} to make informed decisions. The score at the end of a rollout is taken from the game state - so if \gls{mcts} doesn't see any player reach a goal, all branches will be equal.
 
 For the tournament, three parameter sets were chosen for comparison and are shown in Figure \ref{mctsTable}.
@@ -103,9 +104,9 @@ High & 500 & 10 & 45 \\
 \label{mctsTable}
 \end{figure}
 
-\subsubsection*{Macro Action Genetic Algorithm}
+\paragraph{Macro Action Genetic Algorithm}
 The \gls{ga} algorithm was selected for its simplicity and had Macro Actions added in order to improve the forward search capability. The \gls{maga} used a population size of 10 and tournament selection of 3. Each candidate was a string of 15 actions - with each action performed 3 times in a row. This meant the \gls{maga} could "see" 45 ticks in the future.
-\subsubsection*{Variable Macro Action Genetic Algorithm}
+\paragraph{Variable Macro Action Genetic Algorithm}
 The Variable Macro Action \gls{ga} was created to try to solve the shortcomings of \gls{maga}. The primary premise was to allow the \gls{ga} to evolve the individual macro action lengths and the length of the overall sequence (number of macro actions). The main technique used was a 1 + 1 ES. The algorithm was bounded by a number of parameters that are shown in Figure \ref{vmagaTable}.
 
 \begin{figure}[h]
@@ -123,11 +124,64 @@ lengthChance & Chance of altering each length & 0.8 \\
 actionChance & Chance of altering each action & 0.75 \\
 \hline
 \end{tabular}
-\caption{Table of paramters for the Variable Macro Action Genetic Algorithm}
+\caption{Table of parameters for the Variable Macro Action Genetic Algorithm}
 \label{vmagaTable}
 \end{figure}
 These values need extensive tuning to realise the full potential of the algorithm and is a source of possible future work.
+\pagebreak
+\section{Results}
 
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{level1vsleve1e}
+\caption{Graph showing the average score obtained by each Agent across level 1(Blue) and level 1E (Orange)}
+\label{1v1eS}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{level1vsleve1eTicks}
+\caption{Graph showing the average ticks taken for each AI Agent across level 1(Blue) and level 1E (Orange)}
+\label{1v1eT}
+\end{figure}
+
+Figure \ref{1v1eS} shows the effect that having the complex \emph{Buttons} and \emph{Doors} in a level has on the score an Agent achieves. Figure \ref{1v1eT} demonstrates the vast improvement in pathfinding ability to a goal in the VariGA compared to the GAController.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{avgScoreOverAllMaps}
+\caption{Average score of each AI Agent over all the Maps}
+\label{avgScoreAllMaps}
+\end{figure}
+
+Figure \ref{avgScoreAllMaps} shows the average score that each AI Agent achieved over all the maps. The two more powerful \gls{mcts} Agents performed the best, doing much better than the competition. Figure \ref{avgTicksAllMaps} shows a similar result, with the more powerful Agents typically completing the maps in fewer ticks. \emph{RandomController} is the only deviant here - it outperformed the GA's in score but was worse in average ticks.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{avgTicksOverAllMaps}
+\caption{Average Ticks taken for each AI Agent over all the Maps}
+\label{avgTicksAllMaps}
+\end{figure}
+
+\pagebreak
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.5]{level5}
+\caption{The initial starting state for level5.txt}
+\label{Level5State}
+\end{figure}
+Level 5 - shown in Figure \ref{Level5State} - poses a particular problem for many of the agents (see Figure \ref{avgScoreMap5}). The asymmetric nature of the level, and the delayed reward caused great difficulty for the Agents. Relying on two button presses and the other agent to get through the open doors - in order - greatly reduced performance. The top agent, High MCTS, only managed an average score of $0.44$ compared to its total average of just over 0.8.
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[trim=0cm 0cm 5cm 3cm, clip=true, width = \linewidth]{avgScoreOverMap5}
+\caption{Average Score for each AI agent over Map 5}
+\label{avgScoreMap5}
+\end{figure}
+
+\section{Conclusions}
+In this paper, we found that a strong MCTS player can solve simple cooperative problems without requiring communication between agents.
 \bibliographystyle{IEEEtran}
 \bibliography{ceec}
 
