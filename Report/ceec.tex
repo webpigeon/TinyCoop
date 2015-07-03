@@ -18,7 +18,7 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-This paper highlights an experiment to see how standard \gls{mcts} handles simple co-operative problems with no prior or provided knowledge.	These problems are formed from a simple grid world that has a set of goals, doors and buttons as well as walls that cannot be walked through. Two agents have to each reach every goal present on the map. For a door to be open, an Agent must be present on at least one of the buttons that is linked to it.
+This paper highlights an experiment to see how standard \gls{mcts} handles simple co-operative problems with no prior or provided knowledge. These problems are formed from a simple grid world that has a set of goals, doors and buttons as well as walls that cannot be walked through. Two agents have to each reach every goal present on the map. For a door to be open, an Agent must be present on at least one of the buttons that is linked to it.
 
 When laid out correctly, the world requires each agent to do certain things at certain times in order to achieve the goal. With no modification to allow communication between the two Agents - \gls{mcts} performs well and performs very 'purposefully' when given enough computational time.
 \end{abstract}
@@ -56,17 +56,18 @@ The starting positions for a simple problem is shown in Figure \ref{InitialState
 \footnotetext{Displayed numbers are the ID numbers - \emph{Button} ID 0 will open \emph{Door} ID 0 but not \emph{Door} ID 1}
 All levels are defined by a simple text file format.
 
-The problems are designed to require Agents to co-operate in order to achieve their goals. Unlike other environments where \gls{mcts} can charge off achieving its own goals, this domain requires the agents to sometimes sit patiently on a button for another Agent to do something else.
+The problems are designed to require \emph{Agents} to co-operate in order to achieve their goals. Unlike other environments where \gls{mcts} can charge off achieving its own goals, this domain requires the agents to sometimes sit patiently on a button for another Agent to do something else.
 
 \subsection{Initial Testing}
 Initially, observations were made to see how \gls{mcts} handled the problem. At first, with a small computational budget it seemed like \gls{mcts} would perform poorly, with near random movement seeming to emerge.
 
 This changed, when an agent (Agent 1 say) got near a \emph{Button} or \emph{Door}. When Agent 1 reached an item like this - Agent 2 would seemingly gain some purpose and typically head for the other items. When Agent 1 got on the \emph{Button}, Agent 2 would head straight through the open \emph{Door} and to the \emph{Goal}. Behaviour would then typically go back towards a more random approach, unless the Agent 1 got near the \emph{Door} - typically causing Agent 2 to head more purposefully towards the \emph{Button} that would allow Agent 1 to reach the \emph{Goal}.
 
-With this observation made - the computational budget was increased ten-fold, and the \gls{mcts} agents performed significantly better. Typical behaviour would be near optimal with significantly less random sections of movement. This can likely be attributed to the increased rollout and uct border depths allowing more foresight on such a small puzzle.
+With this observation made - the computational budget was increased ten-fold, and the \gls{mcts} agents performed significantly better. Typical behaviour would be near optimal with significantly less random sections of movement. This can likely be attributed to the increased rollout and \gls{uct} border depths allowing more foresight on such a small puzzle.
 \subsection{Tournament}
 For the main data collection, we ran a round robin tournament of maps and Agents.
 
+\subsubsection{Maps}
 The 7 maps that were included in the tournament were as follows:
 \begin{itemize}
 \item{\emph{level1.txt} This map is the same as the map in \ref{InitialState}}
@@ -80,12 +81,12 @@ The 7 maps that were included in the tournament were as follows:
 
 \subsubsection{\gls{ai} Controllers}
 A small set of \gls{ai} Controllers were created in order to attempt to solve the problem domain. None of the agents have the ability to communicate with another agent.
-\subsubsection*{Random}
+\paragraph{Random}
 The random controller simply chooses one of the possible 5 actions. This is one of the simplest to implement and run.
-\subsubsection*{Keyboard}
+\paragraph{Keyboard}
 The keyboard controller takes input from the keyboard and translates that into a single Action. Once an action is polled, it is reset to the No Op action unless the keyboard is used again. 
-\subsubsection*{\gls{mcts}}
-The \gls{mcts} controller is a simple implementation of \gls{uct} - with a fixed iteration, \gls{uct} Border and rollout border. No knowledge about the game is provided and the assumption is made that the other player will play randomly. The fixed rollout border makes a significant improvement in iterations per decision (On the machine from 1-3 to 500-600 in 40ms). This greatly improves the ability of \gls{mcts} to make informed decisions. The score at the end of a rollout is taken from the game state - so if \gls{mcts} doesn't see any player reach a goal, all branches will be equal.
+\paragraph{\gls{mcts}}
+The \gls{mcts} controller is a simple implementation of \gls{uct} - with a fixed iteration, \gls{uct} Border and rollout border. No knowledge about the game is provided and the assumption is made that the other player will play randomly. The fixed rollout border makes a significant improvement in iterations per decision (from 1-3 to 500-600 in 40ms \footnote{Intel Core i5-3570, 8GB RAM, Windows 7 Enterprise 64bit}). This greatly improves the ability of \gls{mcts} to make informed decisions. The score at the end of a rollout is taken from the game state - so if \gls{mcts} doesn't see any player reach a goal, all branches will be equal.
 
 For the tournament, three parameter sets were chosen for comparison and are shown in Figure \ref{mctsTable}.
 \begin{figure}[h]
@@ -103,9 +104,9 @@ High & 500 & 10 & 45 \\
 \label{mctsTable}
 \end{figure}
 
-\subsubsection*{Macro Action Genetic Algorithm}
+\paragraph{Macro Action Genetic Algorithm}
 The \gls{ga} algorithm was selected for its simplicity and had Macro Actions added in order to improve the forward search capability. The \gls{maga} used a population size of 10 and tournament selection of 3. Each candidate was a string of 15 actions - with each action performed 3 times in a row. This meant the \gls{maga} could "see" 45 ticks in the future.
-\subsubsection*{Variable Macro Action Genetic Algorithm}
+\paragraph{Variable Macro Action Genetic Algorithm}
 The Variable Macro Action \gls{ga} was created to try to solve the shortcomings of \gls{maga}. The primary premise was to allow the \gls{ga} to evolve the individual macro action lengths and the length of the overall sequence (number of macro actions). The main technique used was a 1 + 1 ES. The algorithm was bounded by a number of parameters that are shown in Figure \ref{vmagaTable}.
 
 \begin{figure}[h]
@@ -123,10 +124,69 @@ lengthChance & Chance of altering each length & 0.8 \\
 actionChance & Chance of altering each action & 0.75 \\
 \hline
 \end{tabular}
-\caption{Table of paramters for the Variable Macro Action Genetic Algorithm}
+\caption{Table of parameters for the Variable Macro Action Genetic Algorithm}
 \label{vmagaTable}
 \end{figure}
 These values need extensive tuning to realise the full potential of the algorithm and is a source of possible future work.
+\pagebreak
+\section{Results}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{level1vsleve1e}
+\caption{Graph showing the average score obtained by each \emph{Agent} across level 1(Blue) and level 1E (Orange)}
+\label{1v1eS}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{level1vsleve1eTicks}
+\caption{Graph showing the average ticks taken for each \gls{ai} \emph{Agent} across level 1(Blue) and level 1E (Orange)}
+\label{1v1eT}
+\end{figure}
+
+Figure \ref{1v1eS} shows the effect that having the complex \emph{Buttons} and \emph{Doors} in a level has on the score an Agent achieves. Figure \ref{1v1eT} demonstrates the vast improvement in path finding ability to a goal in the VariGA compared to the GAController. This is expected due to the ability to make individual actions as compared to the GAController which is only able to make 3 identical turns at a time leading to convoluted paths compared to optimum.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{avgScoreOverAllMaps}
+\caption{Average score of each AI Agent over all the Maps}
+\label{avgScoreAllMaps}
+\end{figure}
+
+Figure \ref{avgScoreAllMaps} shows the average score that each AI Agent achieved over all the maps. The two more powerful \gls{mcts} Agents performed the best, doing much better than the competition. Figure \ref{avgTicksAllMaps} shows a similar result, with the more powerful Agents typically completing the maps in fewer ticks. \emph{RandomController} is the only deviant here - it outperformed the GA's in score but was worse in average ticks.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{avgTicksOverAllMaps}
+\caption{Average Ticks taken for each AI Agent over all the Maps}
+\label{avgTicksAllMaps}
+\end{figure}
+
+\pagebreak
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.5]{level5}
+\caption{The initial starting state for level5.txt}
+\label{Level5State}
+\end{figure}
+Level 5 - shown in Figure \ref{Level5State} - poses a particular problem for many of the agents (see Figure \ref{avgScoreMap5}). The asymmetric nature of the level, and the delayed reward caused great difficulty for the Agents. Relying on two button presses and the other agent to get through the open doors - in order - greatly reduced performance. The top agent, High MCTS, only managed an average score of $0.44$ compared to its total average of just over $0.8$.
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[ width = \linewidth]{avgScoreOverMap5}
+\caption{Average Score for each AI agent over Map 5}
+\label{avgScoreMap5}
+\end{figure}
+
+\section{Conclusions}
+In this paper, we found that a strong MCTS player can solve simple cooperative problems without requiring communication between agents. We also found that a number of other \gls{ai} techniques experienced difficulty when the problem became cooperative. Further work is required in this area.
+
+\subsection{Further Work}
+There is scope for more work in a number of areas. More work can be conducted in the writing of AI's to use communication in order to complete these challenges better amongst themselves. A framework for communication would be devised - with the requirement for fairly \gls{ggp} restrictions in mind.
+
+More work can also be done on experimenting with the problem domain itself. Expanding the object types to include different techniques such as pickup-able objects that can be placed on \emph{Buttons}, \emph{Buttons} that remain active for a period of time after vacating them as well as potentially \emph{Doors} that will open permanently if all it's \emph{Buttons} are activated. The scope here is fairly limitless.
 
 \bibliographystyle{IEEEtran}
 \bibliography{ceec}
