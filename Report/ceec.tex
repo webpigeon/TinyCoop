@@ -7,6 +7,8 @@
 \usepackage{graphicx}
 \usepackage{glossaries}
 
+\graphicspath{{stats-processing/}{stats-processing/data/maps}}
+
 \newacronym{mcts}{MCTS}{Monte-Carlo Tree Search}
 \newacronym{uct}{UCT}{Uniform Cost applied to Trees}
 \newacronym{ggp}{GGP}{General Game Playing}
@@ -32,6 +34,7 @@ Creating \gls{ggp} agents that can co-operate with other players would open the 
 
 Standard \gls{mcts} plays best when it is either able to search to the end of the game tree, or is given rewards frequently. \gls{mcts} tends to stumble when the time given to it isn't sufficient to allow it to locate any sequence of actions that provides a reward in order to differentiate the root's children \cite{perez2012monte}.
 
+\includegraphics[scale=1]{level5.txt-pairs-ticks}
 
 \section{The Experiment}
 The main premise was to put \gls{mcts} in a situation where it would rely on other AI Agents in order to achieve its objectives, as well as provide a code base for further work with communication between Agents. In order to do this, a problem domain was created.

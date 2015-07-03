@@ -1,4 +1,4 @@
-setwd("M:\\graphs")
+setwd("D:\\graphs")
 library(ggplot2) 
 
 # custom functions
@@ -50,7 +50,7 @@ build_graph <- function (filename, title, s) {
 }
 
 #read in our raw data
-games.raw <- read.csv(file="m:\\combined.csv", head=TRUE,sep=",")
+games.raw <- read.csv(file="combined.csv", head=TRUE,sep=",")
 
 # build graphs of agent and it's self
 samePairs.raw = games.raw[games.raw$agent1==games.raw$agent2,]
@@ -76,9 +76,9 @@ for (map in unique(games.raw$maps)) {
 	filtered.raw <- games.raw[games.raw$maps==map, ]
 	filtered.scores <- build_summary_score(filtered.raw)
 	filtered.ticks <- build_summary_ticks(filtered.raw)
-
-	name.scores = paste(map,"-scores.png",sep="")
-	name.ticks = paste(map,"-ticks.png",sep="")
+	mapper <- gsub("[.]", "-", map)
+	name.scores = paste(mapper,"-scores.png",sep="")
+	name.ticks = paste(mapper,"-ticks.png",sep="")
 	build_graph(name.scores, "All agents across a single map", filtered.scores)
 	build_graph(name.ticks, "All agents across a single map", filtered.ticks)
 
@@ -86,8 +86,8 @@ for (map in unique(games.raw$maps)) {
 	samePairs.scores <- build_summary_score(samePairs.raw)
 	samePairs.ticks <- build_summary_ticks(samePairs.raw)
 
-	name.scores = paste(map,"-pairs-scores.png",sep="")
-	name.ticks = paste(map,"-pairs-ticks.png",sep="")
+	name.scores = paste(mapper,"-pairs-scores.png",sep="")
+	name.ticks = paste(mapper,"-pairs-ticks.png",sep="")
 	build_graph(name.scores, "All agents paired with themselves", samePairs.scores)
 	build_graph(name.ticks, "All agents paired with themselves", samePairs.ticks)
 }
