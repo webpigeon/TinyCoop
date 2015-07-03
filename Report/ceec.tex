@@ -12,24 +12,27 @@
 \newacronym{ggp}{GGP}{General Game Playing}
 \newacronym{ga}{GA}{Genetic Algorithm}
 \newacronym{mas}{MAS}{Multi-Agent Systems}
+\newacronym{maga}{MAGA}{Macro Action Genetic Algorithm}
+\newacronym{ai}{AI}{Artificial Intelligence}
 
 \begin{document}
 \maketitle
 \begin{abstract}
-This paper highlights an experiment to see how standard \gls{mcts} handles simple co-operative problems.	These problems are formed from a simple grid world that has a set of goals, doors and buttons as well as walls that cannot be walked through. Two agents have to each reach every goal present on the map. For a door to be open, an Agent must be present on at least one of the buttons that is linked to it.
+This paper highlights an experiment to see how standard \gls{mcts} handles simple co-operative problems with no prior or provided knowledge.	These problems are formed from a simple grid world that has a set of goals, doors and buttons as well as walls that cannot be walked through. Two agents have to each reach every goal present on the map. For a door to be open, an Agent must be present on at least one of the buttons that is linked to it.
 
 When laid out correctly, the world requires each agent to do certain things at certain times in order to achieve the goal. With no modification to allow communication between the two Agents - \gls{mcts} performs well and performs very 'purposefully' when given enough computational time.
 \end{abstract}
 
 \section{Introduction}
+\gls{ggp} is the field of writing \gls{ai} agents that can play a multitude of games without being written specifically for each one individually. \gls{ggp} in real time video games is a popular competition \cite{perez2014}
 
-\gls{mcts} has been applied to a wealth of domains and is one of the primary algorithms in use for \gls{ggp}\cite{finnsson2008simulation}. Primary advantages are that, when given a sufficient forward model, \gls{mcts} doesn't require any knowledge about the game itself in order to play.
+Creating \gls{ggp} agents that can co-operate with other players would open the door for more flexible agents in games that can work together with human players. This experiment tests how well current techniques can cope without specifically co-operating with each other. Agents that communicate slowly using a form of Natural Language, should in theory be able to work with human players equally well as they do with other Agents.
 
-Standard \gls{mcts} plays best when it is either able to search to the end of the game tree, or is given rewards frequently. \gls{mcts} tends to stumble when the time given to it isn't sufficient to allow it to locate any sequence of actions that provides a reward in order to differentiate the root's children.
+\gls{mcts} \cite{browne2012survey} has been applied to a wealth of domains and is one of the primary algorithms in use for \gls{ggp}\cite{finnsson2008simulation}. Primary advantages are that, when given a sufficient forward model, \gls{mcts} doesn't require any knowledge about the game itself in order to play.
 
-Traditional \gls{mas} would be the logical choice for solving this type of problem, however they were left out in order to work towards a co-operative \gls{ggp} agent.
+Standard \gls{mcts} plays best when it is either able to search to the end of the game tree, or is given rewards frequently. \gls{mcts} tends to stumble when the time given to it isn't sufficient to allow it to locate any sequence of actions that provides a reward in order to differentiate the root's children \cite{perez2012monte}.
 
-Creating \gls{ggp} agents that can co-operate with other players would open the door for more flexible agents in games that can work together with human players. 
+
 \section{The Experiment}
 The main premise was to put \gls{mcts} in a situation where it would rely on other AI Agents in order to achieve its objectives, as well as provide a code base for further work with communication between Agents. In order to do this, a problem domain was created.
 \subsection{The Problem Domain}
@@ -44,29 +47,16 @@ The problem domain is a simple grid world consisting of various objects:
 
 The starting positions for a simple problem is shown in Figure \ref{InitialState}
 \begin{figure}[ht]
+\centering
 \includegraphics[scale=0.5]{InitialState}
-\caption{Simple game state showing the different elements}
+\caption{Simple game state showing the different elements\protect\footnotemark }
 \label{InitialState}
 \end{figure}
 
+\footnotetext{Displayed numbers are the ID numbers - \emph{Button} ID 0 will open \emph{Door} ID 0 but not \emph{Door} ID 1}
 All levels are defined by a simple text file format.
 
 The problems are designed to require Agents to co-operate in order to achieve their goals. Unlike other environments where \gls{mcts} can charge off achieving its own goals, this domain requires the agents to sometimes sit patiently on a button for another Agent to do something else.
-
-
-\subsection{AI Controllers}
-A small set of AI Controllers were created in order to attempt to solve the problem domain. None of the agents have the ability to communicate with another agent.
-\subsubsection{Random}
-The random controller simply chooses one of the possible 5 actions. This is one of the simplest to implement and run.
-\subsubsection{Keyboard}
-The keyboard controller takes input from the keyboard and translates that into a single Action. Once an action is polled, it is reset to the No Op action unless the keyboard is used again. 
-\subsubsection{\gls{mcts}}
-The \gls{mcts} controller is a simple implementation of \gls{uct} - with a fixed iteration, \gls{uct} Border and rollout border. No knowledge about the game is provided and the assumption is made that the other player will play randomly. The fixed rollout border makes a significant improvement in iterations per decision (On the machine from 1-3 to 500-600 in 40ms). This greatly improves the ability of \gls{mcts} to make informed decisions. The score at the end of a rollout is taken from the game state - so if \gls{mcts} doesn't see any player reach a goal, all branches will be equal.
-\subsubsection{A*}
-An intelligent agent was required that could provide comparison to how the MCTS is performing. A Star was selected and written to view the problem as selecting the shortest path of actions that would result in reaching the goals.
-\subsubsection{Macro Action Genetic Algorithm}
-The \gls{ga} algorithm was selected for its simplicity and had Macro Actions added in order to improve the forward search capability.
-\subsubsection{Variable Macro Action Genetic Algorithm}
 
 \subsection{Initial Testing}
 Initially, observations were made to see how \gls{mcts} handled the problem. At first, with a small computational budget it seemed like \gls{mcts} would perform poorly, with near random movement seeming to emerge.
@@ -75,7 +65,69 @@ This changed, when an agent (Agent 1 say) got near a \emph{Button} or \emph{Door
 
 With this observation made - the computational budget was increased ten-fold, and the \gls{mcts} agents performed significantly better. Typical behaviour would be near optimal with significantly less random sections of movement. This can likely be attributed to the increased rollout and uct border depths allowing more foresight on such a small puzzle.
 \subsection{Tournament}
-A round robin tournament with three maps and the assembled Agents with various parameters was run - allowing each Agent to be paired with every other Agent (including itself) and play the game ten times per level.
+For the main data collection, we ran a round robin tournament of maps and Agents.
+
+The 7 maps that were included in the tournament were as follows:
+\begin{itemize}
+\item{\emph{level1.txt} This map is the same as the map in \ref{InitialState}}
+\item{\emph{level1E.txt} This map is the same as level1.txt but without the \emph{Doors} and \emph{Buttons}. This was to test the \emph{Agent's} ability to solve the simplest problem.}
+\item{\emph{level2.txt} This map was a modification of the level1.txt - making the map more symmetric and the action parts closer together.}
+\item{\emph{level3.txt} This map was an extension of level1.txt with a second \emph{Goal} and some extra walls in the game. Spreading the action parts away from the door and buttons was the main purpose of this one}
+\item{\emph{level4.txt} This map was a modification of level1.txt - putting a second \emph{Goal} in and making the map partly mirrored. Each \emph{Agent} began in a separate room to each other instead of together.}
+\item{\emph{level5.txt} This map was a new map, designed to give wildly different roles to each AI - the top Agent would have to travel through two doors that the bottom agent had access to the linked \emph{Buttons}. Then the top \emph{Agent} could collect the reward and allow the bottom \emph{Agent} access to the \emph{Goal}.}
+\item{\emph{level6.txt} This map was a new map - with two rooms each with a \emph{Goal} and a door.This was designed to force each \emph{Agent} to be let into the \emph{Goal} room, and out of it again.}
+\end{itemize}
+
+\subsubsection{\gls{ai} Controllers}
+A small set of \gls{ai} Controllers were created in order to attempt to solve the problem domain. None of the agents have the ability to communicate with another agent.
+\subsubsection*{Random}
+The random controller simply chooses one of the possible 5 actions. This is one of the simplest to implement and run.
+\subsubsection*{Keyboard}
+The keyboard controller takes input from the keyboard and translates that into a single Action. Once an action is polled, it is reset to the No Op action unless the keyboard is used again. 
+\subsubsection*{\gls{mcts}}
+The \gls{mcts} controller is a simple implementation of \gls{uct} - with a fixed iteration, \gls{uct} Border and rollout border. No knowledge about the game is provided and the assumption is made that the other player will play randomly. The fixed rollout border makes a significant improvement in iterations per decision (On the machine from 1-3 to 500-600 in 40ms). This greatly improves the ability of \gls{mcts} to make informed decisions. The score at the end of a rollout is taken from the game state - so if \gls{mcts} doesn't see any player reach a goal, all branches will be equal.
+
+For the tournament, three parameter sets were chosen for comparison and are shown in Figure \ref{mctsTable}.
+\begin{figure}[h]
+\centering
+\begin{tabular}{| l | c | c | c |}
+\hline
+\textbf{Budget} & \textbf{Iterations} & \textbf{Max UCT} & \textbf{Max Rollout} \\
+\hline
+Small & 75 & 3 & 15 \\
+Medium & 200 & 5 & 30 \\
+High & 500 & 10 & 45 \\
+\hline
+\end{tabular}
+\caption{Table of parameters for the 3 \gls{mcts} players}
+\label{mctsTable}
+\end{figure}
+
+\subsubsection*{Macro Action Genetic Algorithm}
+The \gls{ga} algorithm was selected for its simplicity and had Macro Actions added in order to improve the forward search capability. The \gls{maga} used a population size of 10 and tournament selection of 3. Each candidate was a string of 15 actions - with each action performed 3 times in a row. This meant the \gls{maga} could "see" 45 ticks in the future.
+\subsubsection*{Variable Macro Action Genetic Algorithm}
+The Variable Macro Action \gls{ga} was created to try to solve the shortcomings of \gls{maga}. The primary premise was to allow the \gls{ga} to evolve the individual macro action lengths and the length of the overall sequence (number of macro actions). The main technique used was a 1 + 1 ES. The algorithm was bounded by a number of parameters that are shown in Figure \ref{vmagaTable}.
+
+\begin{figure}[h]
+\centering
+\begin{tabular}{| l | l | l |}
+\hline
+\textbf{Param} & \textbf{Controls} & \textbf{Value} \\
+\hline
+minNum & Number of Macro Actions & 3 \\
+MaxNum & Number of Macro Actions & 10 \\
+minLength & Length of Macro Actions & 1 \\
+maxLength & Length of Macro Actions & 5 \\
+numChance & Chance of altering Number & 0.25 \\
+lengthChance & Chance of altering each length & 0.8 \\
+actionChance & Chance of altering each action & 0.75 \\
+\hline
+\end{tabular}
+\caption{Table of paramters for the Variable Macro Action Genetic Algorithm}
+\label{vmagaTable}
+\end{figure}
+These values need extensive tuning to realise the full potential of the algorithm and is a source of possible future work.
+
 \bibliographystyle{IEEEtran}
 \bibliography{ceec}
 
