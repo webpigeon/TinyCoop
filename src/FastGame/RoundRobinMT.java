@@ -17,7 +17,7 @@ import java.util.concurrent.*;
  * Created by jwalto on 01/07/2015.
  */
 public class RoundRobinMT {
-    private final static Integer REPEATS = 3;
+    private final static Integer REPEATS = 1;
     private final static Integer MAX_TICKS = 2000;
 
     public static void main(String[] args) throws FileNotFoundException, InterruptedException, ExecutionException {
@@ -151,7 +151,7 @@ public class RoundRobinMT {
         }
 
         public String toString() {
-            return String.format("%s and %s (%d ticks, %f score)", p1.getSimpleName(), p2.getSimpleName(), timeTaken, score);
+            return String.format("%s and %s on %s (%d ticks, %f score)", p1.getSimpleName(), p2.getSimpleName(), map, timeTaken, score);
         }
     }
 }
