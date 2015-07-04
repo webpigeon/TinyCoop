@@ -1,6 +1,6 @@
 \documentclass{IEEEtran}
 
-\author{Piers R. Williams, \and Joseph Walton-Rivers}
+%\author{Piers R. Williams, \and Joseph Walton-Rivers}
 
 \title{MCTS Applied to Co-operative Problems}
 
@@ -189,18 +189,25 @@ Figure \ref{avgScoreAllMaps} shows the average score that each AI Agent achieved
 \begin{figure}[ht]
 \centering
 \includegraphics[width = \linewidth]{level5-txt-scores}
-\caption{Average Score for each AI agent over Map 5}
+\caption{Average Score for each AI Agent over Map 5}
 \label{avgScoreMap5}
 \end{figure}
 
-Level 5 - shown in Figure \ref{Level5State} - poses a particular problem for many of the agents (see Figure \ref{avgScoreMap5}). The asymmetric nature of the level, and the delayed reward caused great difficulty for the Agents. Relying on two button presses and the other agent to get through the open doors - in order - greatly reduced performance. The top agent, High MCTS, only managed an average score of $0.44$ compared to its total average of just over $0.8$.
+Level 5 - shown in Figure \ref{Level5State} - poses a particular problem for many of the agents (see Figure \ref{avgScoreMap5}). The asymmetric nature of the level, and the delayed reward caused great difficulty for the Agents. Relying on two button presses and the other agent to get through the open doors - in order - greatly reduced performance. The top agent, \emph{High MCTS}, only managed an average score of $0.44$ compared to its total average of just over $0.8$.
 
 \section{Conclusions}
 In this paper, we found that a strong MCTS player can solve simple cooperative problems without requiring communication between agents. We also found that a number of other \gls{ai} techniques experienced difficulty when the problem became cooperative. Further work is required in this area.
 
 \subsection{Further Work}
-There is scope for more work in a number of areas. More work can be conducted in the writing of AI's to use communication in order to complete these challenges better amongst themselves. A framework for communication would be devised - with the requirement for fairly \gls{ggp} like restrictions in mind.
+There is scope for more work in a number of areas.
 
+\subsubsection{Communication}
+More work can be conducted in the writing of AI's to use communication in order to complete these challenges better amongst themselves. A framework for communication would be devised - with the requirement for fairly \gls{ggp} like restrictions in mind.
+
+\subsubsection{Optimisations}
+Future work should also include some work to ensure that the \gls{ai} Agents have their parameters set correctly. The \emph{High MCTS} performed well - showing the power of having the correct parameters compared to the \emph{Low MCTS}. The \emph{VariGA} has 7 parameters that we simply didn't have time to correctly optimise for this experiment.
+
+\subsubsection{Problem Domain}
 More work can also be done on experimenting with the problem domain itself. Expanding the object types to include different techniques such as pickup-able objects that can be placed on \emph{Buttons}, \emph{Buttons} that remain active for a period of time after vacating them as well as potentially \emph{Doors} that will open permanently if all it's \emph{Buttons} are activated. The scope here is fairly limitless.
 
 \bibliographystyle{IEEEtran}
