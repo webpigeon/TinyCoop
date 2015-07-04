@@ -134,19 +134,19 @@ These values need extensive tuning to realise the full potential of the algorith
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=\linewidth]{level1vsleve1e}
-\caption{Graph showing the average score obtained by each \emph{Agent} across level 1(Blue) and level 1E (Orange)}
-\label{1v1eS}
+\includegraphics[width=\linewidth]{level1E-txt-pairs-ticks}
+\caption{Average ticks taken to complete level1E.txt when paired only with identical Agents}
+\label{1epairedTicks}
 \end{figure}
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=\linewidth]{level1vsleve1eTicks}
-\caption{Graph showing the average ticks taken for each \gls{ai} \emph{Agent} across level 1(Blue) and level 1E (Orange)}
-\label{1v1eT}
+\includegraphics[width=\linewidth]{level1-txt-pairs-ticks}
+\caption{Average ticks taken to complete level1.txt when paired only with identical Agents}
+\label{1pairedTicks}
 \end{figure}
 
-Figure \ref{1v1eS} shows the effect that having the complex \emph{Buttons} and \emph{Doors} in a level has on the score an Agent achieves. Figure \ref{1v1eT} demonstrates the vast improvement in path finding ability to a goal in the VariGA compared to the GAController. This is expected due to the ability to make individual actions as compared to the GAController which is only able to make 3 identical turns at a time leading to convoluted paths compared to optimum.
+Figure \ref{1epairedTicks} shows the ability of each Agent to solve a simple path finding problem. The \emph{GAcontroller}, with its macro actions, is hindered by its inability to make single step moves and has trouble actually walking straight to the target. The \emph{VariGA} does significantly better, due to its ability to perform single step moves. Figure \ref{1pairedTicks} shows that most of the controllers really struggle when the \emph{Door} and \emph{Buttons} are added. This proves that the challenge of the task is high, although perhaps remarkable that \gls{mcts} is able to solve the tasks.
 
 \begin{figure}[ht]
 \centering
@@ -155,14 +155,28 @@ Figure \ref{1v1eS} shows the effect that having the complex \emph{Buttons} and \
 \label{avgScoreAllMaps}
 \end{figure}
 
-Figure \ref{avgScoreAllMaps} shows the average score that each AI Agent achieved over all the maps. The two more powerful \gls{mcts} Agents performed the best, doing much better than the competition. Figure \ref{avgTicksAllMaps} shows a similar result, with the more powerful Agents typically completing the maps in fewer ticks. \emph{RandomController} is the only deviant here - it outperformed the GA's in score but was worse in average ticks.
-
 \begin{figure}[ht]
 \centering
 \includegraphics[width=\linewidth]{ticks-allmaps}
 \caption{Average Ticks taken for each AI Agent over all the Maps}
 \label{avgTicksAllMaps}
 \end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{scores-samepairs}
+\caption{Average Scores for each AI Agent paired with itself over all the Maps}
+\label{avgScorePairAllMaps}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{ticks-samepairs}
+\caption{Average Ticks taken for each AI Agent paired with itself over all the Maps}
+\label{avgTicksPairAllMaps}
+\end{figure}
+
+Figure \ref{avgScoreAllMaps} shows the average score that each AI Agent achieved over all the maps. The two more powerful \gls{mcts} Agents performed the best, doing much better than the competition. Figure \ref{avgTicksAllMaps} shows a similar result, with the more powerful Agents typically completing the maps in fewer ticks. \emph{RandomController} is the only deviant here - it outperformed the GA's in score but was worse in average ticks. Comparing the \gls{ai} \emph{Agents} when paired only with themselves in Figure \ref{avgScorePairAllMaps} and Figure \ref{avgTicksPairAllMaps}. The shockingly good results for \emph{RandomController} are potentially due to the fact that the 3 \gls{mcts} controllers and 2 \gls{ga} algorithms all based their decisions on having Random as an accomplice.
 
 \pagebreak
 \begin{figure}[ht]
@@ -171,21 +185,21 @@ Figure \ref{avgScoreAllMaps} shows the average score that each AI Agent achieved
 \caption{The initial starting state for level5.txt}
 \label{Level5State}
 \end{figure}
-Level 5 - shown in Figure \ref{Level5State} - poses a particular problem for many of the agents (see Figure \ref{avgScoreMap5}). The asymmetric nature of the level, and the delayed reward caused great difficulty for the Agents. Relying on two button presses and the other agent to get through the open doors - in order - greatly reduced performance. The top agent, High MCTS, only managed an average score of $0.44$ compared to its total average of just over $0.8$.
-
 
 \begin{figure}[ht]
 \centering
-\includegraphics[ width = \linewidth]{level5-txt-scores}
+\includegraphics[width = \linewidth]{level5-txt-scores}
 \caption{Average Score for each AI agent over Map 5}
 \label{avgScoreMap5}
 \end{figure}
+
+Level 5 - shown in Figure \ref{Level5State} - poses a particular problem for many of the agents (see Figure \ref{avgScoreMap5}). The asymmetric nature of the level, and the delayed reward caused great difficulty for the Agents. Relying on two button presses and the other agent to get through the open doors - in order - greatly reduced performance. The top agent, High MCTS, only managed an average score of $0.44$ compared to its total average of just over $0.8$.
 
 \section{Conclusions}
 In this paper, we found that a strong MCTS player can solve simple cooperative problems without requiring communication between agents. We also found that a number of other \gls{ai} techniques experienced difficulty when the problem became cooperative. Further work is required in this area.
 
 \subsection{Further Work}
-There is scope for more work in a number of areas. More work can be conducted in the writing of AI's to use communication in order to complete these challenges better amongst themselves. A framework for communication would be devised - with the requirement for fairly \gls{ggp} restrictions in mind.
+There is scope for more work in a number of areas. More work can be conducted in the writing of AI's to use communication in order to complete these challenges better amongst themselves. A framework for communication would be devised - with the requirement for fairly \gls{ggp} like restrictions in mind.
 
 More work can also be done on experimenting with the problem domain itself. Expanding the object types to include different techniques such as pickup-able objects that can be placed on \emph{Buttons}, \emph{Buttons} that remain active for a period of time after vacating them as well as potentially \emph{Doors} that will open permanently if all it's \emph{Buttons} are activated. The scope here is fairly limitless.
 

@@ -38,7 +38,7 @@ build_summary_ticks <- function (x) {
 
 build_graph <- function (filename, title, s) {
 	summary(s)
-	png(filename, width = 720, height = 480, units="px")
+	png(filename, width = 900, height = 500, units="px")
 	p = ggplot(s, aes(x = agent1, y = mean)) +  
   	geom_bar(position = position_dodge(), stat="identity", fill="blue") + 
   	geom_errorbar(aes(ymin=mean-sem, ymax=mean+sem)) +
