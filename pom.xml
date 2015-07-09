@@ -6,6 +6,14 @@
   <name>Tiny CoOp</name>
   <description>A simple CoOp game for testing AIs</description>
   
+  <dependencies>
+  <dependency>
+  <groupId>uk.me.webpigeon.planner</groupId>
+  <artifactId>wasp</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  </dependency>
+  </dependencies>
+  
   <build>
   <pluginManagement>
   <plugins>

@@ -3,6 +3,7 @@ package FastGame;
 import Controllers.Controller;
 import Controllers.MCTS;
 import Controllers.RandomController;
+import Controllers.wasp.PlanningController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +14,7 @@ import java.util.Arrays;
 public class Test {
 
     public static void main(String[] args) {
-        Controller m1 = new MCTS(true, 500);
+        Controller m1 = new PlanningController();
         Controller m2 = new MCTS(false, 500);
         Controller r1 = new RandomController();
 
