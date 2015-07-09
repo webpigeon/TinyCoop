@@ -5,7 +5,6 @@ package Controllers.astar;
 
         import java.awt.Point;
         import java.util.*;
-        import java.util.function.Function;
 
 /**
  * An implementation of A* for path finding
@@ -22,13 +21,15 @@ public class PathFind {
 
     public List<MovePair> getPath(CoopGame game, GameNode start) {
         List<GameNode> closedSet = new ArrayList<GameNode>();
-        Queue<GameNode> openSet = new PriorityQueue<GameNode>(new Comparator<GameNode>() {
+        Queue<GameNode> openSet = new PriorityQueue<GameNode>(10, new Comparator<GameNode>() {
 
             @Override
             public int compare(GameNode o1, GameNode o2) {
                 System.out.println(o1);
                 System.out.println(o2);
-                return Double.compare(fScores.getOrDefault(o1, 0.0),fScores.getOrDefault(o2, 0.0)) * -1;
+                Double score1 = fScores.get(o1);
+                Double score2 = fScores.get(o2);
+                return Double.compare(score1,score2) * -1;
             }
         });
         openSet.add(start);
@@ -56,7 +57,10 @@ public class PathFind {
                 }
                 gScore += 1;
 
-                if ( !openSet.contains(neighbor) || gScore > gScores.getOrDefault(neighbor, 0.0) ) {
+                Double gScoreOther = gScores.get(neighbor);
+                gScoreOther = gScoreOther==null?0:gScoreOther;
+                
+                if ( !openSet.contains(neighbor) || gScore > gScoreOther ) {
                     cameFrom.put(neighbor, current);
                     gScores.put(neighbor, gScore);
                     fScores.put(neighbor, gScore + heristic.apply(neighbor));

@@ -38,10 +38,14 @@ public class AStar extends Controller {
                 if (closedSet.contains(neighbor)) {
                     continue;
                 }
-                Double gScore = gScores.getOrDefault(current, 0.0);
+                Double gScore = gScores.get(current);
+                gScore = gScore!=null?gScore:0;
                 gScore += 1; // 'cost' to get to this state
 
-                if ( !openSet.contains(neighbor) || gScore > gScores.getOrDefault(neighbor, 0.0) ) {
+                Double otherScore = gScores.get(neighbor);
+                otherScore = otherScore!=null?otherScore:0;
+                
+                if ( !openSet.contains(neighbor) || gScore > otherScore ) {
                     cameFrom.put(neighbor, current);
                     gScores.put(neighbor, gScore);
                     fScores.put(neighbor, gScore + getDistance(neighbor, goals, isFirst));
