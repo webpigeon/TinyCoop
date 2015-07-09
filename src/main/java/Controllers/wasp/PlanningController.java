@@ -40,22 +40,26 @@ public class PlanningController extends Controller {
 		
 		WaspState state = new WaspState();
 		
+		//TODO hard code some observations about the world
+		
+		//what objects are in the world and what sort of objects are they?
+		state.recordVariable("agent", "player1");
+		state.recordVariable("agent", "player2");
 		state.recordVariable("door", "door1");
 		state.recordVariable("door", "door2");
 		state.recordVariable("button", "button1");
 		state.recordVariable("button", "button2");
 		
+		// what we know about the current state of the world
 		state.recordObservation("open(door1)");
 		state.recordObservation("open(door2)");
 		state.recordObservation("at(agent1,button)");
 		state.recordObservation("at(agent2, room1)");
 		
 		//non-contextual actions (we know what we are allowed to do but not what effect they will have)
-		state.recordAction("LEFT");
-		state.recordAction("RIGHT");
-		state.recordAction("UP");
-		state.recordAction("DOWN");
-		state.recordAction("WAIT");
+		for (String action : actionList.keySet()) {
+			state.recordAction(action);
+		}
 		
 		return state;
 	}
