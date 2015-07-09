@@ -1,0 +1,8 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>uk.ac.essex.csee.pwillic</groupId>
+  <artifactId>tinycoop</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>Tiny CoOp</name>
+  <description>A simple CoOp game for testing AIs</description>
+</project>
