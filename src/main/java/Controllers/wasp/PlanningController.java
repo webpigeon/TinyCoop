@@ -40,7 +40,14 @@ public class PlanningController extends Controller {
 		
 		WaspState state = new WaspState();
 		
-		//TODO hard code some observations about the world
+		//TODO hard code some observations about the world - current pseudo code
+		state.recordRule("LEFT(us)", "AT(us,x+1,y)"); 
+		state.recordRule("RIGHT(us)","AT(us,x-1,y)"); 
+		state.recordRule("UP(us)", "AT(x, y-1)");
+		state.recordRule("DOWN(us)", "AT(x, y-1)");
+		state.recordRule("ON(AGENT x, BUTTON y)", "+OPEN(door,y)"); 
+		state.recordRule("!ON(AGENT x, BUTTON y)","-OPEN(door,y)"); 
+		state.recordRule("AT(a, x, y) && AT(b, x, y)","ON(a, b)"); 
 		
 		//what objects are in the world and what sort of objects are they?
 		state.recordVariable("agent", "player1");
@@ -53,8 +60,12 @@ public class PlanningController extends Controller {
 		// what we know about the current state of the world
 		state.recordObservation("open(door1)");
 		state.recordObservation("open(door2)");
-		state.recordObservation("at(agent1,button)");
-		state.recordObservation("at(agent2, room1)");
+		state.recordObservation("AT(agent1,0,0)");
+		state.recordObservation("AT(agent2,0,0)");
+		state.recordObservation("AT(door1,0,0)");
+		state.recordObservation("AT(door2,0,0)");
+		state.recordObservation("AT(button1,0,0)");
+		state.recordObservation("AT(button2,0,0)");
 		
 		//non-contextual actions (we know what we are allowed to do but not what effect they will have)
 		for (String action : actionList.keySet()) {
