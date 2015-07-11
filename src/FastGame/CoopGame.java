@@ -50,6 +50,10 @@ public class CoopGame {
         return value - (getItemTypeFromValue(value) * 1000);
     }
 
+    public static int getValueFromIdAndType(int type, int id){
+        return (type * 1000) + id;
+    }
+
     public CoopGame getClone() {
         CoopGame other = new CoopGame(this.width, this.height);
         System.arraycopy(this.data, 0, other.data, 0, this.data.length);
@@ -130,15 +134,18 @@ public class CoopGame {
         runUpdateLoop(first, second);
     }
 
-    // This is very slow - remember where Agents live and use that info to shorten this
+    // This is very broken TODO fix this and work out why it went wront
     private void runUpdateLoop(Action first, Action second) {
+
+        if(first.equals(Action.NOOP) && second.equals(Action.NOOP)) return;
+//        System.out.println("First: " + first + " Second: " + second);
         resetEncountered();
-        for(int agentID = 0; agentID < maxIDs[AGENT]; agentID++){
+        for(int agentID = 0; agentID <= maxIDs[AGENT]; agentID++){
             int x = getAgentX(agentID);
             int y = getAgentY(agentID);
-
             int newX = x + ((agentID == 0) ? first : second).getX();
             int newY = y + ((agentID == 0)? first : second).getY();
+//            System.out.println("X:" + x + "Y:" + y + "nX" + newX + "nY" + newY);
 
             // Can we go there?
             if (WALKABLE[get(newX, newY, 0)]) {
@@ -151,7 +158,8 @@ public class CoopGame {
                     continue;
                 }
                 set(x, y, AGENT, NO_OBJECT);
-                set(newX, newY, AGENT, agentID);
+                set(newX, newY, AGENT, getValueFromIdAndType(AGENT, agentID));
+                setAgentLocation(agentID, newX, newY);
                 encounter(AGENT, agentID);
                 playerPos.put(agentID, new Point(newX, newY));
             }
@@ -178,17 +186,19 @@ public class CoopGame {
     private void runCollisionDetection() {
         doorOpen = new boolean[doorOpen.length];
 
-        for(int agentID = 0; agentID < maxIDs[AGENT]; agentID++){
+        for(int agentID = 0; agentID <= maxIDs[AGENT]; agentID++){
             int x = getAgentX(agentID);
             int y = getAgentY(agentID);
-            for(int layer = 1; layer < layers - 1; layer++){
+            for(int layer = 1; layer < NUMBER_OF_LAYERS; layer++){
                 if(layer == AGENT) continue;
                 // check collision
                 int value = get(x, y, layer);
                 if(value == 0) continue;
-                int type = layer;
+                int type = getItemTypeFromValue(value);
+//                System.out.println(type);
                 if(type == BUTTON){
                     int buttonID = getIDFromValue(value);
+//                    System.out.println("Collided with button");
                     doorOpen[buttonID] = true;
                 }else if(type == GOAL){
                     int goalID = getIDFromValue(value);
