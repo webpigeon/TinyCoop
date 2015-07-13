@@ -23,7 +23,6 @@ public class CoopGame {
     private boolean[] doorOpen;
     private double score = 0;
     private int[] maxIDs;
-    // stores the locations  TODO need to populate this
     private int[] agentLocations;
 
     // volatile, required for A*
@@ -134,7 +133,6 @@ public class CoopGame {
         runUpdateLoop(first, second);
     }
 
-    // This is very broken TODO fix this and work out why it went wront
     private void runUpdateLoop(Action first, Action second) {
 
         if(first.equals(Action.NOOP) && second.equals(Action.NOOP)) return;

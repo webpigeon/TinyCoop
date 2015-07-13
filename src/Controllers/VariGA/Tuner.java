@@ -42,15 +42,17 @@ public class Tuner {
             header.add(level + "-TickS");
         }
         String fileName = "Data/" + InetAddress.getLocalHost().getHostName() + "-thread" + threadNumber + ".csv";
-        write(fileName, header.toArray());
+        if(!(new File(fileName).exists())) {
+            write(fileName, header.toArray());
+        }
 
         int candidates = 0;
         //noinspection InfiniteLoopStatement
         while(true){
             System.out.println("Starting: " + candidates);
             Candidate candidate = new Candidate(true);
-            c1 = new VariGA(true, 250, candidate.chances, candidate.params);
-            c2 = new VariGA(false, 250, candidate.chances, candidate.params);
+            c1 = new VariGA(true, 500, candidate.chances, candidate.params);
+            c2 = new VariGA(false, 500, candidate.chances, candidate.params);
             double[][] results = runGames(c1, c2, levels, candidates);
             ArrayList<Object> list = new ArrayList<>();
             list.add(candidate.chances[0]);
@@ -122,8 +124,6 @@ public class Tuner {
             e.printStackTrace();
         }
     }
-
-
 }
 
 
@@ -191,9 +191,12 @@ class Candidate {
     }
 
     private void randomise() {
-        for (int i = 0; i < chances.length; i++) {
-            chances[i] = random.nextDouble();
-        }
+//        for (int i = 0; i < chances.length; i++) {
+//            chances[i] = random.nextDouble();
+//        }
+        chances[0] = 0.25;
+        chances[1] = 0.8;
+        chances[2] = 0.75;
 
         boolean finished = false;
         while (!finished) {
@@ -205,8 +208,8 @@ class Candidate {
 
         finished = false;
         while (!finished) {
-            params[2] = random.nextInt(15) + 1;
-            params[3] = random.nextInt(15) + 1;
+            params[2] = random.nextInt(5) + 1;
+            params[3] = random.nextInt(5) + 1;
             finished = params[2] < params[3];
 
         }
