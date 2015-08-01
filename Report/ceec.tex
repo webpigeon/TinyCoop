@@ -42,7 +42,7 @@ The problem domain is a simple grid world consisting of various objects:
 \item{\emph{Floor - } Floors are passable, and are rendered in Grey.}
 \item{\emph{Walls -} Walls are impassable, and are fixed in position. \emph{Walls} are rendered in Black.}
 \item{\emph{Agents -} Agents are the moving objects that can activate buttons and the goal. \emph{Agents} are rendered in dark Yellow}
-\item{\emph{Doors -} Doors are impassable, unless a linked \emph{Button} is currently activated. \emph{Doors} are rendered in Blue whilst closed, and are invisible when open}
+\item{\emph{Doors -} Doors can either be open or closed. When open, the door is passable. When closed, the door is impassable. Doors are open whilst an \emph{Agent} is activating a linked \emph{Button}. If the \emph{Agent} stops activating the \emph{Button} the \emph{Door} will close. \emph{Doors} are rendered in Blue when closed, and are invisible when open.}
 \item{\emph{Buttons -} Buttons are passable, and when an \emph{Agent} is on the \emph{Button} it will activate and open the linked \emph{Door}. \emph{Buttons} are rendered in Red}
 \item{\emph{Goals -} Goals are passable and reward all \emph{Agents} with a portion of the score. All \emph{Goals} are worth the same amount and the maximum score of $1$ is achieved when every \emph{Agent} has visited every \emph{Goal} at least once. Re-visiting a \emph{Goal} has no effect. \emph{Goals} are rendered in Yellow}
 \end{itemize}
