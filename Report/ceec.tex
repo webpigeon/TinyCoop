@@ -47,6 +47,15 @@ The problem domain is a simple grid world consisting of various objects:
 \item{\emph{Goals -} Goals are passable and reward all \emph{Agents} with a portion of the score. All \emph{Goals} are worth the same amount and the maximum score of $1$ is achieved when every \emph{Agent} has visited every \emph{Goal} at least once. Re-visiting a \emph{Goal} has no effect. \emph{Goals} are rendered in Bright Yellow}
 \end{itemize}
 
+Each \emph{Agent} is able to make a single action in each game tick. The actions are polled from each \emph{Agent} that is given the state of the game. When every \emph{Agent} has returned an action, the game is updated with these actions. The actions are implemented sequentially, if two \emph{Agents} return actions that result in occupying the same space, the \emph{Agent} with the lowest ID number will succeed while the other \emph{Agent} will fail and execute a \emph{No-Op}. The available 5 actions are:
+\begin{itemize}
+\item{\emph{Left} - This will move the \emph{Agent} one grid square to the left. (-1, 0)}
+\item{\emph{Right} - This will move the \emph{Agent} one grid square to the right. (1, 0)}
+\item{\emph{Up} - This will move the \emph{Agent} one grid square up. (0, -1)}
+\item{\emph{Down} - This will move the \emph{Agent} one grid square down. (0, 1)}
+\item{\emph{No-Op} - This will not move the \emph{Agent}. It will remain in the same location as the previous game state.}
+\end{itemize}
+
 The starting positions for a simple problem is shown in Figure \ref{InitialState}
 \begin{figure}[ht]
 \centering
