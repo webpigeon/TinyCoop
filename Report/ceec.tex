@@ -41,7 +41,7 @@ The problem domain is a simple grid world consisting of various objects:
 \begin{itemize}
 \item{\emph{Walls -} Walls are impassable, and are fixed in position. \emph{Walls} are rendered in Black.}
 \item{\emph{Agents -} Agents are the moving objects that can activate buttons and the goal. \emph{Agents} are rendered in dark Yellow}
-\item{\emph{Doors -} Doors are impassable, unless a linked \emph{Button} is currently activated. \emph{Doors} are rendered in Blue unless they are open}
+\item{\emph{Doors -} Doors are impassable, unless a linked \emph{Button} is currently activated. \emph{Doors} are rendered in Blue whilst closed, and are invisible when open}
 \item{\emph{Buttons -} Buttons are passable, and when an \emph{Agent} is on the \emph{Button} it will activate and open the linked \emph{Door}. \emph{Buttons} are rendered in Red}
 \item{\emph{Goals -} Goals are passable and reward all \emph{Agents} with a portion of the score. All \emph{Goals} are worth the same amount and the maximum score of $1$ is achieved when every \emph{Agent} has visited every \emph{Goal} at least once. Re-visiting a \emph{Goal} has no effect. \emph{Goals} are rendered in Yellow}
 \end{itemize}
