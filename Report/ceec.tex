@@ -35,7 +35,7 @@ Creating \gls{ggp} agents that can co-operate with other players would open the 
 Standard \gls{mcts} plays best when it is either able to search to the end of the game tree, or is given rewards frequently. \gls{mcts} tends to stumble when the time given to it isn't sufficient to allow it to locate any sequence of actions that provides a reward in order to differentiate the root's children \cite{perez2012monte}.
 
 \section{The Experiment}
-The main premise was to put \gls{mcts} in a situation where it would rely on other AI Agents in order to achieve its objectives, as well as provide a code base for further work with communication between Agents. In order to do this, a problem domain was created.
+The main premise was to put \gls{mcts} in a situation where it would rely on other AI Agents in order to achieve its objectives, as well as provide a code base for further work with communication between \emph{Agents}. In order to do this, a problem domain was created.
 \subsection{The Problem Domain}
 The problem domain is a simple grid world consisting of various objects:
 \begin{itemize}
@@ -46,6 +46,8 @@ The problem domain is a simple grid world consisting of various objects:
 \item{\emph{Buttons -} Buttons are passable, and when an \emph{Agent} is on the \emph{Button} it will activate and open the linked \emph{Door}. \emph{Buttons} are rendered in Red}
 \item{\emph{Goals -} Goals are passable and reward all \emph{Agents} with a portion of the score. All \emph{Goals} are worth the same amount and the maximum score of $1$ is achieved when every \emph{Agent} has visited every \emph{Goal} at least once. Re-visiting a \emph{Goal} has no effect. All \emph{Agents} are aware of the current score achieved, and therefore can calculate if a \emph{Goal} is reached. \emph{Goals} are rendered in Bright Yellow}
 \end{itemize}
+
+The \emph{Agents} are provided with a forward model, that allows simulation of potential moves up to the end of the game. The \emph{Agents} are not allowed to directly query any information about the game state other than the score at any given state (current or simulated).
 
 Each \emph{Agent} is able to make a single action in each game tick. The actions are polled from each \emph{Agent} that is given the state of the game. When every \emph{Agent} has returned an action, the game is updated with these actions. The actions are implemented sequentially, if two \emph{Agents} return actions that result in occupying the same space, the \emph{Agent} with the lowest ID number will succeed while the other \emph{Agent} will fail and execute a \emph{No-Op}. The available 5 actions are:
 \begin{itemize}
