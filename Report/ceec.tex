@@ -6,6 +6,7 @@
 
 \usepackage{graphicx}
 \usepackage{glossaries}
+\usepackage{verbatim}
 
 \graphicspath{{stats-processing/}{stats-processing/data/maps/}}
 
@@ -70,13 +71,14 @@ The starting positions for a simple problem is shown in Figure \ref{InitialState
 All levels are defined by a simple text file format.
 
 The problems are designed to require \emph{Agents} to co-operate in order to achieve their goals. Unlike other environments where \gls{mcts} can charge off achieving its own goals, this domain requires the agents to sometimes sit patiently on a button for another Agent to do something else.
-
+\begin{comment}
 \subsection{Initial Testing}
 Initially, observations were made to see how \gls{mcts} handled the problem. At first, with a small computational budget it seemed like \gls{mcts} would perform poorly, with near random movement seeming to emerge.
 
 This changed, when an agent (Agent 1 say) got near a \emph{Button} or \emph{Door}. When Agent 1 reached an item like this - Agent 2 would seemingly gain some purpose and typically head for the other items. When Agent 1 got on the \emph{Button}, Agent 2 would head straight through the open \emph{Door} and to the \emph{Goal}. Behaviour would then typically go back towards a more random approach, unless the Agent 1 got near the \emph{Door} - typically causing Agent 2 to head more purposefully towards the \emph{Button} that would allow Agent 1 to reach the \emph{Goal}.
 
 With this observation made - the computational budget was increased ten-fold, and the \gls{mcts} agents performed significantly better. Typical behaviour would be near optimal with significantly less random sections of movement. This can likely be attributed to the increased rollout and \gls{uct} border depths allowing more foresight on such a small puzzle.
+\end{comment}
 \subsection{Tournament}
 For the main data collection, we ran a round robin tournament of maps and Agents.
 
