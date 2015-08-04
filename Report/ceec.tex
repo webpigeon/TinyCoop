@@ -35,7 +35,7 @@ Creating \gls{ggp} agents that can co-operate with other players would open the 
 
 \gls{mcts} \cite{browne2012survey} has been applied to a wealth of domains and is one of the primary algorithms in use for \gls{ggp}\cite{finnsson2008simulation}. Primary advantages are that, when given a sufficient forward model, \gls{mcts} doesn't require any strategic knowledge about the game itself in order to play.
 
-Standard \gls{mcts} plays best when it is either able to search to the end of the game tree, or is given rewards frequently. \gls{mcts} tends to stumble when the time given to it isn't sufficient to allow it to locate any sequence of actions that provides a reward in order to differentiate the root's children \cite{perez2012monte}.
+Standard \gls{mcts} plays best when it is able to search far enough to locate states that provide a reward. \gls{mcts} tends to stumble when the time or search depth limit given to it isn't sufficient to allow it to locate any sequence of actions that provides a reward in order to differentiate the root's children \cite{perez2012monte}. When \gls{mcts} can't find any single state that contained a reward, all children of the node will contain identical values and the algorithm will be forced to make a random choice.
 
 \section{The Experiment}
 The main premise was to put \gls{mcts} in a situation where it would rely on other AI Agents in order to achieve its objectives, as well as provide a code base for further work with communication between \emph{Agents}. In order to do this, a problem domain was created.
