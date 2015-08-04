@@ -103,14 +103,14 @@ The random controller simply chooses one of the possible 5 actions. This is one 
 \paragraph{Keyboard}
 The keyboard controller takes input from the keyboard and translates that into a single Action. Once an action is polled, it is reset to the No Op action unless the keyboard is used again. 
 \paragraph{\gls{mcts}}
-The \gls{mcts} controller is a simple implementation of \gls{uct} - with a fixed iteration, \gls{uct} Border and rollout border. No knowledge about the game is provided and the assumption is made that the other player will play randomly. The fixed rollout border makes a significant improvement in iterations per decision (from 1-3 to 500-600 in 40ms \footnote{Intel Core i5-3570, 8GB RAM, Windows 7 Enterprise 64bit}). This greatly improves the ability of \gls{mcts} to make informed decisions. The score at the end of a rollout is taken from the game state - so if \gls{mcts} doesn't see any player reach a goal, all branches will be equal.
+The \gls{mcts} controller is a simple implementation of \gls{uct} - with a fixed number of rollouts, \gls{uct} tree search depth limit and rollout border. The rollout border is how far in total, the forward model will be allowed to progress before the game is evaluated. No knowledge about the game is provided and the assumption is made that the other player will play randomly. The fixed rollout border makes a significant improvement in iterations per decision (from 1-3 to 500-600 in 40ms \footnote{Intel Core i5-3570, 8GB RAM, Windows 7 Enterprise 64bit}). This greatly improves the ability of \gls{mcts} to make informed decisions. The score at the end of a rollout is taken from the game state - so if \gls{mcts} doesn't see any player reach a goal, all branches will be equal.
 
 For the tournament, three parameter sets were chosen for comparison and are shown in Figure \ref{mctsTable}.
 \begin{figure}[h]
 \centering
 \begin{tabular}{| l | c | c | c |}
 \hline
-\textbf{Budget} & \textbf{Iterations} & \textbf{Max UCT} & \textbf{Max Rollout} \\
+\textbf{Budget} & \textbf{Rollouts} & \textbf{UCT Search Limit} & \textbf{Rollout Border} \\
 \hline
 Small & 75 & 3 & 15 \\
 Medium & 200 & 5 & 30 \\
