@@ -36,16 +36,42 @@ Reworded.
 \paragraph*{\textit{The list of references is short (four) and does not include any references to work on cooperative agents, swarm behaviour, etc.}}
 \paragraph*{\textit{Despite these concerns with the presentation, I liked the idea and the authors' approach to investigating the problem. The paper could be improved greatly with a little bit of work.}}
 \subsection{Review 3 (Reviewer G)}
-\paragraph*{\textit{What is "Uniform Cost applied to Trees"? Is it something similar to the famous "Upper Confidence bound applied to Trees"? If not, please cite something.}}
-We have corrected the incorrect definition of UCT from Uniform Cost over Trees to Upper Confidence bound applied to Trees.
-\paragraph*{\textit{Is the problem domain a real time problem? How long is a tick? 40ms? Do all agents return an action within a tick?}}
-The definition of the problem domain has been improved with a section describing the particular way that actions are collected and executed as well as a list of each possible action that can be chosen.
-\paragraph*{\textit{If an agent reaches a goal, is it known to the other agents?}}
-We have clarified whether the \emph{Agents} are aware that other \emph{Agents} reach a \emph{Goal}.
-\paragraph*{\textit{Do agents see all areas of the problem?}}
-We have clarified how the problem domain handles observability and what information the \emph{Agents} have access to.
 \paragraph*{\textit{Who created this problem domain?}}
 We have clarified who created the problem domain.
+\paragraph*{\textit{The agents move simultaneously or alternately?}}
+Added a section to highlight this.
+\paragraph*{\textit{Do agents see all areas of the problem?}}
+We have clarified how the problem domain handles observability and what information the \emph{Agents} have access to.
+\paragraph*{\textit{If an agent reaches a goal, is it known to the other agents?}}
+We have clarified whether the \emph{Agents} are aware that other \emph{Agents} reach a \emph{Goal}.
+
+\paragraph*{\textit{In what sense this domain interesting compared to other domains?}}
+
+
+\paragraph*{\textit{Is the problem domain a real time problem? How long is a tick? 40ms? Do all agents return an action within a tick? Possible 5 actions mean up, down left, right and stay where it is?}}
+The definition of the problem domain has been improved with a section describing the particular way that actions are collected and executed as well as a list of each possible action that can be chosen.
+
+\paragraph*{\textit{What is "Uniform Cost applied to Trees"? Is it something similar to the famous "Upper Confidence bound applied to Trees"? If not, please cite something.}}
+We have corrected the incorrect definition of UCT from Uniform Cost over Trees to Upper Confidence bound applied to Trees.
+\paragraph*{\textit{About MCTS, what are "iteration", "UCT Border", and "rollout border"?
+My guess is iteration means the number of rollouts,
+UCT border means the UCT tree search depth limit, and
+rollout border means the length of the sequence of rollout.
+Am I correct?
+These phrases are different from normal terminology used in MCTS.}}
+\paragraph*{\textit{What is the reward of the rollout? Maybe the raw score?}}
+\paragraph*{\textit{About the results, what is averaged?
+How many runs are averaged?
+All agents play in cooperation with other agents including the "keyboard AI"?
+Is the keyboard AI controlled by human beings?
+Can we assume it plays perfectly well?}}
+\paragraph*{\textit{Please cite something about (1+1)-ES}}
+\paragraph*{\textit{If all information is visible to the agents,
+this problem domain seems not so interesting especially if
+both agents are the same.}}
+\paragraph*{\textit{I don't think GA is suitable for this domain.
+Comparing against A* search with a simple evaluation function would be more interesting.}}
+
 \paragraph*{\textit{"Doors are rendered in Black." -> "Walls are rendered in Black."}}
 We have corrected the typo in the definition of \emph{Walls} in the problem domain section.
 \subsection{Review 4 (Reviewer B)}
