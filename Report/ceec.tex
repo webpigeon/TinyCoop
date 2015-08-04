@@ -29,11 +29,11 @@ When laid out correctly, the world requires each agent to do certain things at c
 \section{Introduction}
 This research problem that this paper will asses is how \gls{ggp} agents perform when trying to solve a simple co-operative problem, with a focus on \gls{mcts}.
 
-\gls{ggp} is the field of writing \gls{ai} agents that can play a multitude of games without being written specifically for each one individually. \gls{ggp} in real time video games is a popular competition \cite{perez2014}
+\gls{ggp} is the field of writing \gls{ai} agents that can play a multitude of games without being written specifically for each one individually \cite{genesereth2005general}. \gls{ggp} in real time video games is a popular competition \cite{perez2014}
 
 Creating \gls{ggp} agents that can co-operate with other players would open the door for more flexible agents in games that can work together with human players. This experiment tests how well current techniques can cope without specifically co-operating with each other. Agents that communicate slowly using a form of Natural Language, should in theory be able to work with human players equally well as they do with other Agents.
 
-\gls{mcts} \cite{browne2012survey} has been applied to a wealth of domains and is one of the primary algorithms in use for \gls{ggp}\cite{finnsson2008simulation}. Primary advantages are that, when given a sufficient forward model, \gls{mcts} doesn't require any knowledge about the game itself in order to play.
+\gls{mcts} \cite{browne2012survey} has been applied to a wealth of domains and is one of the primary algorithms in use for \gls{ggp}\cite{finnsson2008simulation}. Primary advantages are that, when given a sufficient forward model, \gls{mcts} doesn't require any strategic knowledge about the game itself in order to play.
 
 Standard \gls{mcts} plays best when it is either able to search to the end of the game tree, or is given rewards frequently. \gls{mcts} tends to stumble when the time given to it isn't sufficient to allow it to locate any sequence of actions that provides a reward in order to differentiate the root's children \cite{perez2012monte}.
 
