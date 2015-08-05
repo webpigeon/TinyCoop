@@ -22,13 +22,18 @@ We have improved the definition for \emph{Door} in order to make it clearer that
 \paragraph*{\textit{Since 'Agents' are described as dark yellow, and since there are only two shades of yellow used, it would be wiser to describe a 'Goal' as rendered in bright yellow.}}
 We have reworded the definition of \emph{Goal} to better describe the colour in relation to \emph{Agents}.
 \paragraph*{\textit{the sentence "Agent 1 reached an item like this -Agent 2 would seemingly gain some purpose and typically head for the other items." is poorly worded and not very informative. It is better explained in the sentences below. Either remove this sentence or reword it.}}
+Removed.
 
 \paragraph*{\textit{it would be a good idea to give the maps meaningful names.}}
 \paragraph*{\textit{The MAGA is not explained very well and seems hastily put together. I would say explain this better but given how poorly it does and how badly optimized it seems to be, maybe the authors should get rid of this player altogether. If this work is resubmitted in future I would recommend creating a better thought out version of this player. For now the better VMAGA should stand alone.
 }}
+The explanations behind the two agents have been improved, and proper optimisation is a potential candidate for future work in this problem domain.
 \paragraph*{\textit{There should be a separate subsection for the results.}}
+There is a separate section for results, with a sub-section of discussion about each AI agent's performance.
 \paragraph*{\textit{In figures 4--9 the 3 MCTS players are ordered in an odd order Meduin-Large-Small. This order makes no sense and should be changed. GA-Controller is presented separately from Var-GA inexplicably. If this player is kept (and it shouldn't be. Unless changed and improved for submission somewhere else) then both GA players should be together. It seems that columns are organized automatically in alphabetical order they should be ordered in a way that makes sense.}}
+The graphs have been re-ordered to a more logical ordering.
 \paragraph*{\textit{Regarding the fact that players were trained assuming a random strategy was controlling the other player: This is mentioned again in the section, but a reasoning for this decision is not given. Why not use self play? Wouldn't it do better? Doesn't it make sense to assume a better than random strategy for the other player?}}
+Assuming a random strategy was chosen due to the availability only of agents that could play generally. Whilst nesting these could enhance play, it comes at a significant computational cost and must in the case of GGP feature a very simple or Random player at the base of the stack. Random is exceedingly fast to calculate, and provides the ability for techniques like MCTS to sample how its behaviour works almost regardless of what the other agent does. This gives it the ability to make moves that it believes would help a worst case scenario player - something that in this problem domain is likely to also help a more intelligent player.
 
 \subsection{Review 2 (Reviewer D)}
 \paragraph*{\textit{The writing is generally good, I only noticed one actual error "GGP[3]", but the tone is casual and a lot of inappropriately subjective comments are made}}
