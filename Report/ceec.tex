@@ -122,7 +122,7 @@ High & 500 & 10 & 45 \\
 \end{figure}
 
 \paragraph{Macro Action Genetic Algorithm}
-The \gls{ga} algorithm was selected for its simplicity and had Macro Actions added in order to improve the forward search capability. The \gls{maga} used a population size of 10 and tournament selection of 3. Each candidate was a string of 15 actions - with each action performed 3 times in a row. This meant the \gls{maga} could "see" 45 ticks in the future.
+The \gls{ga} algorithm was selected for its simplicity and had Macro Actions added in order to improve the forward search capability. The \gls{maga} used a population size of 10 and tournament selection of 3. Each candidate was a string of 15 actions - with each action performed 3 times in a row. This meant the \gls{maga} could "see" 45 ticks in the future. The design of the \gls{maga} algorithm was inspired by \textit{Perez et al} \cite{perez2013rolling}
 \paragraph{Variable Macro Action Genetic Algorithm}
 The Variable Macro Action \gls{ga} was created to try to solve the shortcomings of \gls{maga}. The primary premise was to allow the \gls{ga} to evolve the individual macro action lengths and the length of the overall sequence (number of macro actions). The main technique used was a 1 + 1 ES. The algorithm was bounded by a number of parameters that are shown in Figure \ref{vmagaTable}.
 
@@ -148,14 +148,14 @@ These values need extensive tuning to realise the full potential of the algorith
 \pagebreak
 \section{Results}
 
-\begin{figure}[ht]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=\linewidth]{level1E-txt-pairs-ticks}
 \caption{Average ticks taken to complete level1E.txt when paired only with identical Agents}
 \label{1epairedTicks}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=\linewidth]{level1-txt-pairs-ticks}
 \caption{Average ticks taken to complete level1.txt when paired only with identical Agents}
@@ -164,28 +164,28 @@ These values need extensive tuning to realise the full potential of the algorith
 
 Figure \ref{1epairedTicks} shows the ability of each Agent to solve a simple path finding problem. The \emph{GAcontroller}, with its macro actions, is hindered by its inability to make single step moves and has trouble actually walking straight to the target. The \emph{VariGA} does significantly better, due to its ability to perform single step moves. Figure \ref{1pairedTicks} shows that most of the controllers really struggle when the \emph{Door} and \emph{Buttons} are added. This indicates that the challenge of the task is high, although perhaps remarkable that \gls{mcts} is able to solve the task.
 
-\begin{figure}[ht]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=\linewidth]{scores-allmaps}
 \caption{Average score of each AI Agent over all the Maps}
 \label{avgScoreAllMaps}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=\linewidth]{ticks-allmaps}
 \caption{Average Ticks taken for each AI Agent over all the Maps}
 \label{avgTicksAllMaps}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=\linewidth]{scores-samepairs}
 \caption{Average Scores for each AI Agent paired with itself over all the Maps}
 \label{avgScorePairAllMaps}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=\linewidth]{ticks-samepairs}
 \caption{Average Ticks taken for each AI Agent paired with itself over all the Maps}
@@ -195,14 +195,14 @@ Figure \ref{1epairedTicks} shows the ability of each Agent to solve a simple pat
 Figure \ref{avgScoreAllMaps} shows the average score that each AI Agent achieved over all the maps. The two more powerful \gls{mcts} Agents performed the best, doing much better than the competition. Figure \ref{avgTicksAllMaps} shows a similar result, with the more powerful Agents typically completing the maps in fewer ticks. \emph{RandomController} is the only deviant here - it outperformed the GA's in score but was worse in average ticks. Comparing the \gls{ai} \emph{Agents} when paired only with themselves in Figure \ref{avgScorePairAllMaps} and Figure \ref{avgTicksPairAllMaps}. The good results for \emph{RandomController} are potentially due to the fact that the 3 \gls{mcts} controllers and 2 \gls{ga} algorithms all based their decisions on having Random as an accomplice.
 
 \pagebreak
-\begin{figure}[ht]
+\begin{figure}[!ht]
 \centering
 \includegraphics[scale=0.5]{level5}
 \caption{The initial starting state for level5.txt}
 \label{Level5State}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width = \linewidth]{level5-txt-scores}
 \caption{Average Score for each AI Agent over Map 5}
@@ -211,6 +211,17 @@ Figure \ref{avgScoreAllMaps} shows the average score that each AI Agent achieved
 
 Level 5 - shown in Figure \ref{Level5State} - poses a particular problem for many of the agents (see Figure \ref{avgScoreMap5}). The asymmetric nature of the level, and the delayed reward caused great difficulty for the Agents. Relying on two button presses and the other agent to get through the open doors - in order - greatly reduced performance. The top agent, \emph{High MCTS}, only managed an average score of $0.44$ compared to its total average of just over $0.8$.
 
+\subsection{Discussion}
+\subsubsection{MCTS}
+\gls{mcts} performed very well in this problem domain. 
+
+As seen above, in Figure \ref{avgTicksPairAllMaps}, the medium and high budget implementations provided the two quickest completion times across all maps. The differences shown were significant as well as being the only two agents to complete on average in under 1000 ticks.  Figure \ref{avgScorePairAllMaps} showed that the medium and high budget implementations scored significantly better than all other agents.
+\subsubsection{GA}
+The two \gls{ga} algorithms did not perform very well in this problem domain. 
+
+As seen in Figure \ref{avgScorePairAllMaps} and Figure \ref{avgTicksPairAllMaps}, when tasked with solving the problem domain with another identical agent, neither the \emph{GAController} or \emph{VariGA} performed well at all. The \emph{VariGA} only performed significantly better than either \emph{RandomController} or \emph{GAController} in \emph{level1E.txt}. In all other cases, \emph{VariGA} performed similarly to the standard \emph{GAController}. The ability to mutate the lengths of individual action sequences made the \emph{VariGA} a more flexible pathfinder that the \emph{GAController} but did not aid its ability to solve the co-operative problems present elsewhere in the experiment.
+\subsubsection{Random}
+The \emph{RandomController} performed poorly in this problem domain. On average, the \emph{RandomController} finished under the 2000 tick limit and scored less than half the maximum on average.
 \section{Conclusions}
 In this paper, we found that a strong MCTS player can solve simple cooperative problems without requiring communication between agents. We also found that a number of other \gls{ai} techniques experienced difficulty when the problem became cooperative. Further work is required in this area.
 
