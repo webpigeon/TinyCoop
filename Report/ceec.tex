@@ -17,6 +17,9 @@
 \newacronym{mas}{MAS}{Multi-Agent Systems}
 \newacronym{maga}{MAGA}{Macro Action Genetic Algorithm}
 \newacronym{ai}{AI}{Artificial Intelligence}
+\newacronym{fps}{FPS}{First-Person Shooter}
+\newacronym{rts}{RTS}{Real-Time Strategy}
+\newacronym{rpg}{RPG}{Role-Playing Game}
 
 \begin{document}
 \maketitle
@@ -30,6 +33,10 @@ When laid out correctly, the world requires each agent to do certain things at c
 This research problem that this paper will asses is how \gls{ggp} agents perform when trying to solve a simple co-operative problem, with a focus on \gls{mcts}.
 
 \gls{ggp} is the field of writing \gls{ai} agents that can play a multitude of games without being written specifically for each one individually \cite{genesereth2005general}. \gls{ggp} in real time video games is a popular competition \cite{perez2014}.
+
+Games that feature co-operation of some form between human players and \gls{ai} agents are commonplace. Most however feature very limited forms of co-operation that are typically scripted such as in most \gls{fps} games. Typically \gls{fps} games give the mere impression of co-operation, though any player that looks carefully at it will see the tell tale signs of scripting. Where \gls{fps} games typically excel at co-operation is in online modes that enable teams of humans to play against each other. Some games even provide squad structures and communication allowing direct command for the purpose of better co-ordination as in Battlefield 2142 \cite{battlefield2142}. \gls{rts} games also often have a small number of features designed to facilitate communication in a bid to facilitate co-operation. Two games that stand out for co-operation are Microsoft's Rise of Nations \cite{riseofnations} and Mad Doc Software's Empire Earth 2 \cite{empireEarth2}. Rise of Nations allowed a human and \gls{ai} player to operate the same set of units and buildings, though no communication was possible at all. This allowed a form of co-operation but the \gls{ai} operated to its own agenda. Empire Earth 2 allowed for humans and \gls{ai} agents to co-operate by letting plans be drawn up between them that could also be followed by both the human and \gls{ai} agent. These allowed a fairly complex set of instructions to be created, despite the simple interface. 
+
+A highly popular game that had an entire mode designed for co-operation between humans was Valve's Portal 2 \cite{portal2}. This featured human sized lab test mazes with elements that required players to work together by activating buttons, moving cubes and using intra-dimensional portals to get to the end goal. Both players were required to reach the goal in order to complete the level.
 
 Creating \gls{ggp} agents that can co-operate with other players would open the door for more flexible agents in games that can work together with human players. This experiment tests how well current techniques can cope without specifically co-operating with each other. Agents that communicate slowly using a form of Natural Language, should in theory be able to work with human players equally well as they do with other Agents.
 
