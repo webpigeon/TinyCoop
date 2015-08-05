@@ -78,7 +78,7 @@ this problem domain seems not so interesting especially if
 both agents are the same.}}
 \paragraph*{\textit{I don't think GA is suitable for this domain.
 Comparing against A* search with a simple evaluation function would be more interesting.}}
-Referenced the design of the GA that shows validity in its theoretical ability to perform in real time general video game domains.
+Referenced the design of the GA that shows validity in its theoretical to perform in real time general video game domains. The production of the \emph{VariGA} was to better adapt GA to the grid based world after observing the GA struggling to navigate. Whilst neither AI proved able to solve the puzzle element of the domain, this served to show differences between MCTS and the GA techniques. A* was considered to have too high a branching factor in this problem but was decided to be investigated in future work.
 
 \paragraph*{\textit{"Doors are rendered in Black." -> "Walls are rendered in Black."}}
 We have corrected the typo in the definition of \emph{Walls} in the problem domain section.
@@ -98,6 +98,7 @@ We have removed this section to make way for more detailed results
 \paragraph*{\textit{The third page could do with being structured better.  The charts are ill-placed, do not help the flow of the authors argument and need better captions.}}
 \paragraph*{\textit{The paper would benefit from showing the actual levels used as part of the testing.  Given it makes it harder to understand the impact of later levels.  Figure 10 should be shown much earlier in the paper.}}
 \paragraph*{\textit{The selection of controller types does strike me as odd.  With a random selected and a Variable MAGA that is introduced to resolve shortcoming of the other.  What about a simple 1+1 ES without the macro's?  Or the likes of an A* bot?  Could these not be implemented?}}
+A simple 1+1 ES would not be able to find a good solution within the time limits of real time video games. Macro Actions has been proven to vastly improve the ability of GA's to solve complex real time problems such as in Perez et al \cite{perez2013rolling}. A* was considered to have too high a branching factor in this problem but was decided to be investigated in future work.
 \paragraph*{\textit{More than once the idea of a language through which to communicate is discussed, but it has no real impact on this paper and should really be saved for when it is explored}}
 
 \bibliographystyle{IEEEtran}
