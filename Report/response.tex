@@ -8,6 +8,8 @@
 We have placed the reviewers comments in \textit{\textbf{Italics and Bold}} and our response to those comments in plain text.
 
 \subsection{Review 1 (Reviewer A)}
+\paragraph*{\textit{Introduction: The introduction is well written but oddly doesn't contain discussion about cooperative games. The introduction starts by discussing general game playing (which is not a main topic of the paper) and then presents MCTS (which is) but the discussion of cooperative games is missing.}}
+
 \paragraph*{\textit{When listing objects in  II.A the default gray empty square should also be mentioned.}}
 We have added a definition for the \emph{Floor}.
 \paragraph*{\textit{In the definition of 'Walls' the word 'Walls' appears instead of 'Doors'.}}
@@ -18,6 +20,15 @@ We have changed the description of \emph{Doors} to better reflect what they look
 We have improved the definition for \emph{Door} in order to make it clearer that the \emph{Door} closes again when the \emph{Buttons} are no longer activated.
 \paragraph*{\textit{Since 'Agents' are described as dark yellow, and since there are only two shades of yellow used, it would be wiser to describe a 'Goal' as rendered in bright yellow.}}
 We have reworded the definition of \emph{Goal} to better describe the colour in relation to \emph{Agents}.
+\paragraph*{\textit{the sentence "Agent 1 reached an item like this -Agent 2 would seemingly gain some purpose and typically head for the other items." is poorly worded and not very informative. It is better explained in the sentences below. Either remove this sentence or reword it.}}
+
+\paragraph*{\textit{it would be a good idea to give the maps meaningful names.}}
+\paragraph*{\textit{The MAGA is not explained very well and seems hastily put together. I would say explain this better but given how poorly it does and how badly optimized it seems to be, maybe the authors should get rid of this player altogether. If this work is resubmitted in future I would recommend creating a better thought out version of this player. For now the better VMAGA should stand alone.
+}}
+\paragraph*{\textit{There should be a separate subsection for the results.s}}
+\paragraph*{\textit{In figures 4--9 the 3 MCTS players are ordered in an odd order Meduin-Large-Small. This order makes no sense and should be changed. GA-Controller is presented separately from Var-GA inexplicably. If this player is kept (and it shouldn't be. Unless changed and improved for submission somewhere else) then both GA players should be together. It seems that columns are organized automatically in alphabetical order they should be ordered in a way that makes sense.}}
+\paragraph*{\textit{Regarding the fact that players were trained assuming a random strategy was controlling the other player: This is mentioned again in the section, but a reasoning for this decision is not given. Why not use self play? Wouldn't it do better? Doesn't it make sense to assume a better than random strategy for the other player?}}
+
 \subsection{Review 2 (Reviewer D)}
 \paragraph*{\textit{The writing is generally good, I only noticed one actual error "GGP[3]", but the tone is casual and a lot of inappropriately subjective comments are made}}
 \paragraph*{\textit{The authors make a few dubious claims in the Introduction. GGP is not exactly "the field of writing Artificial Intelligence (AI) agents", and it is wrong to say that "MCTS doesn't requuire any knowledge about the game itself in order to play", as it needs to know starting position, legal moves, terminal states, etc. Perhaps the authors means "strategic knowledge". }}
