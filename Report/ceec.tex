@@ -93,11 +93,11 @@ The 7 maps that were included in the tournament were as follows:
 \item{\emph{level3.txt} This map was an extension of level1.txt with a second \emph{Goal} and some extra walls in the game. Spreading the action parts away from the door and buttons was the main purpose of this one}
 \item{\emph{level4.txt} This map was a modification of level1.txt - putting a second \emph{Goal} in and making the map partly mirrored. Each \emph{Agent} began in a separate room to each other instead of together.}
 \item{\emph{level5.txt} This map was a new map, designed to give wildly different roles to each AI - the top Agent would have to travel through two doors that the bottom agent had access to the linked \emph{Buttons}. Then the top \emph{Agent} could collect the reward and allow the bottom \emph{Agent} access to the \emph{Goal}.}
-\item{\emph{level6.txt} This map was a new map - with two rooms each with a \emph{Goal} and a door.This was designed to force each \emph{Agent} to be let into the \emph{Goal} room, and out of it again.}
+\item{\emph{level6.txt} This map was a new map - with two rooms each with a \emph{Goal} and a door. This was designed to force each \emph{Agent} to be let into the \emph{Goal} room, and out of it again.}
 \end{itemize}
 
 \subsubsection{\gls{ai} Controllers}
-A small set of \gls{ai} Controllers were created in order to attempt to solve the problem domain. None of the agents have the ability to communicate with another agent.
+A small set of \gls{ai} Controllers were created in order to attempt to solve the problem domain. None of the agents have the ability to communicate with another agent and each agent has a single controller.
 \paragraph{Random}
 The random controller simply chooses one of the possible 5 actions. This is one of the simplest to implement and run.
 \paragraph{Keyboard}
