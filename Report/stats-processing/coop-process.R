@@ -1,4 +1,4 @@
-setwd("C:\\Users\\joseph\\Documents\\GitHub\\TinyCoop\\Report\\stats-processing")
+setwd("/home/webpigeon/Documents/TinyCoop/Report/stats-processing")
 library(ggplot2)
 require(data.frame)
 
@@ -52,11 +52,18 @@ build_summary_map_score <- function (x) {
 build_graph <- function (filename, title, s) {
 	summary(s)
 	png(filename, width = 900, height = 500, units="px")
+	order <- c("GAController",
+	                      "VariGA",
+	                      "MCTS: (75;3;15)",
+	                      "MCTS: (200;5;30)",
+	                      "MCTS: (500;10;45)",
+	                      "RandomController")
 	p = ggplot(s, aes(x = agent1, y = mean)) +  
   	geom_bar(position = position_dodge(), stat="identity", fill="blue") + 
   	geom_errorbar(aes(ymin=mean-sem, ymax=mean+sem)) +
   	ggtitle(title) + 
   	theme_bw() +
+	  scale_x_discrete(limits = order) +
   	theme(panel.grid.major = element_blank())
 	print(p)
 	invisible(dev.off())
