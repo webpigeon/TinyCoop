@@ -37,6 +37,18 @@ We have reworded the definition of \emph{Goal} to better describe the colour in 
 Removed.
 
 \paragraph*{\textit{it would be a good idea to give the maps meaningful names.}}
+This has been done.
+
+``\begin{itemize}
+\item{\emph{SingleDoor} This map is the same as the map in \ref{InitialState}}
+\item{\emph{Pathfinding} This map is the same as level1.txt but without the \emph{Doors} and \emph{Buttons}. This was to test the \emph{Agent's} ability to solve the simplest problem.}
+\item{\emph{SymmetricSingleDoor} This map was a modification of the level1.txt - making the map more symmetric and the action parts closer together.}
+\item{\emph{ExtendedSide} This map was an extension of level1.txt with a second \emph{Goal} and some extra walls in the game. Spreading the action parts away from the door and buttons was the main purpose of this one}
+\item{\emph{SideBySide} This map was a modification of level1.txt - putting a second \emph{Goal} in and making the map partly mirrored. Each \emph{Agent} began in a separate room to each other instead of together.}
+\item{\emph{Airlock} This map was a new map, designed to give wildly different roles to each AI - the top Agent would have to travel through two doors (Like an airlock) that the bottom agent had access to the linked \emph{Buttons}. Then the top \emph{Agent} could collect the reward and allow the bottom \emph{Agent} access to the \emph{Goal}.}
+\item{\emph{Butterfly} This map was a new map - with two rooms each with a \emph{Goal} and a door. This was designed to force each \emph{Agent} to be let into the \emph{Goal} room, and out of it again.}
+\end{itemize}''
+
 \paragraph*{\textit{The MAGA is not explained very well and seems hastily put together. I would say explain this better but given how poorly it does and how badly optimized it seems to be, maybe the authors should get rid of this player altogether. If this work is resubmitted in future I would recommend creating a better thought out version of this player. For now the better VMAGA should stand alone.
 }}
 The explanations behind the two agents have been improved, and proper optimisation is a potential candidate for future work in this problem domain. We appreciate the reviewer's comment regarding the poor performance of the algorithm, and it could be possibly eliminated however, we have decided to keep this algorithm in the paper as a comparison, in order to show the improvements obtained when using variable macro-actions (VMAGA).
@@ -126,6 +138,8 @@ The reward of the rollout was indeed the raw score that the game calculates. No 
 \paragraph*{\textit{About the results, what is averaged? How many runs are averaged? All agents play in cooperation with other agents including the "keyboard AI"? Is the keyboard AI controlled by human beings? Can we assume it plays perfectly well?}}
 The round robin tournament has been better explained, with numbers, at the beginning of the Tournament sub-section.
 We have removed the definition for the keyboard AI as it was never used in the experiment and was largely used for manual testing and investigation.
+
+``For the main data collection, we ran a round robin tournament of maps and Agents. Each Agent was paired with all 7 Agents (including a copy of itself) and played 47 games on each of the 7 maps.''
 \paragraph*{\textit{Please cite something about (1+1)-ES}}
 We have added a citation:
 

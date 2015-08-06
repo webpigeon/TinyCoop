@@ -8,7 +8,8 @@
 \usepackage{glossaries}
 \usepackage{verbatim}
 \usepackage{array}
-
+\usepackage{caption}
+\captionsetup{belowskip=12pt,aboveskip=4pt}
 \graphicspath{{stats-processing/}{stats-processing/data/maps/}}
 
 \newacronym{mcts}{MCTS}{Monte-Carlo Tree Search}
@@ -110,13 +111,13 @@ For the main data collection, we ran a round robin tournament of maps and Agents
 \subsubsection{Maps}
 The 7 maps that were included in the tournament were as follows:
 \begin{itemize}
-\item{\emph{level1.txt} This map is the same as the map in \ref{InitialState}}
-\item{\emph{level1E.txt} This map is the same as level1.txt but without the \emph{Doors} and \emph{Buttons}. This was to test the \emph{Agent's} ability to solve the simplest problem.}
-\item{\emph{level2.txt} This map was a modification of the level1.txt - making the map more symmetric and the action parts closer together.}
-\item{\emph{level3.txt} This map was an extension of level1.txt with a second \emph{Goal} and some extra walls in the game. Spreading the action parts away from the door and buttons was the main purpose of this one}
-\item{\emph{level4.txt} This map was a modification of level1.txt - putting a second \emph{Goal} in and making the map partly mirrored. Each \emph{Agent} began in a separate room to each other instead of together.}
-\item{\emph{level5.txt} This map was a new map, designed to give wildly different roles to each AI - the top Agent would have to travel through two doors that the bottom agent had access to the linked \emph{Buttons}. Then the top \emph{Agent} could collect the reward and allow the bottom \emph{Agent} access to the \emph{Goal}.}
-\item{\emph{level6.txt} This map was a new map - with two rooms each with a \emph{Goal} and a door. This was designed to force each \emph{Agent} to be let into the \emph{Goal} room, and out of it again.}
+\item{\emph{SingleDoor} This map is the same as the map in \ref{InitialState}}
+\item{\emph{Pathfinding} This map is the same as level1.txt but without the \emph{Doors} and \emph{Buttons}. This was to test the \emph{Agent's} ability to solve the simplest problem.}
+\item{\emph{SymmetricSingleDoor} This map was a modification of the level1.txt - making the map more symmetric and the action parts closer together.}
+\item{\emph{ExtendedSide} This map was an extension of level1.txt with a second \emph{Goal} and some extra walls in the game. Spreading the action parts away from the door and buttons was the main purpose of this one}
+\item{\emph{SideBySide} This map was a modification of level1.txt - putting a second \emph{Goal} in and making the map partly mirrored. Each \emph{Agent} began in a separate room to each other instead of together.}
+\item{\emph{Airlock} This map was a new map, designed to give wildly different roles to each AI - the top Agent would have to travel through two doors (Like an airlock) that the bottom agent had access to the linked \emph{Buttons}. Then the top \emph{Agent} could collect the reward and allow the bottom \emph{Agent} access to the \emph{Goal}.}
+\item{\emph{Butterfly} This map was a new map - with two rooms each with a \emph{Goal} and a door. This was designed to force each \emph{Agent} to be let into the \emph{Goal} room, and out of it again.}
 \end{itemize}
 
 \subsubsection{\gls{ai} Controllers}
@@ -130,7 +131,7 @@ The keyboard controller takes input from the keyboard and translates that into a
 \paragraph{\gls{mcts}}
 The \gls{mcts} controller is a simple implementation of \gls{uct} - with a fixed number of rollouts, \gls{uct} tree search depth limit and rollout border. The rollout border is how far in total, the forward model will be allowed to progress before the game is evaluated. No knowledge about the game is provided and the assumption is made that the other player will play randomly. The fixed rollout border makes a significant improvement in iterations per decision (from 1-3 to 500-600 in 40ms \footnote{Intel Core i5-3570, 8GB RAM, Windows 7 Enterprise 64bit}). This greatly improves the ability of \gls{mcts} to make informed decisions. The score at the end of a rollout is taken from the game state - so if \gls{mcts} doesn't see any player reach a goal, all branches will be equal.
 
-For the tournament, three parameter sets were chosen for comparison and are shown in Figure \ref{mctsTable}.
+For the tournament, three parameter sets were chosen for comparison and are shown in Table \ref{mctsTable}.
 \begin{table}[!t]
 \begin{center}
 \begin{tabular}{|p{2.0cm}|p{2.0cm}|m{1.4cm}|m{1.4cm}|}
@@ -150,10 +151,9 @@ High & 500 & 10 & 45 \\
 \paragraph{Macro Action Genetic Algorithm}
 The \gls{ga} algorithm was selected for its simplicity and had Macro Actions added in order to improve the forward search capability as well as the amount of computation time per decision available to it. The \gls{maga} used a population size of 10 and tournament selection of 3. Each candidate was a string of 15 actions - with each action performed 3 times in a row. This meant the \gls{maga} could "see" 45 ticks in the future. The design of the \gls{maga} algorithm was inspired by \textit{Perez et al} \cite{perez2013rolling}
 \paragraph{Variable Macro Action Genetic Algorithm}
-The Variable Macro Action \gls{ga} was created to try to solve the shortcomings of \gls{maga}. The primary premise was to allow the \gls{ga} to evolve the individual macro action lengths and the length of the overall sequence (number of macro actions). The main technique used was a 1 + 1 Evolutionary Strategy \cite{t.back2000evolutionary-co}. A 1 + 1 ES is a very simple \gls{ga} that maintains a single candidate, and in each iteration a mutation is made and if it is an improvement it is saved as the new best candidate. It is discarded if it is not an improvement. ES's are often much simpler than full gls{ga} algorithms to create, often require much less memory and due to performing less within each iteration is able to use more of the available time budget than a full gls{ga}. The algorithm was bounded by a number of parameters that are shown in Figure \ref{vmagaTable}.
-
-\begin{figure}[h]
-\centering
+The Variable Macro Action \gls{ga} was created to try to solve the shortcomings of \gls{maga}. The primary premise was to allow the \gls{ga} to evolve the individual macro action lengths and the length of the overall sequence (number of macro actions). The main technique used was a 1 + 1 Evolutionary Strategy \cite{t.back2000evolutionary-co}. A 1 + 1 ES is a very simple \gls{ga} that maintains a single candidate, and in each iteration a mutation is made and if it is an improvement it is saved as the new best candidate. It is discarded if it is not an improvement. ES's are often much simpler than full gls{ga} algorithms to create, often require much less memory and due to performing less within each iteration is able to use more of the available time budget than a full \gls{ga}. The algorithm was bounded by a number of parameters that are shown in Table \ref{vmagaTable}.
+\begin{table}[!t]
+\begin{center}
 \begin{tabular}{| l | l | l |}
 \hline
 \textbf{Param} & \textbf{Controls} & \textbf{Value} \\
@@ -169,22 +169,22 @@ actionChance & Chance of altering each action & 0.75 \\
 \end{tabular}
 \caption{Table of parameters for the Variable Macro Action Genetic Algorithm}
 \label{vmagaTable}
-\end{figure}
+\end{center}
+\end{table}
 These values need extensive tuning to realise the full potential of the algorithm and is a source of possible future work.
-\pagebreak
 \section{Results}
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=\linewidth]{level1E-txt-pairs-ticks}
-\caption{Average ticks taken to complete level1E.txt when paired only with identical Agents}
+\caption{Average ticks taken to complete \emph{Pathfinding} when paired only with identical Agents}
 \label{1epairedTicks}
 \end{figure}
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=\linewidth]{level1-txt-pairs-ticks}
-\caption{Average ticks taken to complete level1.txt when paired only with identical Agents}
+\caption{Average ticks taken to complete \emph{SingleDoor} when paired only with identical Agents}
 \label{1pairedTicks}
 \end{figure}
 
@@ -220,18 +220,17 @@ Figure \ref{1epairedTicks} shows the ability of each Agent to solve a simple pat
 
 Figure \ref{avgScoreAllMaps} shows the average score that each AI Agent achieved over all the maps. The two more powerful \gls{mcts} Agents performed the best, doing much better than the competition. Figure \ref{avgTicksAllMaps} shows a similar result, with the more powerful Agents typically completing the maps in fewer ticks. \emph{RandomController} is the only deviant here - it outperformed the GA's in score but was worse in average ticks. Comparing the \gls{ai} \emph{Agents} when paired only with themselves in Figure \ref{avgScorePairAllMaps} and Figure \ref{avgTicksPairAllMaps}. The good results for \emph{RandomController} are potentially due to the fact that the 3 \gls{mcts} controllers and 2 \gls{ga} algorithms all based their decisions on having Random as an accomplice.
 
-\pagebreak
 \begin{figure}[!ht]
 \centering
 \includegraphics[scale=0.5]{level5}
-\caption{The initial starting state for level5.txt}
+\caption{The initial starting state for \emph{SideBySide}}
 \label{Level5State}
 \end{figure}
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[width = \linewidth]{level5-txt-scores}
-\caption{Average Score for each AI Agent over Map 5}
+\caption{Average Score for each AI Agent over \emph{SideBySide}}
 \label{avgScoreMap5}
 \end{figure}
 
@@ -242,10 +241,14 @@ Level 5 - shown in Figure \ref{Level5State} - poses a particular problem for man
 \gls{mcts} performed very well in this problem domain. 
 
 As seen above, in Figure \ref{avgTicksPairAllMaps}, the medium and high budget implementations provided the two quickest completion times across all maps. The differences shown were significant as well as being the only two agents to complete on average in under 1000 ticks.  Figure \ref{avgScorePairAllMaps} showed that the medium and high budget implementations scored significantly better than all other agents.
+
+One possible reason for \gls{mcts} scoring so well in this problem domain is its use of statistics over hundreds and thousands of simulations to provide it with the ability to act in such a way that it handles all eventualities. Statistically,  in certain situations \gls{mcts} would only see rewards in the tree when it was situated on a \emph{Button}. This tended to cause the \gls{mcts} to travle towards \emph{Buttons}, increasing the likelihood that its own simulations would cause it to be situated on the button. Eventually, most other \gls{ai} \emph{Agents} would cross through the open door.
 \subsubsection{GA}
 The two \gls{ga} algorithms did not perform very well in this problem domain. 
 
 As seen in Figure \ref{avgScorePairAllMaps} and Figure \ref{avgTicksPairAllMaps}, when tasked with solving the problem domain with another identical agent, neither the \emph{GAController} or \emph{VariGA} performed well at all. The \emph{VariGA} only performed significantly better than either \emph{RandomController} or \emph{GAController} in \emph{level1E.txt}. In all other cases, \emph{VariGA} performed similarly to the standard \emph{GAController}. The ability to mutate the lengths of individual action sequences made the \emph{VariGA} a more flexible pathfinder that the \emph{GAController} but did not aid its ability to solve the co-operative problems present elsewhere in the experiment.
+
+The \gls{ga} algorithms don't have the stored tree structure of \gls{mcts} with which to gain the statistical model for what happens when they pursue certain actions. This leads to a seemingly poor performance for the \gls{ga} despite \gls{ga} and \gls{mcts} typically performing equally well in other domains.
 \subsubsection{Random}
 The \emph{RandomController} performed poorly in this problem domain. On average, the \emph{RandomController} finished under the 2000 tick limit and scored less than half the maximum on average.
 \section{Conclusions}
