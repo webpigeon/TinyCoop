@@ -33,7 +33,7 @@ When laid out correctly, the world requires each agent to do certain things at c
 \end{abstract}
 
 \section{Introduction}
-This research problem that this paper will asses is how \gls{ggp} agents perform when trying to solve a simple co-operative problem, with a focus on \gls{mcts}.
+This research problem that this paper will asses is how \gls{ggp} agents perform when trying to solve a simple co-operative problem without co-operative abilities, with a focus on \gls{mcts}.
 
 \gls{ggp} is the field of writing \gls{ai} agents that can play a multitude of games without being written specifically for each one individually \cite{genesereth2005general}. \gls{ggp} in real time video games is a popular competition \cite{perez2014}.
 
@@ -41,7 +41,7 @@ Games that feature co-operation of some form between human players and \gls{ai} 
 
 A highly popular game that had an entire mode designed for co-operation between humans was Valve's Portal 2 \cite{portal2}. This featured human sized lab test mazes with elements that required players to work together by activating buttons, moving cubes and using intra-dimensional portals to get to the end goal. Both players were required to reach the goal in order to complete the level.
 
-Creating \gls{ggp} agents that can co-operate with other players would open the door for more flexible agents in games that can work together with human players. This experiment tests how well current techniques can cope without specifically co-operating with each other. Agents that communicate slowly using a form of Natural Language, should in theory be able to work with human players equally well as they do with other Agents.
+Creating \gls{ggp} agents that can co-operate with other players would open the door for more flexible agents in games that can work together with human players. This experiment tests how well current techniques can cope without specifically co-operating with each other.
 
 \subsection{MCTS}
 
@@ -228,14 +228,14 @@ Figure \ref{1epairedTicks} shows the ability of each Agent to solve a simple pat
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=\linewidth]{scores-allmaps}
-\caption{Average score of each AI Agent over all the Maps}
+\caption{Average score of each AI Agent over all pairings over all the Maps}
 \label{avgScoreAllMaps}
 \end{figure}
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=\linewidth]{ticks-allmaps}
-\caption{Average Ticks taken for each AI Agent over all the Maps}
+\caption{Average Ticks taken for each AI Agent over all pairings over all the Maps}
 \label{avgTicksAllMaps}
 \end{figure}
 
@@ -257,19 +257,12 @@ Figure \ref{avgScoreAllMaps} shows the average score that each AI Agent achieved
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[scale=0.5]{level5}
-\caption{The initial starting state for \emph{SideBySide}}
-\label{Level5State}
-\end{figure}
-
-\begin{figure}[!ht]
-\centering
 \includegraphics[width = \linewidth]{level5-txt-scores}
-\caption{Average Score for each AI Agent over \emph{SideBySide}}
+\caption{Average Score for each AI Agent paired with itself over \emph{Airlock}}
 \label{avgScoreMap5}
 \end{figure}
 
-Level 5 - shown in Figure \ref{Level5State} - poses a particular problem for many of the agents (see Figure \ref{avgScoreMap5}). The asymmetric nature of the level, and the delayed reward caused great difficulty for the Agents. Relying on two button presses and the other agent to get through the open doors - in order - greatly reduced performance. The top agent, \emph{High MCTS}, only managed an average score of $0.44$ compared to its total average of just over $0.8$.
+Level 5 - shown in Figure \ref{Airlock} - poses a particular problem for many of the agents (see Figure \ref{avgScoreMap5}). The asymmetric nature of the level, and the delayed reward caused great difficulty for the Agents. Relying on two button presses and the other agent to get through the open doors - in order - greatly reduced performance. The top agent, \emph{High MCTS}, only managed an average score of $0.44$ compared to its total average of just over $0.8$.
 
 \subsection{Discussion}
 \subsubsection{MCTS}

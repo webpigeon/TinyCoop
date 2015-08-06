@@ -5,13 +5,25 @@
 \begin{document}
 \maketitle
 \section{Response to the reviewers}
+Dear Reviewers,
+
+Please find below our responses to your comments.
+
 We would like to thank the reviewers for their insightful comments, that have truly enabled us to make many improvements to this paper. We hope you will agree that the paper has matured into a quality that allows for publication.
 
 We have placed the reviewers comments in \textit{\textbf{Italics and Bold}} and our response to those comments in plain text. Quoted sections of text from the paper may include references to papers - these are listed at the end of this response.
 
+Yours sincerely,
+
+The Authors.
+
 \subsection{Review 1 (Reviewer A)}
 \paragraph*{\textit{Introduction: The introduction is well written but oddly doesn't contain discussion about cooperative games. The introduction starts by discussing general game playing (which is not a main topic of the paper) and then presents MCTS (which is) but the discussion of cooperative games is missing.}}
 Added section on co-operative games.
+
+``Games that feature co-operation of some form between human players and AI agents are commonplace. Most however feature very limited forms of co-operation that are typically scripted such as in most FPS games. Typically FPS games give the mere impression of co-operation, though any player that looks carefully at it will see the tell tale signs of scripting. Where FPS games typically excel at co-operation is in online modes that enable teams of humans to play against each other. Some games even provide squad structures and communication allowing direct command for the purpose of better co-ordination as in Battlefield 2142 \cite{battlefield2142}. RTS games also often have a small number of features designed to facilitate communication in a bid to facilitate co-operation. Two games that stand out for co-operation are Microsoft's Rise of Nations \cite{riseofnations} and Mad Doc Software's Empire Earth 2 \cite{empireEarth2}. Rise of Nations allowed a human and AI player to operate the same set of units and buildings, though no communication was possible at all. This allowed a form of co-operation but the AI operated to its own agenda. Empire Earth 2 allowed for humans and AI agents to co-operate by letting plans be drawn up between them that could also be followed by both the human and AI agent. These allowed a fairly complex set of instructions to be created, despite the simple interface. 
+
+A highly popular game that had an entire mode designed for co-operation between humans was Valve's Portal 2 \cite{portal2}. This featured human sized lab test mazes with elements that required players to work together by activating buttons, moving cubes and using intra-dimensional portals to get to the end goal. Both players were required to reach the goal in order to complete the level.''
 
 \paragraph*{\textit{When listing objects in  II.A the default gray empty square should also be mentioned.}}
 We have added a definition for the \emph{Floor}.
@@ -40,7 +52,7 @@ Removed.
 This has been done.
 
 ``\begin{itemize}
-\item{\emph{SingleDoor} This map is the same as the map in \ref{InitialState}}
+\item{\emph{SingleDoor} This map is a basic map with two rooms, single door and a button either side.}
 \item{\emph{Pathfinding} This map is the same as level1.txt but without the \emph{Doors} and \emph{Buttons}. This was to test the \emph{Agent's} ability to solve the simplest problem.}
 \item{\emph{SymmetricSingleDoor} This map was a modification of the level1.txt - making the map more symmetric and the action parts closer together.}
 \item{\emph{ExtendedSide} This map was an extension of level1.txt with a second \emph{Goal} and some extra walls in the game. Spreading the action parts away from the door and buttons was the main purpose of this one}
@@ -65,7 +77,11 @@ Assuming a random strategy was chosen due to the availability only of agents tha
 \paragraph*{\textit{The writing is generally good, I only noticed one actual error "GGP[3]", but the tone is casual and a lot of inappropriately subjective comments are made}}
 Have placed a space between GGP and the reference.
 \paragraph*{\textit{The authors make a few dubious claims in the Introduction. GGP is not exactly "the field of writing Artificial Intelligence (AI) agents", and it is wrong to say that "MCTS doesn't requuire any knowledge about the game itself in order to play", as it needs to know starting position, legal moves, terminal states, etc. Perhaps the authors means "strategic knowledge". }}
-Have clarified the definition of GGP with reference to this paper\cite{genesereth2005general} and the terminology used to define MCTS's use of knowledge.
+Have clarified the definition of GGP and the terminology used to define MCTS's use of knowledge.
+
+``GGP is the field of writing AI agents that can play a multitude of games without being written specifically for each one individually \cite{genesereth2005general}.''
+
+``Standard MCTS plays best when it is able to search far enough to locate states that provide a reward. MCTS tends to stumble when the time or search depth limit given to it isn't sufficient to allow it to locate any sequence of actions that provides a reward in order to differentiate the root's children \cite{perez2012monte}. When MCTS can't find any single state that contained a reward, all children of the node will contain identical values and the algorithm will be forced to make a random choice.''
 \paragraph*{\textit{The authors claim that MCTS works best when it is given rewards frequently. What is the evidence for this claim?}}
 Have rewritten this to point out that MCTS can't provide anything but random if it isn't given enough time or depth to search to a state that provides a reward.
 
@@ -81,7 +97,7 @@ Reworded.
 \paragraph*{\textit{"This proves that the challenge...": no it doesn't, it indicates it.}}
 Reworded to indicates.
 
-11This indicates that the challenge of the task is high ...''
+``This indicates that the challenge of the task is high ...''
 \paragraph*{\textit{"The shockingly good results...": too casual and subjective, overstating the case.}}
 Reworded.
 
@@ -202,16 +218,35 @@ Have expanded the section in future work on communication to better reflect this
 ``More work can be conducted in the writing of AI's to use communication in order to complete these challenges better amongst themselves. A framework for communication would be devised - with the requirement for fairly GGP like restrictions in mind. Use of the communication framework would need to likely be learned by the \emph{Agents} during play, posing a particular challenge for the future.''
 \subsection{Review 5 (Reviewer F)}
 \paragraph*{\textit{The early segments fail to really discuss the MCTS algorithm.  The abbreviation for this is also found in the abstract and should really be in the introductory paragraph.}}
-The MCTS algorithm was given some background in the literature as to its previous applications and a summary of its typical behaviour. Have added a small section describing its creation and referenced the key papers for that.
+We have added a subsection in the Introduction that describes the MCTS algorithm much more fully than before.
 Have removed the abbreviation for MCTS from the abstract.
+
+
+``MCTS is a tree search algorithm originally designed by R{\'e}mi Coulom \cite{coulom2007efficient} and the major modification of UCT was defined by Kocsis and Szepesv{\'a}ri \cite{kocsis2006bandit} and improved by Kocsis et al \cite{kocsis2006improved}.
+
+MCTS is a tree search algorithm that in games is typically applied directly to the action space. MCTS requires the ability to simulate action sequences and retrieve at least some form of reward (or lack of) from the results of these simulations. The basic steps for MCTS are:
+
+\begin{enumerate}
+\item{\emph{Selection} - Selection is the stage where the algorithm navigates the search tree, selecting optimal nodes(Based on the tree policy) until it reaches a leaf node.}
+\item{\emph{Expansion} - Expansion is the stage whereby the leaf node is expanded by adding one of the remaining child states if it is not a terminal node.}
+\item{\emph{Simulation} - Simulation is the stage where the algorithm forwards the model until a result is achieved. Their is usually a policy that defines how the simulation is made, with the simplest being random possible moves.}
+\item{\emph{Backpropagation} - Backpropagation is the stage where the results of the simulation are propagated up the tree, so that they can influence the selection phase.}
+\end{enumerate}
+
+MCTS \cite{browne2012survey} has been applied to a wealth of domains and is one of the primary algorithms in use for GGP \cite{finnsson2008simulation}. Primary advantages are that, when given a sufficient forward model, MCTS doesn't require any strategic knowledge about the game itself in order to play.
+
+Standard MCTS plays best when it is able to search far enough to locate states that provide a reward. MCTS tends to stumble when the time or search depth limit given to it isn't sufficient to allow it to locate any sequence of actions that provides a reward in order to differentiate the root's children \cite{perez2012monte}. When MCTS can't find any single state that contained a reward, all children of the node will contain identical values and the algorithm will be forced to make a random choice.''
 \paragraph*{\textit{Section II covering preliminary tests is light on technical details and seem ill placed when you consider the subsequent studies later on in the paper.}}
 We have removed this section to make way for more detailed results
 \paragraph*{\textit{The third page could do with being structured better.  The charts are ill-placed, do not help the flow of the authors argument and need better captions.}}
 We have made efforts to improve the layout of the entire paper.
 \paragraph*{\textit{The paper would benefit from showing the actual levels used as part of the testing.  Given it makes it harder to understand the impact of later levels.  Figure 10 should be shown much earlier in the paper.}}
+The description of each level has had an image of the initial starting state added, as well as being renamed. What was once Figure 10 has been removed due to that image now appearing earlier.
+
 \paragraph*{\textit{The selection of controller types does strike me as odd.  With a random selected and a Variable MAGA that is introduced to resolve shortcoming of the other.  What about a simple 1+1 ES without the macro's?  Or the likes of an A* bot?  Could these not be implemented?}}
 A simple 1+1 ES would not be able to find a good solution within the time limits of real time video games. Macro Actions has been proven to vastly improve the ability of GA's to solve complex real time problems such as in Perez et al \cite{perez2013rolling}. A* was considered to have too high a branching factor in this problem but was decided to be investigated in future work.
 \paragraph*{\textit{More than once the idea of a language through which to communicate is discussed, but it has no real impact on this paper and should really be saved for when it is explored}}
+This has been removed.
 
 \bibliographystyle{IEEEtran}
 \bibliography{ceec}
