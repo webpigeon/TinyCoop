@@ -37,7 +37,7 @@ public class FastGameMain {
         Controller c2 = arrows;
 //        Controller c2 = new NoOp();
 
-        CoopGame game = new CoopGame("data/maps/level5.txt");
+        CoopGame game = new CoopGame("data/maps/level6.txt");
 
         Viewer viewer = new Viewer(game);
         viewer.addKeyListener(wasd);

@@ -7,6 +7,7 @@
 \usepackage{graphicx}
 \usepackage{glossaries}
 \usepackage{verbatim}
+\usepackage{array}
 
 \graphicspath{{stats-processing/}{stats-processing/data/maps/}}
 
@@ -40,7 +41,18 @@ A highly popular game that had an entire mode designed for co-operation between 
 
 Creating \gls{ggp} agents that can co-operate with other players would open the door for more flexible agents in games that can work together with human players. This experiment tests how well current techniques can cope without specifically co-operating with each other. Agents that communicate slowly using a form of Natural Language, should in theory be able to work with human players equally well as they do with other Agents.
 
+\subsection{MCTS}
+
 \gls{mcts} is a tree search algorithm originally designed by R{\'e}mi Coulom \cite{coulom2007efficient} and the major modification of \gls{uct} was defined by Kocsis and Szepesv{\'a}ri \cite{kocsis2006bandit} and improved by Kocsis et al \cite{kocsis2006improved}.
+
+\gls{mcts} is a tree search algorithm that in games is typically applied directly to the action space. \gls{mcts} requires the ability to simulate action sequences and retrieve at least some form of reward (or lack of) from the results of these simulations. The basic steps for \gls{mcts} are:
+
+\begin{enumerate}
+\item{\emph{Selection} - Selection is the stage where the algorithm navigates the search tree, selecting optimal nodes(Based on the tree policy) until it reaches a leaf node.}
+\item{\emph{Expansion} - Expansion is the stage whereby the leaf node is expanded by adding one of the remaining child states if it is not a terminal node.}
+\item{\emph{Simulation} - Simulation is the stage where the algorithm forwards the model until a result is achieved. Their is usually a policy that defines how the simulation is made, with the simplest being random possible moves.}
+\item{\emph{Backpropagation} - Backpropagation is the stage where the results of the simulation are propagated up the tree, so that they can influence the selection phase.}
+\end{enumerate}
 
 \gls{mcts} \cite{browne2012survey} has been applied to a wealth of domains and is one of the primary algorithms in use for \gls{ggp} \cite{finnsson2008simulation}. Primary advantages are that, when given a sufficient forward model, \gls{mcts} doesn't require any strategic knowledge about the game itself in order to play.
 
@@ -82,6 +94,8 @@ The starting positions for a simple problem is shown in Figure \ref{InitialState
 All levels are defined by a simple text file format.
 
 The problems are designed to require \emph{Agents} to co-operate in order to achieve their goals. Unlike other domains where \gls{mcts} can solve tasks at its own pace and by itself, this domain requires the agents to sometimes sit patiently on a button for another \emph{Agent} to do something else.
+
+We feel that this creates a very interesting problem domain, due to the reward space for each \emph{Agent} being tied to the activities of other \emph{Agents}.
 \begin{comment}
 \subsection{Initial Testing}
 Initially, observations were made to see how \gls{mcts} handled the problem. At first, with a small computational budget it seemed like \gls{mcts} would perform poorly, with near random movement seeming to emerge.
@@ -91,7 +105,7 @@ This changed, when an agent (Agent 1 say) got near a \emph{Button} or \emph{Door
 With this observation made - the computational budget was increased ten-fold, and the \gls{mcts} agents performed significantly better. Typical behaviour would be near optimal with significantly less random sections of movement. This can likely be attributed to the increased rollout and \gls{uct} border depths allowing more foresight on such a small puzzle.
 \end{comment}
 \subsection{Tournament}
-For the main data collection, we ran a round robin tournament of maps and Agents. Each Agent was paired with all 7 Agents (including a copy of itself) and played X games on each of the 7 maps. 
+For the main data collection, we ran a round robin tournament of maps and Agents. Each Agent was paired with all 7 Agents (including a copy of itself) and played 47 games on each of the 7 maps. 
 
 \subsubsection{Maps}
 The 7 maps that were included in the tournament were as follows:
@@ -117,9 +131,9 @@ The keyboard controller takes input from the keyboard and translates that into a
 The \gls{mcts} controller is a simple implementation of \gls{uct} - with a fixed number of rollouts, \gls{uct} tree search depth limit and rollout border. The rollout border is how far in total, the forward model will be allowed to progress before the game is evaluated. No knowledge about the game is provided and the assumption is made that the other player will play randomly. The fixed rollout border makes a significant improvement in iterations per decision (from 1-3 to 500-600 in 40ms \footnote{Intel Core i5-3570, 8GB RAM, Windows 7 Enterprise 64bit}). This greatly improves the ability of \gls{mcts} to make informed decisions. The score at the end of a rollout is taken from the game state - so if \gls{mcts} doesn't see any player reach a goal, all branches will be equal.
 
 For the tournament, three parameter sets were chosen for comparison and are shown in Figure \ref{mctsTable}.
-\begin{figure}[h]
-\centering
-\begin{tabular}{| l | c | c | c |}
+\begin{table}[!t]
+\begin{center}
+\begin{tabular}{|p{2.0cm}|p{2.0cm}|m{1.4cm}|m{1.4cm}|}
 \hline
 \textbf{Budget} & \textbf{Rollouts} & \textbf{UCT Search Limit} & \textbf{Rollout Border} \\
 \hline
@@ -130,12 +144,13 @@ High & 500 & 10 & 45 \\
 \end{tabular}
 \caption{Table of parameters for the 3 \gls{mcts} players}
 \label{mctsTable}
-\end{figure}
+\end{center}
+\end{table}
 
 \paragraph{Macro Action Genetic Algorithm}
 The \gls{ga} algorithm was selected for its simplicity and had Macro Actions added in order to improve the forward search capability as well as the amount of computation time per decision available to it. The \gls{maga} used a population size of 10 and tournament selection of 3. Each candidate was a string of 15 actions - with each action performed 3 times in a row. This meant the \gls{maga} could "see" 45 ticks in the future. The design of the \gls{maga} algorithm was inspired by \textit{Perez et al} \cite{perez2013rolling}
 \paragraph{Variable Macro Action Genetic Algorithm}
-The Variable Macro Action \gls{ga} was created to try to solve the shortcomings of \gls{maga}. The primary premise was to allow the \gls{ga} to evolve the individual macro action lengths and the length of the overall sequence (number of macro actions). The main technique used was a 1 + 1 Evolutionary Strategy. A 1 + 1 ES is a very simple \gls{ga} that maintains a single candidate, and in each iteration a mutation is made and if it is an improvement it is saved as the new best candidate. It is discarded if it is not an improvement. ES's are often much simpler than full gls{ga} algorithms to create, often require much less memory and due to performing less within each iteration is able to use more of the available time budget than a full gls{ga}. The algorithm was bounded by a number of parameters that are shown in Figure \ref{vmagaTable}.
+The Variable Macro Action \gls{ga} was created to try to solve the shortcomings of \gls{maga}. The primary premise was to allow the \gls{ga} to evolve the individual macro action lengths and the length of the overall sequence (number of macro actions). The main technique used was a 1 + 1 Evolutionary Strategy \cite{t.back2000evolutionary-co}. A 1 + 1 ES is a very simple \gls{ga} that maintains a single candidate, and in each iteration a mutation is made and if it is an improvement it is saved as the new best candidate. It is discarded if it is not an improvement. ES's are often much simpler than full gls{ga} algorithms to create, often require much less memory and due to performing less within each iteration is able to use more of the available time budget than a full gls{ga}. The algorithm was bounded by a number of parameters that are shown in Figure \ref{vmagaTable}.
 
 \begin{figure}[h]
 \centering
