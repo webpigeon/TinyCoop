@@ -114,6 +114,29 @@ We have clarified whether the \emph{Agents} are aware that other \emph{Agents} r
 \paragraph*{\textit{In what sense this domain interesting compared to other domains?}}
 We feel that this problem domain is interesting due to placing each agent that is typically designed to solve problems by themselves in an environment where they must rely on another agent performing certain sequences of actions. To quote the words of Reviewer F ``\textit{This proves to be an interesting reward space to explore, given that we are dealing with circumstances where players need to take action then await the outcome courtesy of another player}''. The domain also gains an interesting aspect when we consider the ability to, in a slowed down pace, allow human players to potentially communicate with a more advanced AI in order to improve performance in the domain. Communication within computer games is something that we believe would improve the feelings of immersion that the player feels.
 
+\paragraph*{\textit{Is there a time limit for solving the problem? I think, if given infinite time, random agent can always solve level1 and the average score should be 1.0.
+When and how do agents fail to solve a problem?}}
+The time limit for the problem was 2,000 ticks. Given infinite time, random agent can always solve any level. Some experiments (100,000 runs per level) showed a pair of random agents took on average this many ticks to complete each level:
+
+\begin{tabular}{|l|l|c|}
+\hline
+\textbf{Old Map Name} & \textbf{New Map Name} & \textbf{Avg Ticks to complete} \\
+\hline
+level1.txt & SingleDoor & 7250\\
+\hline
+level1E.txt & Pathfinder & 419\\
+\hline
+level2.txt & SymmetricSingleDoor & 7353\\
+\hline
+level3.txt & ExtendedSide& 13416\\
+\hline
+level4.txt & SideBySide & 7302\\
+\hline
+level5.txt & Airlock & \\
+\hline
+level6.txt & Butterfly & \\
+\hline
+\end{tabular}
 
 \paragraph*{\textit{Is the problem domain a real time problem? How long is a tick? 40ms? Do all agents return an action within a tick? Possible 5 actions mean up, down left, right and stay where it is?}}
 The definition of the problem domain has been improved with a section describing the particular way that actions are collected and executed as well as a list of each possible action that can be chosen.

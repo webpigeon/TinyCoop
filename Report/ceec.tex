@@ -9,6 +9,7 @@
 \usepackage{verbatim}
 \usepackage{array}
 \usepackage{caption}
+\usepackage{float}
 \captionsetup{belowskip=12pt,aboveskip=4pt}
 \graphicspath{{stats-processing/}{stats-processing/data/maps/}}
 
@@ -83,15 +84,6 @@ Each \emph{Agent} is able to make a single action in each game tick. The actions
 \item{\emph{No-Op} - This will not move the \emph{Agent}. It will remain in the same location as the previous game state.}
 \end{itemize}
 
-The starting positions for a simple problem is shown in Figure \ref{InitialState}
-\begin{figure}[ht]
-\centering
-\includegraphics[scale=0.5]{InitialState}
-\caption{Simple game state showing the different elements\protect\footnotemark }
-\label{InitialState}
-\end{figure}
-
-\footnotetext{Displayed numbers are the ID numbers - \emph{Button} ID 0 will open \emph{Door} ID 0 but not \emph{Door} ID 1}
 All levels are defined by a simple text file format.
 
 The problems are designed to require \emph{Agents} to co-operate in order to achieve their goals. Unlike other domains where \gls{mcts} can solve tasks at its own pace and by itself, this domain requires the agents to sometimes sit patiently on a button for another \emph{Agent} to do something else.
@@ -110,15 +102,58 @@ For the main data collection, we ran a round robin tournament of maps and Agents
 
 \subsubsection{Maps}
 The 7 maps that were included in the tournament were as follows:
-\begin{itemize}
-\item{\emph{SingleDoor} This map is the same as the map in \ref{InitialState}}
-\item{\emph{Pathfinding} This map is the same as level1.txt but without the \emph{Doors} and \emph{Buttons}. This was to test the \emph{Agent's} ability to solve the simplest problem.}
-\item{\emph{SymmetricSingleDoor} This map was a modification of the level1.txt - making the map more symmetric and the action parts closer together.}
-\item{\emph{ExtendedSide} This map was an extension of level1.txt with a second \emph{Goal} and some extra walls in the game. Spreading the action parts away from the door and buttons was the main purpose of this one}
-\item{\emph{SideBySide} This map was a modification of level1.txt - putting a second \emph{Goal} in and making the map partly mirrored. Each \emph{Agent} began in a separate room to each other instead of together.}
-\item{\emph{Airlock} This map was a new map, designed to give wildly different roles to each AI - the top Agent would have to travel through two doors (Like an airlock) that the bottom agent had access to the linked \emph{Buttons}. Then the top \emph{Agent} could collect the reward and allow the bottom \emph{Agent} access to the \emph{Goal}.}
-\item{\emph{Butterfly} This map was a new map - with two rooms each with a \emph{Goal} and a door. This was designed to force each \emph{Agent} to be let into the \emph{Goal} room, and out of it again.}
-\end{itemize}
+
+\paragraph{\emph{SingleDoor}} This map is a basic map with two rooms, single door and a button either side.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{InitialState}
+\caption{Single Door \protect\footnotemark}
+\label{SingleDoor}
+\end{figure}
+\footnotetext{Displayed numbers are the ID numbers - \emph{Button} ID 0 will open \emph{Door} ID 0 but not \emph{Door} ID 1}
+\paragraph{\emph{Pathfinding}} This map is the same as level1.txt but without the \emph{Doors} and \emph{Buttons}. This was to test the \emph{Agent's} ability to solve the simplest problem.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{level1e}
+\caption{Pathfinding}
+\label{Pathfinding}
+\end{figure}
+\paragraph{\emph{SymmetricSingleDoor}} This map was a modification of the level1.txt - making the map more symmetric and the action parts closer together.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{level2}
+\caption{Symmetric Single Door}
+\label{SymmetricSingleDoor}
+\end{figure}
+\paragraph{\emph{ExtendedSide}} This map was an extension of level1.txt with a second \emph{Goal} and some extra walls in the game. Spreading the action parts away from the door and buttons was the main purpose of this one.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{level3}
+\caption{Extended Side}
+\label{ExtendedSide}
+\end{figure}
+\paragraph{\emph{SideBySide}} This map was a modification of level1.txt - putting a second \emph{Goal} in and making the map partly mirrored. Each \emph{Agent} began in a separate room to each other instead of together.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{level4}
+\caption{Side By Side}
+\label{SideBySide}
+\end{figure}
+\paragraph{\emph{Airlock}} This map was a new map, designed to give wildly different roles to each AI - the top Agent would have to travel through two doors (Like an airlock) that the bottom agent had access to the linked \emph{Buttons}. Then the top \emph{Agent} could collect the reward and allow the bottom \emph{Agent} access to the \emph{Goal}.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{level5}
+\caption{Airlock}
+\label{Airlock}
+\end{figure}
+\paragraph{\emph{Butterfly}} This map was a new map - with two rooms each with a \emph{Goal} and a door. This was designed to force each \emph{Agent} to be let into the \emph{Goal} room, and out of it again.
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{level6}
+\caption{Butterfly}
+\label{Butterfly}
+\end{figure}
+
 
 \subsubsection{\gls{ai} Controllers}
 A set of \gls{ai} Controllers were created in order to attempt to solve the problem domain. None of the agents have the ability to communicate with another agent and each agent has a single controller.
