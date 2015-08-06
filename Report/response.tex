@@ -5,6 +5,8 @@
 \begin{document}
 \maketitle
 \section{Response to the reviewers}
+We would like to thank the reviewers for their insightful comments, that have truly enabled us to make many improvements to this paper.
+
 We have placed the reviewers comments in \textit{\textbf{Italics and Bold}} and our response to those comments in plain text.
 
 \subsection{Review 1 (Reviewer A)}
@@ -37,8 +39,9 @@ Assuming a random strategy was chosen due to the availability only of agents tha
 
 \subsection{Review 2 (Reviewer D)}
 \paragraph*{\textit{The writing is generally good, I only noticed one actual error "GGP[3]", but the tone is casual and a lot of inappropriately subjective comments are made}}
+Have placed a space between GGP and the reference.
 \paragraph*{\textit{The authors make a few dubious claims in the Introduction. GGP is not exactly "the field of writing Artificial Intelligence (AI) agents", and it is wrong to say that "MCTS doesn't requuire any knowledge about the game itself in order to play", as it needs to know starting position, legal moves, terminal states, etc. Perhaps the authors means "strategic knowledge". }}
-Have clarified the definition of GGP with reference to this paper\cite{genesereth2005general} and the terminology used to define MCTS use of knowledge. 
+Have clarified the definition of GGP with reference to this paper\cite{genesereth2005general} and the terminology used to define MCTS's use of knowledge.
 \paragraph*{\textit{The authors claim that MCTS works best when it is given rewards frequently. What is the evidence for this claim?}}
 Have rewritten this to point out that MCTS can't provide anything but random if it isn't given enough time or depth to search to a state that provides a reward.
 \paragraph*{\textit{The research problem is stated, but should be stated more clearly in the Introduction.}}
@@ -48,12 +51,16 @@ Reworded.
 \paragraph*{\textit{"This proves that the challenge...": no it doesn't, it indicates it.}}
 Reworded to indicates.
 \paragraph*{\textit{"The shockingly good results...": too casual and subjective, overstating the case.}}
-Reworded. 
+Reworded.
 \paragraph*{\textit{There is no Discussion as such, rather there are subjective appraisals of the algorithm's performance at each task scattered throughout the results. The paper would be better structures with a Discussion section that summarised the results and their implications, and then recapped this in the Conclusion. At the moment, the exact contributions are a bit hard to see.}}
+A discussion sub-section has been added to the Results section, and provides an analysis of the different AI techniques performance in general.
 \paragraph*{\textit{The list of references is short (four) and does not include any references to work on cooperative agents, swarm behaviour, etc.}}
+The references have been expanded, although not yet to cover co-operative agents.
+Swarm behaviour and co-operative agents are not possible in this domain due to the enforced lack of communication between \emph{Agents}, and was deemed outside of the scope for the Introduction. Future work mentions extensions of communication, which could allow a swarm technique or co-operative agents to be implemented.
+
 \subsection{Review 3 (Reviewer G)}
 \paragraph*{\textit{Who created this problem domain?}}
-We have clarified who created the problem domain.
+We have clarified who created the problem domain, it was the authors of the papers (Can't tell you who though just yet).
 \paragraph*{\textit{The agents move simultaneously or alternately?}}
 Added a section to highlight this.
 \paragraph*{\textit{Do agents see all areas of the problem?}}
@@ -62,6 +69,7 @@ We have clarified how the problem domain handles observability and what informat
 We have clarified whether the \emph{Agents} are aware that other \emph{Agents} reach a \emph{Goal}.
 
 \paragraph*{\textit{In what sense this domain interesting compared to other domains?}}
+We feel that this problem domain is interesting due to placing each agent that is typically designed to solve problems by themselves in an environment where they must rely on another agent performing certain sequences of actions. To quote the words of Reviewer F \textit{This proves to be an interesting reward space to explore, given that we are dealing with circumstances where players need to take action then await the outcome courtesy of another player}. The domain also gains an interesting aspect when we consider the ability to, in a slowed down pace, allow human players to potentially communicate with a more advanced AI in order to improve performance in the domain. Communication within computer games is something that we believe would improve the feelings of immersion that the player feels.
 
 
 \paragraph*{\textit{Is the problem domain a real time problem? How long is a tick? 40ms? Do all agents return an action within a tick? Possible 5 actions mean up, down left, right and stay where it is?}}
@@ -73,15 +81,15 @@ We have corrected the incorrect definition of UCT from Uniform Cost over Trees t
 UCT border means the UCT tree search depth limit, and rollout border means the length of the sequence of rollout. Am I correct? These phrases are different from normal terminology used in MCTS.}}
 Reworded to more used terminology.
 \paragraph*{\textit{What is the reward of the rollout? Maybe the raw score?}}
-\paragraph*{\textit{About the results, what is averaged?
-How many runs are averaged?
-All agents play in cooperation with other agents including the "keyboard AI"?
-Is the keyboard AI controlled by human beings?
-Can we assume it plays perfectly well?}}
+The reward of the rollout was indeed the raw score that the game calculates. No additional heuristics were used as very little information was available to the agents from the forward model.
+\paragraph*{\textit{About the results, what is averaged? How many runs are averaged? All agents play in cooperation with other agents including the "keyboard AI"? Is the keyboard AI controlled by human beings? Can we assume it plays perfectly well?}}
+The round robin tournament has been better explained, with numbers, at the beginning of the Tournament sub-section.
+We have removed the definition for the keyboard AI as it was never used in the experiment and was largely used for manual testing and investigation.
 \paragraph*{\textit{Please cite something about (1+1)-ES}}
 \paragraph*{\textit{If all information is visible to the agents,
 this problem domain seems not so interesting especially if
 both agents are the same.}}
+The forward model does only provide the ability to simulate an action pair(One for each agent) and get a true score based on that action pair. The forward model can be forwarded up to the tick limit or if the game is completed. There is no way to determine the presence of in-game objects other than potentially the \emph{Goal} due to its effect on score.
 \paragraph*{\textit{I don't think GA is suitable for this domain.
 Comparing against A* search with a simple evaluation function would be more interesting.}}
 Referenced the design of the GA that shows validity in its theoretical to perform in real time general video game domains. The production of the \emph{VariGA} was to better adapt GA to the grid based world after observing the GA struggling to navigate. Whilst neither AI proved able to solve the puzzle element of the domain, this served to show differences between MCTS and the GA techniques. A* was considered to have too high a branching factor in this problem but was decided to be investigated in future work.
@@ -90,14 +98,14 @@ Referenced the design of the GA that shows validity in its theoretical to perfor
 We have corrected the typo in the definition of \emph{Walls} in the problem domain section.
 \subsection{Review 4 (Reviewer B)}
 \paragraph*{\textit{there is some mixup with agents being labeled 0 and 1 in the figures, but 1 and 2 in the text.}}
-That section has been removed due to another comment that we received and so the mixup is gone. 
+That section has been removed due to another comment that we received and so the mixup is gone.
 
 \paragraph*{\textit{I did not understand the terms "UCT border" and "rollout border". Explain them. Are they related to "Max UCT" and "Max Rollout" in Fig. 2 ?}}
 Both have been reworded to a more used set of terminology.
 \paragraph*{\textit{What does 1+1 ES mean?}}
 The paper has been expanded to include a brief description of the 1+1 ES technique.
 \paragraph*{\textit{I did not quite understand how your MCTS works with multiple agents. Are you running independent simulations for each agent (I assume yes but it was not clear)? }}
-Yes, each agent was running independent simulations. It has been made clearer in the paper that none of the agents have the ability to communicate with another agent, and that each agent is controlled by a single controller. 
+Yes, each agent was running independent simulations. It has been made clearer in the paper that none of the agents have the ability to communicate with another agent, and that each agent is controlled by a single controller.
 \paragraph*{\textit{I would like to see results for mixed agent teams.}}
 Figures 6 and 7 have been retitled to better show that they were results for mixed agent teams.
 \paragraph*{\textit{The issue of communication, especially learning communication, is very important and I suggest you focus on this for future research.}}
