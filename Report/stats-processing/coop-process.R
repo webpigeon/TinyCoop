@@ -1,4 +1,4 @@
-setwd("C:\\Users\\joseph\\Documents\\GitHub\\TinyCoop\\Report\\stats-processing")
+setwd("/home/webpigeon/Documents/TinyCoop/Report/stats-processing")
 library(ggplot2)
 require(data.frame)
 
@@ -52,11 +52,18 @@ build_summary_map_score <- function (x) {
 build_graph <- function (filename, title, s) {
 	summary(s)
 	png(filename, width = 900, height = 500, units="px")
+	order <- c("GAController",
+	                      "VariGA",
+	                      "MCTS: (75;3;15)",
+	                      "MCTS: (200;5;30)",
+	                      "MCTS: (500;10;45)",
+	                      "RandomController")
 	p = ggplot(s, aes(x = agent1, y = mean)) +  
   	geom_bar(position = position_dodge(), stat="identity", fill="blue") + 
   	geom_errorbar(aes(ymin=mean-sem, ymax=mean+sem)) +
   	ggtitle(title) + 
   	theme_bw() +
+	  scale_x_discrete(limits = order, name="Agent") +
   	theme(panel.grid.major = element_blank())
 	print(p)
 	invisible(dev.off())
@@ -69,14 +76,14 @@ games.raw <- read.csv(file="combined.csv", head=TRUE,sep=",")
 samePairs.raw = games.raw[games.raw$agent1==games.raw$agent2,]
 samePairs.scores <- build_summary_score(samePairs.raw)
 samePairs.ticks <- build_summary_ticks(samePairs.raw)
-build_graph("scores-samepairs.png", "All agents paired with themselves", samePairs.scores)
-build_graph("ticks-samepairs.png", "All agents paired with themselves", samePairs.ticks)
+build_graph("scores-samepairs.png", "Scores for all agents paired with themselves across all maps", samePairs.scores)
+build_graph("ticks-samepairs.png", "Ticks for all agents paired with themselves across all maps", samePairs.ticks)
 
 # build RR graphs for all agents
 games.scores <- build_summary_score(games.raw)
 games.ticks <- build_summary_ticks(games.raw)
-build_graph("scores-allmaps.png", "Scores across all maps for all agents", games.scores)
-build_graph("ticks-allmaps.png", "Ticks across all maps for all agents", games.ticks)
+build_graph("scores-allmaps.png", "Scores across all maps for each agent paired with all agents", games.scores)
+build_graph("ticks-allmaps.png", "Ticks across all maps for each agent paired with all agents", games.ticks)
 
 # build RR graphs for all agents with the maps as a 2nd dimention
 #games.maps.scores <- build_summary_map_score(games.raw)

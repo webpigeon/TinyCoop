@@ -1,0 +1,253 @@
+\documentclass{article}
+\title{Response}
+
+
+\begin{document}
+\maketitle
+\section{Response to the reviewers}
+Dear Reviewers,
+
+Please find below our responses to your comments.
+
+We would like to thank the reviewers for their insightful comments, that have truly enabled us to make many improvements to this paper. We hope you will agree that the paper has matured into a quality that allows for publication.
+
+We have placed the reviewers comments in \textit{\textbf{Italics and Bold}} and our response to those comments in plain text. Quoted sections of text from the paper may include references to papers - these are listed at the end of this response.
+
+Yours sincerely,
+
+The Authors.
+
+\subsection{Review 1 (Reviewer A)}
+\paragraph*{\textit{Introduction: The introduction is well written but oddly doesn't contain discussion about cooperative games. The introduction starts by discussing general game playing (which is not a main topic of the paper) and then presents MCTS (which is) but the discussion of cooperative games is missing.}}
+Added section on co-operative games.
+
+``Games that feature co-operation of some form between human players and AI agents are commonplace. Most however feature very limited forms of co-operation that are typically scripted such as in most FPS games. Typically FPS games give the mere impression of co-operation, though any player that looks carefully at it will see the tell tale signs of scripting. Where FPS games typically excel at co-operation is in online modes that enable teams of humans to play against each other. Some games even provide squad structures and communication allowing direct command for the purpose of better co-ordination as in Battlefield 2142 \cite{battlefield2142}. RTS games also often have a small number of features designed to facilitate communication in a bid to facilitate co-operation. Two games that stand out for co-operation are Microsoft's Rise of Nations \cite{riseofnations} and Mad Doc Software's Empire Earth 2 \cite{empireEarth2}. Rise of Nations allowed a human and AI player to operate the same set of units and buildings, though no communication was possible at all. This allowed a form of co-operation but the AI operated to its own agenda. Empire Earth 2 allowed for humans and AI agents to co-operate by letting plans be drawn up between them that could also be followed by both the human and AI agent. These allowed a fairly complex set of instructions to be created, despite the simple interface. 
+
+A highly popular game that had an entire mode designed for co-operation between humans was Valve's Portal 2 \cite{portal2}. This featured human sized lab test mazes with elements that required players to work together by activating buttons, moving cubes and using intra-dimensional portals to get to the end goal. Both players were required to reach the goal in order to complete the level.''
+
+\paragraph*{\textit{When listing objects in  II.A the default gray empty square should also be mentioned.}}
+We have added a definition for the \emph{Floor}.
+
+``\emph{Floor - } Floors are passable, and are rendered in Grey.''
+\paragraph*{\textit{In the definition of 'Walls' the word 'Walls' appears instead of 'Doors'.}}
+We have corrected the typo in the definition of \emph{Walls} in the problem domain section.
+
+``\emph{Walls -} Walls are impassable, and are fixed in position. \emph{Walls} are rendered in Black.''
+\paragraph*{\textit{When specifying that closed 'Doors' are blue there should be mention of the color of open 'Doors' (I assume gray).}}
+We have changed the description of \emph{Doors} to better reflect what they look like when open.
+
+``\emph{Doors} are rendered in Blue when closed, and are invisible when open.''
+\paragraph*{\textit{It is unclear if 'Door' closes again when agent on button moves on (or, alternatively, if walking onto a 'Button' effectively destroy the 'Door').}}
+We have improved the definition for \emph{Door} in order to make it clearer that the \emph{Door} closes again when the \emph{Buttons} are no longer activated.
+
+``\emph{Doors -} Doors can either be open or closed. When open, the door is passable. When closed, the door is impassable. Doors are open whilst an \emph{Agent} is activating a linked \emph{Button}. If the \emph{Agent} stops activating the \emph{Button} the \emph{Door} will close.''
+\paragraph*{\textit{Since 'Agents' are described as dark yellow, and since there are only two shades of yellow used, it would be wiser to describe a 'Goal' as rendered in bright yellow.}}
+We have reworded the definition of \emph{Goal} to better describe the colour in relation to \emph{Agents}.
+
+``\emph{Agents -} Agents are the moving objects that can activate buttons and the goal. \emph{Agents} are rendered in dark Yellow''
+\paragraph*{\textit{the sentence "Agent 1 reached an item like this -Agent 2 would seemingly gain some purpose and typically head for the other items." is poorly worded and not very informative. It is better explained in the sentences below. Either remove this sentence or reword it.}}
+Removed.
+
+\paragraph*{\textit{it would be a good idea to give the maps meaningful names.}}
+This has been done.
+
+``\begin{itemize}
+\item{\emph{SingleDoor} This map is a basic map with two rooms, single door and a button either side.}
+\item{\emph{Pathfinding} This map is the same as level1.txt but without the \emph{Doors} and \emph{Buttons}. This was to test the \emph{Agent's} ability to solve the simplest problem.}
+\item{\emph{SymmetricSingleDoor} This map was a modification of the level1.txt - making the map more symmetric and the action parts closer together.}
+\item{\emph{ExtendedSide} This map was an extension of level1.txt with a second \emph{Goal} and some extra walls in the game. Spreading the action parts away from the door and buttons was the main purpose of this one}
+\item{\emph{SideBySide} This map was a modification of level1.txt - putting a second \emph{Goal} in and making the map partly mirrored. Each \emph{Agent} began in a separate room to each other instead of together.}
+\item{\emph{Airlock} This map was a new map, designed to give wildly different roles to each AI - the top Agent would have to travel through two doors (Like an airlock) that the bottom agent had access to the linked \emph{Buttons}. Then the top \emph{Agent} could collect the reward and allow the bottom \emph{Agent} access to the \emph{Goal}.}
+\item{\emph{Butterfly} This map was a new map - with two rooms each with a \emph{Goal} and a door. This was designed to force each \emph{Agent} to be let into the \emph{Goal} room, and out of it again.}
+\end{itemize}''
+
+\paragraph*{\textit{The MAGA is not explained very well and seems hastily put together. I would say explain this better but given how poorly it does and how badly optimized it seems to be, maybe the authors should get rid of this player altogether. If this work is resubmitted in future I would recommend creating a better thought out version of this player. For now the better VMAGA should stand alone.
+}}
+The explanations behind the two agents have been improved, and proper optimisation is a potential candidate for future work in this problem domain. We appreciate the reviewer's comment regarding the poor performance of the algorithm, and it could be possibly eliminated however, we have decided to keep this algorithm in the paper as a comparison, in order to show the improvements obtained when using variable macro-actions (VMAGA).
+
+``The GA algorithm was selected for its simplicity and had Macro Actions added in order to improve the forward search capability as well as the amount of computation time per decision available to it. The MAGA used a population size of 10 and tournament selection of 3. Each candidate was a string of 15 actions - with each action performed 3 times in a row. This meant the MAGA could "see" 45 ticks in the future. The design of the MAGA algorithm was inspired by \textit{Perez et al} \cite{perez2013rolling}''
+\paragraph*{\textit{There should be a separate subsection for the results.}}
+There is a separate section for results (Section III) , with a sub-section of discussion about each AI agent's performance.
+\paragraph*{\textit{In figures 4--9 the 3 MCTS players are ordered in an odd order Meduin-Large-Small. This order makes no sense and should be changed. GA-Controller is presented separately from Var-GA inexplicably. If this player is kept (and it shouldn't be. Unless changed and improved for submission somewhere else) then both GA players should be together. It seems that columns are organized automatically in alphabetical order they should be ordered in a way that makes sense.}}
+The graphs have been re-ordered to a more logical ordering. The new ordering is the two GA's, followed by the three MCTS algorithms in increasing order of budget and then finally random.
+\paragraph*{\textit{Regarding the fact that players were trained assuming a random strategy was controlling the other player: This is mentioned again in the section, but a reasoning for this decision is not given. Why not use self play? Wouldn't it do better? Doesn't it make sense to assume a better than random strategy for the other player?}}
+Assuming a random strategy was chosen due to the availability only of agents that could play generally. Whilst nesting these could enhance play, it comes at a significant computational cost and must in the case of GGP feature a very simple or Random player at the base of the stack. Random is exceedingly fast to calculate, and provides the ability for techniques like MCTS to sample how its behaviour works almost regardless of what the other agent does. This gives it the ability to make moves that it believes would help a worst case scenario player - something that in this problem domain is likely to also help a more intelligent player.
+
+\subsection{Review 2 (Reviewer D)}
+\paragraph*{\textit{The writing is generally good, I only noticed one actual error "GGP[3]", but the tone is casual and a lot of inappropriately subjective comments are made}}
+Have placed a space between GGP and the reference.
+\paragraph*{\textit{The authors make a few dubious claims in the Introduction. GGP is not exactly "the field of writing Artificial Intelligence (AI) agents", and it is wrong to say that "MCTS doesn't requuire any knowledge about the game itself in order to play", as it needs to know starting position, legal moves, terminal states, etc. Perhaps the authors means "strategic knowledge". }}
+Have clarified the definition of GGP and the terminology used to define MCTS's use of knowledge.
+
+``GGP is the field of writing AI agents that can play a multitude of games without being written specifically for each one individually \cite{genesereth2005general}.''
+
+``Standard MCTS plays best when it is able to search far enough to locate states that provide a reward. MCTS tends to stumble when the time or search depth limit given to it isn't sufficient to allow it to locate any sequence of actions that provides a reward in order to differentiate the root's children \cite{perez2012monte}. When MCTS can't find any single state that contained a reward, all children of the node will contain identical values and the algorithm will be forced to make a random choice.''
+\paragraph*{\textit{The authors claim that MCTS works best when it is given rewards frequently. What is the evidence for this claim?}}
+Have rewritten this to point out that MCTS can't provide anything but random if it isn't given enough time or depth to search to a state that provides a reward.
+
+``Standard MCTS plays best when it is able to search far enough to locate states that provide a reward. MCTS tends to stumble when the time or search depth limit given to it isn't sufficient to allow it to locate any sequence of actions that provides a reward in order to differentiate the root's children \cite{perez2012monte}. When MCTS can't find any single state that contained a reward, all children of the node will contain identical values and the algorithm will be forced to make a random choice.''
+\paragraph*{\textit{The research problem is stated, but should be stated more clearly in the Introduction.}}
+Added at the beginning of the introduction a clear statement of the research problem.
+
+``This research problem that this paper will asses is how GGP agents perform when trying to solve a simple co-operative problem, with a focus on MCTS.''
+\paragraph*{\textit{"MCTS can charge off achieving its own goals": it seems odd to describe an algorithm as "charging off".}}
+Reworded.
+
+``Unlike other domains where MCTS can solve tasks at its own pace and by itself ...''
+\paragraph*{\textit{"This proves that the challenge...": no it doesn't, it indicates it.}}
+Reworded to indicates.
+
+``This indicates that the challenge of the task is high ...''
+\paragraph*{\textit{"The shockingly good results...": too casual and subjective, overstating the case.}}
+Reworded.
+
+``Figure 10 shows the average score that each AI Agent achieved over all the maps. The two more powerful MCTS Agents performed the best, doing much better than the competition. Figure 11 shows a similar result, with the more powerful Agents typically completing the maps in fewer ticks. \emph{RandomController} is the only deviant here - it outperformed the GA's in score but was worse in average ticks. Comparing the AI \emph{Agents} when paired only with themselves in Figure 12 and Figure 13. The good results for \emph{RandomController} are potentially due to the fact that the 3 MCTS controllers and 2 GA algorithms all based their decisions on having Random as an accomplice.''
+
+\paragraph*{\textit{There is no Discussion as such, rather there are subjective appraisals of the algorithm's performance at each task scattered throughout the results. The paper would be better structures with a Discussion section that summarised the results and their implications, and then recapped this in the Conclusion. At the moment, the exact contributions are a bit hard to see.}}
+A discussion sub-section has been added to the Results section, and provides an analysis of the different AI techniques performance in general.
+\paragraph*{\textit{The list of references is short (four) and does not include any references to work on cooperative agents, swarm behaviour, etc.}}
+The references have been expanded.
+Swarm behaviour and co-operative agents are not possible in this domain due to the enforced lack of communication between \emph{Agents}, and was deemed outside of the scope for the Introduction. Future work mentions extensions of communication, which could allow a swarm technique or co-operative agents to be implemented.
+
+\subsection{Review 3 (Reviewer G)}
+\paragraph*{\textit{Who created this problem domain?}}
+We have clarified who created the problem domain, it was the authors of the papers (Can't tell you who though just yet).
+
+``We created the following problem domain that is a simple grid world consisting of various objects:''
+\paragraph*{\textit{The agents move simultaneously or alternately?}}
+Added a section to highlight this.
+
+``Each \emph{Agent} is able to make a single action in each game tick. The actions are polled from each \emph{Agent} that is given the state of the game. When every \emph{Agent} has returned an action, the game is updated with these actions. The actions are implemented sequentially, if two \emph{Agents} return actions that result in occupying the same space, the \emph{Agent} with the lowest ID number will succeed while the other \emph{Agent} will fail and execute a \emph{No-Op}.''
+\paragraph*{\textit{Do agents see all areas of the problem?}}
+We have clarified how the problem domain handles observability and what information the \emph{Agents} have access to.
+
+``The \emph{Agents} are provided with a forward model, that allows simulation of potential moves up to the end of the game. The \emph{Agents} are not allowed to directly query any information about the game state other than the score at any given state (current or simulated).''
+\paragraph*{\textit{If an agent reaches a goal, is it known to the other agents?}}
+We have clarified whether the \emph{Agents} are aware that other \emph{Agents} reach a \emph{Goal}.
+
+``All \emph{Agents} are aware of the current score achieved, and therefore can calculate if a \emph{Goal} is reached.''
+
+\paragraph*{\textit{In what sense this domain interesting compared to other domains?}}
+We feel that this problem domain is interesting due to placing each agent that is typically designed to solve problems by themselves in an environment where they must rely on another agent performing certain sequences of actions. To quote the words of Reviewer F ``\textit{This proves to be an interesting reward space to explore, given that we are dealing with circumstances where players need to take action then await the outcome courtesy of another player}''. The domain also gains an interesting aspect when we consider the ability to, in a slowed down pace, allow human players to potentially communicate with a more advanced AI in order to improve performance in the domain. Communication within computer games is something that we believe would improve the feelings of immersion that the player feels.
+
+\paragraph*{\textit{Is there a time limit for solving the problem? I think, if given infinite time, random agent can always solve level1 and the average score should be 1.0.
+When and how do agents fail to solve a problem?}}
+The time limit for the problem was 2,000 ticks. Given infinite time, random agent can always solve any level. Some experiments (100,000 runs per level) showed a pair of random agents took on average this many ticks to complete each level:
+
+\begin{tabular}{|l|l|c|}
+\hline
+\textbf{Old Map Name} & \textbf{New Map Name} & \textbf{Avg Ticks to complete} \\
+\hline
+level1.txt & SingleDoor & 7250\\
+\hline
+level1E.txt & Pathfinder & 419\\
+\hline
+level2.txt & SymmetricSingleDoor & 7353\\
+\hline
+level3.txt & ExtendedSide& 13416\\
+\hline
+level4.txt & SideBySide & 7302\\
+\hline
+level5.txt & Airlock & 12469\\
+\hline
+level6.txt & Butterfly & 10246\\
+\hline
+\end{tabular}
+
+These times are far too long for real time environment (40ms per tick gives an average solution time of nearly 7 minutes for Butterfly)
+
+\paragraph*{\textit{Is the problem domain a real time problem? How long is a tick? 40ms? Do all agents return an action within a tick? Possible 5 actions mean up, down left, right and stay where it is?}}
+The definition of the problem domain has been improved with a section describing the particular way that actions are collected and executed as well as a list of each possible action that can be chosen.
+
+``\begin{itemize}
+\item{\emph{Left} - This will move the \emph{Agent} one grid square to the left. (-1, 0)}
+\item{\emph{Right} - This will move the \emph{Agent} one grid square to the right. (1, 0)}
+\item{\emph{Up} - This will move the \emph{Agent} one grid square up. (0, -1)}
+\item{\emph{Down} - This will move the \emph{Agent} one grid square down. (0, 1)}
+\item{\emph{No-Op} - This will not move the \emph{Agent}. It will remain in the same location as the previous game state.}
+\end{itemize}''
+
+\paragraph*{\textit{What is "Uniform Cost applied to Trees"? Is it something similar to the famous "Upper Confidence bound applied to Trees"? If not, please cite something.}}
+We have corrected the incorrect definition of UCT from Uniform Cost over Trees to Upper Confidence bound applied to Trees.
+\paragraph*{\textit{About MCTS, what are "iteration", "UCT Border", and "rollout border"? My guess is iteration means the number of rollouts,
+UCT border means the UCT tree search depth limit, and rollout border means the length of the sequence of rollout. Am I correct? These phrases are different from normal terminology used in MCTS.}}
+Reworded to more used terminology.
+
+``The MCTS controller is a simple implementation of UCT - with a fixed number of rollouts, UCT tree search depth limit and rollout border. The rollout border is how far in total, the forward model will be allowed to progress before the game is evaluated.''
+\paragraph*{\textit{What is the reward of the rollout? Maybe the raw score?}}
+The reward of the rollout was indeed the raw score that the game calculates. No additional heuristics were used as very little information was available to the agents from the forward model.
+\paragraph*{\textit{About the results, what is averaged? How many runs are averaged? All agents play in cooperation with other agents including the "keyboard AI"? Is the keyboard AI controlled by human beings? Can we assume it plays perfectly well?}}
+The round robin tournament has been better explained, with numbers, at the beginning of the Tournament sub-section.
+We have removed the definition for the keyboard AI as it was never used in the experiment and was largely used for manual testing and investigation.
+
+``For the main data collection, we ran a round robin tournament of maps and Agents. Each Agent was paired with all 7 Agents (including a copy of itself) and played 47 games on each of the 7 maps.''
+\paragraph*{\textit{Please cite something about (1+1)-ES}}
+We have added a citation:
+
+``The main technique used was a 1 + 1 Evolutionary Strategy \cite{t.back2000evolutionary-co}.''
+
+\paragraph*{\textit{If all information is visible to the agents,
+this problem domain seems not so interesting especially if
+both agents are the same.}}
+The forward model does only provide the ability to simulate an action pair(One for each agent) and get a true score based on that action pair. The forward model can be forwarded up to the tick limit or if the game is completed. There is no way to determine the presence of in-game objects other than potentially the \emph{Goal} due to its effect on score.
+\paragraph*{\textit{I don't think GA is suitable for this domain.
+Comparing against A* search with a simple evaluation function would be more interesting.}}
+Referenced the design of the GA that shows validity in its theoretical to perform in real time general video game domains. The production of the \emph{VariGA} was to better adapt GA to the grid based world after observing the GA struggling to navigate. Whilst neither AI proved able to solve the puzzle element of the domain, this served to show differences between MCTS and the GA techniques. A* was considered to have too high a branching factor in this problem but was decided to be investigated in future work.
+
+\paragraph*{\textit{"Doors are rendered in Black." $\rightarrow$ "Walls are rendered in Black."}}
+We have corrected the typo in the definition of \emph{Walls} in the problem domain section.
+
+``\emph{Walls -} Walls are impassable, and are fixed in position. \emph{Walls} are rendered in Black.''
+\subsection{Review 4 (Reviewer B)}
+\paragraph*{\textit{there is some mixup with agents being labeled 0 and 1 in the figures, but 1 and 2 in the text.}}
+That section has been removed due to another comment that we received and so the mixup is gone.
+
+\paragraph*{\textit{I did not understand the terms "UCT border" and "rollout border". Explain them. Are they related to "Max UCT" and "Max Rollout" in Fig. 2 ?}}
+Both have been reworded to a more used set of terminology. The reworded section is shown above in R3's comments.
+\paragraph*{\textit{What does 1+1 ES mean?}}
+The paper has been expanded to include a brief description of the 1+1 ES technique.
+\paragraph*{\textit{I did not quite understand how your MCTS works with multiple agents. Are you running independent simulations for each agent (I assume yes but it was not clear)? }}
+Yes, each agent was running independent simulations. It has been made clearer in the paper that none of the agents have the ability to communicate with another agent, and that each agent is controlled by a single controller.
+
+``None of the agents have the ability to communicate with another agent and each agent has a single controller.''
+\paragraph*{\textit{I would like to see results for mixed agent teams.}}
+Figures 6 and 7 have been retitled to better show that they were results for mixed agent teams.
+\paragraph*{\textit{The issue of communication, especially learning communication, is very important and I suggest you focus on this for future research.}}
+Have expanded the section in future work on communication to better reflect this.
+
+``More work can be conducted in the writing of AI's to use communication in order to complete these challenges better amongst themselves. A framework for communication would be devised - with the requirement for fairly GGP like restrictions in mind. Use of the communication framework would need to likely be learned by the \emph{Agents} during play, posing a particular challenge for the future.''
+\subsection{Review 5 (Reviewer F)}
+\paragraph*{\textit{The early segments fail to really discuss the MCTS algorithm.  The abbreviation for this is also found in the abstract and should really be in the introductory paragraph.}}
+We have added a subsection in the Introduction that describes the MCTS algorithm much more fully than before.
+Have removed the abbreviation for MCTS from the abstract.
+
+
+``MCTS is a tree search algorithm originally designed by R{\'e}mi Coulom \cite{coulom2007efficient} and the major modification of UCT was defined by Kocsis and Szepesv{\'a}ri \cite{kocsis2006bandit} and improved by Kocsis et al \cite{kocsis2006improved}.
+
+MCTS is a tree search algorithm that in games is typically applied directly to the action space. MCTS requires the ability to simulate action sequences and retrieve at least some form of reward (or lack of) from the results of these simulations. The basic steps for MCTS are:
+
+\begin{enumerate}
+\item{\emph{Selection} - Selection is the stage where the algorithm navigates the search tree, selecting optimal nodes(Based on the tree policy) until it reaches a leaf node.}
+\item{\emph{Expansion} - Expansion is the stage whereby the leaf node is expanded by adding one of the remaining child states if it is not a terminal node.}
+\item{\emph{Simulation} - Simulation is the stage where the algorithm forwards the model until a result is achieved. Their is usually a policy that defines how the simulation is made, with the simplest being random possible moves.}
+\item{\emph{Backpropagation} - Backpropagation is the stage where the results of the simulation are propagated up the tree, so that they can influence the selection phase.}
+\end{enumerate}
+
+MCTS \cite{browne2012survey} has been applied to a wealth of domains and is one of the primary algorithms in use for GGP \cite{finnsson2008simulation}. Primary advantages are that, when given a sufficient forward model, MCTS doesn't require any strategic knowledge about the game itself in order to play.
+
+Standard MCTS plays best when it is able to search far enough to locate states that provide a reward. MCTS tends to stumble when the time or search depth limit given to it isn't sufficient to allow it to locate any sequence of actions that provides a reward in order to differentiate the root's children \cite{perez2012monte}. When MCTS can't find any single state that contained a reward, all children of the node will contain identical values and the algorithm will be forced to make a random choice.''
+\paragraph*{\textit{Section II covering preliminary tests is light on technical details and seem ill placed when you consider the subsequent studies later on in the paper.}}
+We have removed this section to make way for more detailed results
+\paragraph*{\textit{The third page could do with being structured better.  The charts are ill-placed, do not help the flow of the authors argument and need better captions.}}
+We have made efforts to improve the layout of the entire paper.
+\paragraph*{\textit{The paper would benefit from showing the actual levels used as part of the testing.  Given it makes it harder to understand the impact of later levels.  Figure 10 should be shown much earlier in the paper.}}
+The description of each level has had an image of the initial starting state added, as well as being renamed. What was once Figure 10 has been removed due to that image now appearing earlier.
+
+\paragraph*{\textit{The selection of controller types does strike me as odd.  With a random selected and a Variable MAGA that is introduced to resolve shortcoming of the other.  What about a simple 1+1 ES without the macro's?  Or the likes of an A* bot?  Could these not be implemented?}}
+A simple 1+1 ES would not be able to find a good solution within the time limits of real time video games. Macro Actions has been proven to vastly improve the ability of GA's to solve complex real time problems such as in Perez et al \cite{perez2013rolling}. A* was considered to have too high a branching factor in this problem but was decided to be investigated in future work.
+\paragraph*{\textit{More than once the idea of a language through which to communicate is discussed, but it has no real impact on this paper and should really be saved for when it is explored}}
+This has been removed.
+
+\bibliographystyle{IEEEtran}
+\bibliography{ceec}
+\end{document}

@@ -12,7 +12,7 @@ import java.util.Random;
  */
 public class VariGA extends Controller {
 
-    boolean first;
+    private boolean first;
     private int iterations;
     private double numChance = 0.25;
     private double lengthChance = 0.8;
@@ -23,18 +23,33 @@ public class VariGA extends Controller {
     private double parentFitness;
     private CoopGame fastForwardedGame;
 
+    private int[] params;
+
     public VariGA(boolean first, int iterations) {
         this.first = first;
         this.iterations = iterations;
     }
 
+    public VariGA(boolean first, int iterations, double[] chances, int[] params){
+        this(first, iterations);
+        numChance = chances[0];
+        lengthChance = chances[1];
+        actionChance = chances[2];
+        this.params = params;
+    }
+
     public VariGA getClone(){
         VariGA other = new VariGA(this.first, this.iterations);
+        other.params = this.params;
+        other.actionChance = this.actionChance;
+        other.lengthChance = this.lengthChance;
+        other.numChance = this.numChance;
         return other;
     }
     // int minNum, int maxNum, int minLength, int maxLength
     private ActionSequence getNewParent(){
-        return new ActionSequence(3, 10, 1, 5);
+        if(params == null)  return new ActionSequence(3, 10, 1, 5);
+        return new ActionSequence(params[0], params[1], params[2], params[3]);
     }
 
     @Override
@@ -177,7 +192,7 @@ class ActionSequence {
         if (test < numChance) {
             if (numberOfActions == maxLength) {
                 shrinkSequenceLength();
-            } else if (numberOfActions == minLength) {
+            } else if (numberOfActions == minLength || numberOfActions == 1) {
                 growSequenceLength();
             } else {
                 if (random.nextBoolean()) {
@@ -193,7 +208,7 @@ class ActionSequence {
                 // mutate it
                 if (lengths[i] == maxLength) {
                     lengths[i]--;
-                } else if (lengths[i] == minLength) {
+                } else if (lengths[i] == minLength || lengths[i] == 1) {
                     lengths[i]++;
                 } else {
                     lengths[i] += (random.nextBoolean()) ? 1 : -1;
@@ -247,6 +262,4 @@ class ActionSequence {
         }
         return Action.NOOP;
     }
-
-
 }

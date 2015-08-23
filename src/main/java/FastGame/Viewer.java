@@ -19,8 +19,6 @@ public class Viewer extends JComponent {
 
     int gridSize = 50;
 
-
-
     public Viewer(CoopGame game) {
         this.game = game;
     }

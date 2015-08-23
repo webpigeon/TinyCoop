@@ -3,7 +3,9 @@ package FastGame;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.TreeMap;
 
 import static FastGame.GroundTypes.WALKABLE;
 import static FastGame.ObjectTypes.*;
@@ -18,12 +20,14 @@ public class CoopGame {
     // need to check that all agents reach all goals
     private boolean[] goalSet = new boolean[1];
     private int maxID;
+
     private boolean[] encountered;
     private boolean[] doorOpen;
     private double score = 0;
     private int[] maxIDs;
+    private int[] agentLocations;
 
-    // volitile, required for A*
+    // volatile, required for A*
     private Map<Integer, Point> playerPos = new TreeMap<>();
 
     /**
@@ -47,6 +51,10 @@ public class CoopGame {
         return value - (getItemTypeFromValue(value) * 1000);
     }
 
+    public static int getValueFromIdAndType(int type, int id) {
+        return (type * 1000) + id;
+    }
+
     public CoopGame getClone() {
         CoopGame other = new CoopGame(this.width, this.height);
         System.arraycopy(this.data, 0, other.data, 0, this.data.length);
@@ -59,6 +67,8 @@ public class CoopGame {
         System.arraycopy(this.maxIDs, 0, other.maxIDs, 0, this.maxIDs.length);
         other.score = this.score;
         other.playerPos = new TreeMap<>(this.playerPos);
+        other.agentLocations = new int[this.agentLocations.length];
+        System.arraycopy(this.agentLocations, 0, other.agentLocations, 0, this.agentLocations.length);
         return other;
     }
 
@@ -80,6 +90,19 @@ public class CoopGame {
 
     private void encounter(int objectType, int objectID) {
         encountered[objectID + (objectType * maxID)] = true;
+    }
+
+    private int getAgentX(int agentID) {
+        return agentLocations[(agentID * 2)];
+    }
+
+    private int getAgentY(int agentID) {
+        return agentLocations[1 + (agentID * 2)];
+    }
+
+    private void setAgentLocation(int agentID, int x, int y) {
+        agentLocations[agentID * 2] = x;
+        agentLocations[1 + (agentID * 2)] = y;
     }
 
     private boolean haveEncountered(int objectType, int objectID) {
@@ -109,38 +132,80 @@ public class CoopGame {
     // Forward model update loop
     public void update(Action first, Action second) {
         runCollisionDetection();
-
         runUpdateLoop(first, second);
     }
 
+    public void update(Action... actions) {
+        runCollisionDetection();
+        runUpdateLoop(actions);
+    }
+
+    private void runUpdateLoop(Action... actions) {
+        for (int agentID = 0; agentID < actions.length; agentID++) {
+            Action action = actions[agentID];
+            if (action.equals(Action.NOOP)) continue;
+            int x = getAgentX(agentID);
+            int y = getAgentY(agentID);
+
+            int newX = x + action.getX();
+            int newY = y + action.getY();
+
+            if (WALKABLE[get(newX, newY, 0)]) {
+                // is a door closed there?
+                if (get(newX, newY, DOOR) != 0 && !doorOpen(getIDFromValue(get(newX, newY, DOOR)))) {
+                    continue;
+                }
+                if (get(newX, newY, AGENT) != 0) {
+                    // other agent is here
+                    continue;
+                }
+                set(x, y, AGENT, NO_OBJECT);
+                set(newX, newY, AGENT, getValueFromIdAndType(AGENT, agentID));
+                setAgentLocation(agentID, newX, newY);
+                encounter(AGENT, agentID);
+                playerPos.put(agentID, new Point(newX, newY));
+            }
+        }
+    }
+
     private void runUpdateLoop(Action first, Action second) {
+
+        if (first.equals(Action.NOOP) && second.equals(Action.NOOP)) return;
+//        System.out.println("First: " + first + " Second: " + second);
         resetEncountered();
+        for (int agentID = 0; agentID <= maxIDs[AGENT]; agentID++) {
+            int x = getAgentX(agentID);
+            int y = getAgentY(agentID);
+            int newX = x + ((agentID == 0) ? first : second).getX();
+            int newY = y + ((agentID == 0) ? first : second).getY();
+//            System.out.println("X:" + x + "Y:" + y + "nX" + newX + "nY" + newY);
+
+            // Can we go there?
+            if (WALKABLE[get(newX, newY, 0)]) {
+                // is a door closed there?
+                if (get(newX, newY, DOOR) != 0 && !doorOpen(getIDFromValue(get(newX, newY, DOOR)))) {
+                    continue;
+                }
+                if (get(newX, newY, AGENT) != 0) {
+                    // other agent is here
+                    continue;
+                }
+                set(x, y, AGENT, NO_OBJECT);
+                set(newX, newY, AGENT, getValueFromIdAndType(AGENT, agentID));
+                setAgentLocation(agentID, newX, newY);
+                encounter(AGENT, agentID);
+                playerPos.put(agentID, new Point(newX, newY));
+            }
+        }
+    }
+
+    private void findAgents() {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                for (int i = 1; i < layers; i++) {
-                    // Run the update
-                    int value = get(x, y, i);
-                    int itemType = getItemTypeFromValue(value);
-                    if (itemType == AGENT) {
-                        int id = getIDFromValue(value);
-                        int newX = x + ((id == 0) ? first : second).getX();
-                        int newY = y + ((id == 0) ? first : second).getY();
-                        // Can we go there?
-                        if (!haveEncountered(itemType, id) && WALKABLE[get(newX, newY, 0)]) {
-                            // is a door closed there?
-                            if (get(newX, newY, DOOR) != 0 && !doorOpen(getIDFromValue(get(newX, newY, DOOR)))) {
-                                continue;
-                            }
-                            if (get(newX, newY, AGENT) != 0) {
-                                // other agent is here
-                                continue;
-                            }
-                            set(x, y, i, NO_OBJECT);
-                            set(newX, newY, i, value);
-                            encounter(itemType, id);
-                            playerPos.put(id, new Point(newX, newY));
-                        }
-                    }
+                int value = get(x, y, AGENT);
+                if (value != 0) {
+                    int agentID = getIDFromValue(value);
+                    setAgentLocation(agentID, x, y);
                 }
             }
         }
@@ -150,38 +215,27 @@ public class CoopGame {
         return playerPos.get(id);
     }
 
+    // Only agents can collide with stuff - speed things up
     private void runCollisionDetection() {
         doorOpen = new boolean[doorOpen.length];
 
-        // Collision detection
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (WALKABLE[get(x, y, 0)]) {
-                    // Chance of something here
-                    for (int layer = 1; layer < layers - 1; layer++) {
-                        for (int other = layer + 1; other < layers; other++) {
-                            if (get(x, y, layer) != 0 && get(x, y, other) != 0) {
-                                // Collision
-                                int firstType = getItemTypeFromValue(get(x, y, layer));
-                                int secondType = getItemTypeFromValue(get(x, y, other));
-
-                                if ((firstType == AGENT && secondType == BUTTON) || (secondType == AGENT && firstType == BUTTON)) {
-                                    // Yay
-                                    int buttonID = getIDFromValue((firstType == BUTTON) ? get(x, y, layer) : get(x, y, other));
-                                    // Open the door
-                                    doorOpen[buttonID] = true;
-                                }
-
-                                // Agent and goal
-                                if ((firstType == AGENT && secondType == GOAL) || (secondType == AGENT && firstType == GOAL)) {
-                                    // Yay more
-                                    int goalID = getIDFromValue((firstType == GOAL) ? get(x, y, layer) : get(x, y, other));
-                                    int agentID = getIDFromValue((firstType == AGENT) ? get(x, y, layer) : get(x, y, other));
-                                    reachGoal(goalID, agentID);
-                                }
-                            }
-                        }
-                    }
+        for (int agentID = 0; agentID <= maxIDs[AGENT]; agentID++) {
+            int x = getAgentX(agentID);
+            int y = getAgentY(agentID);
+            for (int layer = 1; layer < NUMBER_OF_LAYERS; layer++) {
+                if (layer == AGENT) continue;
+                // check collision
+                int value = get(x, y, layer);
+                if (value == 0) continue;
+                int type = getItemTypeFromValue(value);
+//                System.out.println(type);
+                if (type == BUTTON) {
+                    int buttonID = getIDFromValue(value);
+//                    System.out.println("Collided with button");
+                    doorOpen[buttonID] = true;
+                } else if (type == GOAL) {
+                    int goalID = getIDFromValue(value);
+                    reachGoal(goalID, agentID);
                 }
             }
         }
@@ -257,8 +311,10 @@ public class CoopGame {
             goalSet = new boolean[(maxIDs[GOAL] + 1) * (maxIDs[AGENT] + 1)];
 //            System.out.println(maxIDs[DOOR] + 1);
             doorOpen = new boolean[maxIDs[DOOR] + 1];
+            agentLocations = new int[(maxIDs[AGENT] + 1) * 2];
             this.maxID = maxID + 1;
             this.maxIDs = maxIDs;
+            findAgents();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
