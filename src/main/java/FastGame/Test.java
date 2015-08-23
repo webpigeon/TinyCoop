@@ -14,12 +14,12 @@ import java.util.Arrays;
 public class Test {
 
     public static void main(String[] args) {
-        Controller m1 = new PlanningController();
+        //Controller m1 = new PlanningController();
         Controller m2 = new MCTS(false, 500);
         Controller r1 = new RandomController();
 
 
-        Controller c1 = m1;
+        //Controller c1 = m1;
 //        Controller c1 = new RandomController();
         //        Controller c2 = new MCTS(false);
         Controller c2 = m2;
@@ -27,10 +27,10 @@ public class Test {
 
 
         int gamesPerMatchup = 10;
-        double[] results1 = runGames(m1, m2, gamesPerMatchup);
-        System.out.println(Arrays.toString(results1));
-        double[] results2 = runGames(m1, r1, gamesPerMatchup);
-        System.out.println(Arrays.toString(results2));
+        //double[] results1 = runGames(m1, m2, gamesPerMatchup);
+        //System.out.println(Arrays.toString(results1));
+        //double[] results2 = runGames(m1, r1, gamesPerMatchup);
+        //System.out.println(Arrays.toString(results2));
         double[] results3 = runGames(r1, r1, gamesPerMatchup);
         System.out.println(Arrays.toString(results3));
 //        System.out.println(results2);
