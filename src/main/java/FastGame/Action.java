@@ -16,7 +16,7 @@ public final class Action {
     public static final Action[] allActions = {NOOP, UP, DOWN, LEFT, RIGHT};
     private int x, y;
 
-    private Action(int x, int y) {
+    protected Action(int x, int y) {
         this.x = x;
         this.y = y;
     }

@@ -53,6 +53,6 @@ public class GameNode implements Comparable<GameNode> {
     }
 
     public String toString() {
-        return actions.toString()+" "+game.getScore()+","+game.getPos(0)+","+game.getPos(1);
+        return actions.toString()+" "+game.getScore()+",P1{"+game.getPos(0)+"},P2{"+game.getPos(1)+"}";
     }
 }
