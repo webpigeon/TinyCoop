@@ -7,22 +7,17 @@ import java.util.Random;
  * Created by pwillic on 23/06/2015.
  */
 public final class Action {
-    public static final Action UP = new Action(0, -1);
-    public static final Action DOWN = new Action(0, 1);
-    public static final Action LEFT = new Action(-1, 0);
-    public static final Action RIGHT = new Action(1, 0);
-    public static final Action NOOP = new Action(0, 0);
-    private static final Random random = new Random();
-    public static final Action[] allActions = {NOOP, UP, DOWN, LEFT, RIGHT};
+    //public static final Action UP = new Action(0, -1);
+    //public static final Action DOWN = new Action(0, 1);
+    //public static final Action LEFT = new Action(-1, 0);
+    //public static final Action RIGHT = new Action(1, 0);
+    //public static final Action NOOP = new Action(0, 0);
+    //private static final Action[] allActions = {NOOP, UP, DOWN, LEFT, RIGHT};
     private int x, y;
 
-    private Action(int x, int y) {
+    public Action(int x, int y) {
         this.x = x;
         this.y = y;
-    }
-
-    public static Action getRandom() {
-        return allActions[random.nextInt(allActions.length)];
     }
 
     public int getX() {
@@ -33,6 +28,10 @@ public final class Action {
         return y;
     }
 
+    public boolean isNOOP() {
+    	return x == 0 && y == 0;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -49,11 +48,6 @@ public final class Action {
 
     @Override
     public String toString() {
-        if (this.equals(UP)) return "Action.UP";
-        if (this.equals(DOWN)) return "Action.DOWN";
-        if (this.equals(LEFT)) return "Action.LEFT";
-        if (this.equals(RIGHT)) return "Action.RIGHT";
-
         return "Action(" + x + ":" + y + ")";
     }
 }

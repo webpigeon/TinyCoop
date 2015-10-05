@@ -11,7 +11,7 @@ import java.awt.event.KeyListener;
  * Created by pwillic on 23/06/2015.
  */
 public class WASDController extends Controller implements KeyListener {
-    Action[] actions = new Action[]{Action.NOOP, Action.DOWN, Action.LEFT, Action.RIGHT, Action.UP};
+    //Action[] actions = new Action[]{Action.NOOP, Action.DOWN, Action.LEFT, Action.RIGHT, Action.UP};
 
     int actionID = 0;
 
@@ -19,7 +19,7 @@ public class WASDController extends Controller implements KeyListener {
     public Action get(GameState game) {
         int id = actionID;
         actionID = 0;
-        return actions[id];
+        return game.getLegalActions().get(id);
     }
 
     @Override

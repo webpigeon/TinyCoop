@@ -14,8 +14,12 @@ public class GameTest {
         CoopGame c1 = game.getClone();
         CoopGame c2 = game.getClone();
 
-        MovePair pair1 = new MovePair(Action.UP, Action.NOOP);
-        MovePair pair2 = new MovePair(Action.DOWN, Action.NOOP);
+        Action noop = new Action(0,0);
+        Action up = new Action(0, 1);
+        Action down = new Action(0, -1);
+        
+        MovePair pair1 = new MovePair(noop, noop);
+        MovePair pair2 = new MovePair(down, up);
         System.out.println(pair1.equals(pair2));
 
         GameNode node1 = new GameNode(c1, pair1);

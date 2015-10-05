@@ -3,6 +3,9 @@ package FastGame;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -17,6 +20,12 @@ import static FastGame.ObjectTypes.*;
  */
 public class CoopGame implements GameState {
 
+    private static final Action[] allActions = {
+    		new Action(0,0),
+    		new Action(1,0),
+    		new Action(0,1),
+    		new Action(-1,0),
+    		new Action(0,-1)};
     private int[] data;
     private int width, height, layers;
     // need to check that all agents reach all goals
@@ -145,7 +154,7 @@ public class CoopGame implements GameState {
     private void runUpdateLoop(Action... actions) {
         for (int agentID = 0; agentID < actions.length; agentID++) {
             Action action = actions[agentID];
-            if (action.equals(Action.NOOP)) continue;
+            if (action.isNOOP()) continue;
             int x = getAgentX(agentID);
             int y = getAgentY(agentID);
 
@@ -172,7 +181,7 @@ public class CoopGame implements GameState {
 
     private void runUpdateLoop(Action first, Action second) {
 
-        if (first.equals(Action.NOOP) && second.equals(Action.NOOP)) return;
+        if (first.isNOOP() && second.isNOOP()) return;
 //        System.out.println("First: " + first + " Second: " + second);
         resetEncountered();
         for (int agentID = 0; agentID <= maxIDs[AGENT]; agentID++) {
@@ -325,4 +334,9 @@ public class CoopGame implements GameState {
     public double getScore() {
         return score;
     }
+
+	@Override
+	public List<Action> getLegalActions() {
+		return Arrays.asList(allActions);
+	}
 }
