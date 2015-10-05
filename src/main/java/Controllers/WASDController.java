@@ -2,6 +2,7 @@ package Controllers;
 
 import FastGame.Action;
 import FastGame.CoopGame;
+import gamesrc.GameState;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -15,7 +16,7 @@ public class WASDController extends Controller implements KeyListener {
     int actionID = 0;
 
     @Override
-    public Action get(CoopGame game) {
+    public Action get(GameState game) {
         int id = actionID;
         actionID = 0;
         return actions[id];

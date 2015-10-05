@@ -3,15 +3,16 @@ package Controllers.astar;
 import Controllers.ga.GA;
 import FastGame.Action;
 import FastGame.CoopGame;
+import gamesrc.GameState;
 
 /**
  * Created by jwalto on 02/07/2015.
  */
 public class GameNode implements Comparable<GameNode> {
-    protected CoopGame game;
+    protected GameState game;
     protected MovePair actions;
 
-    public GameNode(CoopGame game, MovePair actions) {
+    public GameNode(GameState game, MovePair actions) {
         this.game = game;
         this.actions = actions;
     }
@@ -25,10 +26,10 @@ public class GameNode implements Comparable<GameNode> {
         return Double.compare(o.game.getScore(), game.getScore());
     }
 
-    public boolean gameEquals(CoopGame us, CoopGame them) {
-        if (us.getScore() != them.getScore()) return false;
-        if (!us.getPos(0).equals(them.getPos(0))) return false;
-        if (!us.getPos(1).equals(them.getPos(1))) return false;
+    public boolean gameEquals(GameState game2, GameState game3) {
+        if (game2.getScore() != game3.getScore()) return false;
+        if (!game2.getPos(0).equals(game3.getPos(0))) return false;
+        if (!game2.getPos(1).equals(game3.getPos(1))) return false;
         return true;
     }
 

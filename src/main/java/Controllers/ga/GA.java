@@ -2,6 +2,7 @@ package Controllers.ga;
 
 import FastGame.Action;
 import FastGame.CoopGame;
+import gamesrc.GameState;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -36,7 +37,7 @@ public class GA
         //init(a_gameState);
     }
 
-    public void init(CoopGame a_gameState, boolean first)
+    public void init(GameState a_gameState, boolean first)
     {
         //System.out.println(" --------- Starting GA --------- ");
         m_numGenerations = 0;
@@ -51,7 +52,7 @@ public class GA
         sortPopulationByFitness();
     }
 
-    public MacroAction run(CoopGame a_gameState, int generations, boolean first)
+    public MacroAction run(GameState a_gameState, int generations, boolean first)
     {
         int currGen = 0;
         while(currGen < generations)

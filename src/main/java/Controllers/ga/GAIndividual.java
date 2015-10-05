@@ -2,6 +2,7 @@ package Controllers.ga;
 
 import FastGame.Action;
 import FastGame.CoopGame;
+import gamesrc.GameState;
 
 import java.util.Random;
 
@@ -30,9 +31,9 @@ public class GAIndividual
         }
     }
 
-    public CoopGame evaluate(CoopGame a_gameState, boolean isFirst)
+    public GameState evaluate(GameState a_gameState, boolean isFirst)
     {
-        CoopGame thisGameCopy = a_gameState.getClone();
+        GameState thisGameCopy = a_gameState.getClone();
         boolean end = false;
         for(int i = 0; i < m_genome.length; ++i)
         {

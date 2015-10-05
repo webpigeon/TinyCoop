@@ -2,8 +2,9 @@ package Controllers.astar;
 
         import FastGame.Action;
         import FastGame.CoopGame;
+import gamesrc.GameState;
 
-        import java.awt.Point;
+import java.awt.Point;
         import java.util.*;
 
 /**
@@ -19,7 +20,7 @@ public class PathFind {
         this.heristic = heristic;
     }
 
-    public List<MovePair> getPath(CoopGame game, GameNode start) {
+    public List<MovePair> getPath(GameState game, GameNode start) {
         List<GameNode> closedSet = new ArrayList<GameNode>();
         Queue<GameNode> openSet = new PriorityQueue<GameNode>(10, new Comparator<GameNode>() {
 
@@ -44,7 +45,7 @@ public class PathFind {
             closedSet.add(current);
 
             for (MovePair moves : getAvailableMoves(game)) {
-                CoopGame nState = current.game.getClone();
+                GameState nState = current.game.getClone();
                 nState.update(moves.p1Move, moves.p2Move);
                 GameNode neighbor = new GameNode(nState, moves);
 
@@ -86,7 +87,7 @@ public class PathFind {
         return path;
     }
 
-    public static List<MovePair> getAvailableMoves(CoopGame game){
+    public static List<MovePair> getAvailableMoves(GameState game){
 
         List<MovePair> legalActions = new ArrayList<MovePair>();
         for (Action p1 : Action.allActions) {

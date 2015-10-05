@@ -3,6 +3,7 @@ package Controllers.VariGA;
 import Controllers.Controller;
 import FastGame.Action;
 import FastGame.CoopGame;
+import gamesrc.GameState;
 
 import java.util.Random;
 
@@ -21,7 +22,7 @@ public class VariGA extends Controller {
     private int currentUsage = 0;
     private ActionSequence parent = getNewParent();
     private double parentFitness;
-    private CoopGame fastForwardedGame;
+    private GameState fastForwardedGame;
 
     private int[] params;
 
@@ -53,7 +54,7 @@ public class VariGA extends Controller {
     }
 
     @Override
-    public Action get(CoopGame game) {
+    public Action get(GameState game) {
         if (currentBest == null || currentUsage >= currentBest.getFirstActionLength()) {
             currentBest = parent;
             parent = null;
@@ -75,7 +76,7 @@ public class VariGA extends Controller {
         return currentBest.getActionAt(currentUsage++);
     }
 
-    private void calculate(CoopGame game) {
+    private void calculate(GameState game) {
 //        System.out.println("Gets here");
         if (parent == null) {
             parent = getNewParent();
@@ -162,12 +163,12 @@ class ActionSequence {
         }
     }
 
-    public double evaluate(CoopGame state, boolean first) {
+    public double evaluate(GameState state, boolean first) {
         int totalScore = 0;
         int totalLength = getTotalLength();
 
         for(int j = 0; j < 3; j++) {
-            CoopGame game = state.getClone();
+            GameState game = state.getClone();
             for (int i = 0; !game.hasWon() && i < totalLength; i++) {
                 if (first) {
                     game.update(getActionAt(i), Action.getRandom());
