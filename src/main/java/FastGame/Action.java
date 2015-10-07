@@ -8,17 +8,21 @@ import gamesrc.GameState;
 /**
  * Created by pwillic on 23/06/2015.
  */
-public final class Action {
-    public static final Action UP = new Action(0, -1);
-    public static final Action DOWN = new Action(0, 1);
-    public static final Action LEFT = new Action(-1, 0);
-    public static final Action RIGHT = new Action(1, 0);
-    public static final Action NOOP = new Action(0, 0);
+public class Action {
+    public static final Action UP = new MoveAction("UP", 0, -1);
+    public static final Action DOWN = new MoveAction("DOWN", 0, 1);
+    public static final Action LEFT = new MoveAction("LEFT", -1, 0);
+    public static final Action RIGHT = new MoveAction("RIGHT", 1, 0);
+    public static final Action NOOP = new Action("NOOP", 0, 0);
+    public static final Action BEEP = new TalkAction(0, 0, 0);
     private static final Random random = new Random();
     //public static final Action[] allActions = {NOOP, UP, DOWN, LEFT, RIGHT};
-    private int x, y;
 
-    protected Action(int x, int y) {
+    private int x, y;
+    private final String actionID;
+    
+    protected Action(String actionID, int x, int y) {
+    	this.actionID = actionID;
         this.x = x;
         this.y = y;
     }
@@ -36,8 +40,12 @@ public final class Action {
         return y;
     }
     
+    public boolean isMovement() {
+    	return true;
+    }
+    
     public boolean isNoop() {
-    	return x==0 && y==0;
+    	return "NOOP".equals(actionID);
     }
 
     @Override
@@ -51,16 +59,15 @@ public final class Action {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getX(), getY());
+        return Objects.hash(actionID, getX(), getY());
     }
 
     @Override
     public String toString() {
-        if (this.equals(UP)) return "Action.UP";
-        if (this.equals(DOWN)) return "Action.DOWN";
-        if (this.equals(LEFT)) return "Action.LEFT";
-        if (this.equals(RIGHT)) return "Action.RIGHT";
-
-        return "Action(" + x + ":" + y + ")";
+    	return actionID;
     }
+
+	public boolean isTalk() {
+		return false;
+	}
 }

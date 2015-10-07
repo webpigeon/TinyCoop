@@ -18,12 +18,16 @@ import FastGame.Action;
  */
 public class SimpleGame implements ObservableGameState {
 	private GameLevel level;
+	private boolean[] beeps;
+	private Point[] flares;
 	private Point[] positions;
 	private boolean[] visitList;
 	private Map<Integer,Integer> signals;
 	
 	public SimpleGame(GameLevel level) {
 		this.level = level;
+		this.beeps = new boolean[level.getPlayerCount()];
+		this.flares = new Point[level.getPlayerCount()];
 		this.positions = new Point[level.getPlayerCount()];
 		this.visitList = new boolean[level.getGoalCount() * level.getPlayerCount()];
 		this.signals = new TreeMap<Integer,Integer>();
@@ -35,6 +39,8 @@ public class SimpleGame implements ObservableGameState {
 	
 	public SimpleGame(SimpleGame game) {
 		this.level = game.level;
+		this.beeps = Arrays.copyOf(game.beeps, game.beeps.length);
+		this.flares = Arrays.copyOf(game.flares, game.flares.length);
 		this.positions = Arrays.copyOf(game.positions, game.positions.length);
 		this.visitList = Arrays.copyOf(game.visitList, game.visitList.length);
 		this.signals = new TreeMap<Integer,Integer>(game.signals);
@@ -69,17 +75,28 @@ public class SimpleGame implements ObservableGameState {
 
 	@Override
 	public void update(Action p1, Action p2) {
+		beeps = new boolean[level.getPlayerCount()];
+		flares = new Point[level.getPlayerCount()];
 		doAction(0, p1);
-		doAction(1, p2);		
+		doAction(1, p2);
 	}
 	
 	protected void doAction(int pid, Action action) {
 		Point newPos = new Point(positions[pid]);
 		newPos.x = newPos.x + action.getX();
 		newPos.y = newPos.y + action.getY();
-		if (!action.isNoop() && level.isWalkable(pid, newPos, this)) {
+		
+		if (action.isMovement() && level.isWalkable(pid, newPos, this)) {
 			level.onStep(this, pid, positions[pid], newPos);
 			positions[pid] = newPos;
+		}
+		
+		if (action.isTalk()) {
+			if (action.getX() != 0 && action.getY() != 0) {
+				flares[pid] = new Point(action.getX(), action.getY());
+			} else {
+				beeps[pid] = true;
+			}
 		}
 	}
 
@@ -149,12 +166,22 @@ public class SimpleGame implements ObservableGameState {
 
 	@Override
 	public Action[] getLegalActions(int playerID) {
-		return new Action[]{Action.NOOP, Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT};
+		return new Action[]{Action.NOOP, Action.BEEP, Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT};
 	}
 
 	@Override
 	public int getActionLength() {
 		return getLegalActions(0).length;
+	}
+
+	@Override
+	public boolean getBeep(int agent) {
+		return beeps[agent];
+	}
+
+	@Override
+	public Point getAgent(int agent) {
+		return flares[agent];
 	}
 
 }

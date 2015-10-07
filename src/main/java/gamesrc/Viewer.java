@@ -94,6 +94,15 @@ public class Viewer extends JComponent {
 	        	}
         	}
         }
+        
+        for (int agent=0; agent<2; agent++) {
+        	g.setColor(Color.RED);
+        	if (game.getBeep(agent)) {
+        		g.fillRect(agent*10, 30, 10, 10);
+        	} else {
+        		g.drawRect(agent*10, 30, 10, 10);
+        	}
+        }
     }
 
     @Override

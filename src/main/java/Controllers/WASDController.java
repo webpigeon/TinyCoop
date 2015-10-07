@@ -11,7 +11,7 @@ import java.awt.event.KeyListener;
  * Created by pwillic on 23/06/2015.
  */
 public class WASDController extends Controller implements KeyListener {
-    Action[] actions = new Action[]{Action.NOOP, Action.DOWN, Action.LEFT, Action.RIGHT, Action.UP};
+    Action[] actions = new Action[]{Action.NOOP, Action.DOWN, Action.LEFT, Action.RIGHT, Action.UP, Action.BEEP};
 
     int actionID = 0;
 
@@ -31,20 +31,19 @@ public class WASDController extends Controller implements KeyListener {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyChar()) {
             case 'a':
-            case 'j':
                 actionID = 2;
                 break;
             case 's':
-            case 'k':
                 actionID = 1;
                 break;
             case 'd':
-            case 'l':
                 actionID = 3;
                 break;
             case 'w':
-            case 'i':
                 actionID = 4;
+                break;
+            case 'x':
+                actionID = 5;
                 break;
         }
 //        System.out.println("Action: " + actions[actionID]);

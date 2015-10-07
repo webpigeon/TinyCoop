@@ -23,6 +23,9 @@ public class ArrowController extends WASDController{
             case KeyEvent.VK_RIGHT:
                 actionID = 3;
                 break;
+            case KeyEvent.VK_CONTROL:
+                actionID = 5;
+                break;
         }
 //        System.out.println("Action Arrows: " + actions[actionID]);
     }
