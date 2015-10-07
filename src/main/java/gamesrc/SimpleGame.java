@@ -147,4 +147,14 @@ public class SimpleGame implements ObservableGameState {
 		return level.getGoalCount();
 	}
 
+	@Override
+	public Action[] getLegalActions(int playerID) {
+		return new Action[]{Action.NOOP, Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT};
+	}
+
+	@Override
+	public int getActionLength() {
+		return getLegalActions(0).length;
+	}
+
 }

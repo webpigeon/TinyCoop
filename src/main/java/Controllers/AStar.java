@@ -174,7 +174,7 @@ public class AStar extends Controller {
         public int hashCode() {
             return Objects.hash(p1action, p2action, game);
         }
-
+		// TODO Auto-generated method stub
         public String toString() {
             return p1action+"+"+p2action+"@"+game.getScore();
         }

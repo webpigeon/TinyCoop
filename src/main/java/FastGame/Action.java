@@ -3,6 +3,8 @@ package FastGame;
 import java.util.Objects;
 import java.util.Random;
 
+import gamesrc.GameState;
+
 /**
  * Created by pwillic on 23/06/2015.
  */
@@ -13,7 +15,7 @@ public final class Action {
     public static final Action RIGHT = new Action(1, 0);
     public static final Action NOOP = new Action(0, 0);
     private static final Random random = new Random();
-    public static final Action[] allActions = {NOOP, UP, DOWN, LEFT, RIGHT};
+    //public static final Action[] allActions = {NOOP, UP, DOWN, LEFT, RIGHT};
     private int x, y;
 
     protected Action(int x, int y) {
@@ -21,7 +23,8 @@ public final class Action {
         this.y = y;
     }
 
-    public static Action getRandom() {
+    public static Action getRandom(int actionID, GameState state) {
+    	Action[] allActions = state.getLegalActions(actionID);
         return allActions[random.nextInt(allActions.length)];
     }
 

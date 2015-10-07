@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -11,6 +12,8 @@ import javax.swing.JFrame;
 
 import Controllers.Controller;
 import Controllers.MCTS;
+import Controllers.RandomController;
+import Controllers.VariGA.VariGA;
 import FastGame.Action;
 
 public class ReadableGame {
@@ -41,13 +44,22 @@ public class ReadableGame {
 		frame.pack();
 		frame.setVisible(true);
 		
+		List<Controller> controllers = Arrays.asList(
+				new MCTS(true, 500),
+				new MCTS(true, 250),
+				new RandomController()
+				);
+		
 		for (GameLevel level : levelList) {
 			GameState initalStateS = new SimpleGame(level);
 			
-			Controller c1 = new MCTS(true, 500);
-			Controller c2 = new MCTS(false, 500);
-			
-			runGraphicalGame(initalStateS, viewer, c1, c2);
+			for (Controller c1 : controllers) {
+				Controller c2 = new MCTS(false, 500);
+				
+				frame.setTitle("TinyCoop "+c1.getSimpleName()+" and "+c2.getSimpleName());
+				
+				runGraphicalGame(initalStateS, viewer, c1, c2);
+			}
 		}
 	}
 	

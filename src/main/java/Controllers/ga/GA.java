@@ -24,12 +24,12 @@ public class GA
 
     public GAIndividual[] m_individuals;
 
-    public GA()
+    public GA(Action[] legalActions)
     {
         m_rnd = new Random();
 
         m_actionList = new ArrayList<MacroAction>();
-        for (Action action : Action.allActions) {
+        for (Action action : legalActions) {
             m_actionList.add(new MacroAction(action, GAConstants.MACRO_ACTION_LENGTH));
         }
 
@@ -44,7 +44,7 @@ public class GA
         for(int i = 0; i < NUM_INDIVIDUALS; ++i)
         {
             m_individuals[i] = new GAIndividual(NUM_ACTIONS_INDIVIDUAL);
-            m_individuals[i].randomize(m_rnd, m_actionList.size());
+            m_individuals[i].randomize(m_rnd, a_gameState, m_actionList.size());
             m_individuals[i].evaluate(a_gameState, first);
             //System.out.format("individual i: " + i + ", fitness: %.3f, actions: %s \n", m_individuals[i].m_fitness, m_individuals[i].toString());
         }
@@ -70,7 +70,7 @@ public class GA
             {
                 //System.out.println("######################");
                 nextPop[i] = breed(); // m_individuals[i-ELITISM].copy();
-                nextPop[i].mutate(m_rnd);
+                nextPop[i].mutate(m_rnd, a_gameState);
                 //System.out.print("c-m: " + nextPop[i].toString());
                 nextPop[i].evaluate(a_gameState, first);
                 //System.out.println(", " + nextPop[i].m_fitness);

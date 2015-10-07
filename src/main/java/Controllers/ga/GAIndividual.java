@@ -14,6 +14,7 @@ import java.util.Random;
 public class GAIndividual
 {
     public Action[] m_genome;
+    public boolean isFirst;
     public double m_fitness;
     public final double MUTATION_PROB = 0.2; //0.834=5/6   //0.2;
 
@@ -23,17 +24,18 @@ public class GAIndividual
         m_fitness = 0;
     }
 
-    public void randomize(Random a_rnd, int a_numActions)
+    public void randomize(Random a_rnd, GameState state, int a_numActions)
     {
         for(int i = 0; i < m_genome.length; ++i)
         {
-            m_genome[i] = Action.getRandom();
+            m_genome[i] = Action.getRandom(-1, state);
         }
     }
 
     public GameState evaluate(GameState a_gameState, boolean isFirst)
     {
         GameState thisGameCopy = a_gameState.getClone();
+        this.isFirst = isFirst;
         boolean end = false;
         for(int i = 0; i < m_genome.length; ++i)
         {
@@ -41,9 +43,9 @@ public class GAIndividual
             for(int j =0; !end && j < GAConstants.MACRO_ACTION_LENGTH; ++j)
             {
                 if (isFirst) {
-                    thisGameCopy.update(thisAction, Action.getRandom());
+                    thisGameCopy.update(thisAction, Action.getRandom(isFirst?0:1, a_gameState));
                 } else {
-                    thisGameCopy.update(Action.getRandom(), thisAction);
+                    thisGameCopy.update(Action.getRandom(isFirst?0:1, a_gameState), thisAction);
                 }
                 end = thisGameCopy.hasWon();
             }
@@ -52,12 +54,12 @@ public class GAIndividual
         return thisGameCopy;
     }
 
-    public void mutate(Random a_rnd)
+    public void mutate(Random a_rnd, GameState state)
     {
         for (int i = 0; i < m_genome.length; i++) {
             if(a_rnd.nextDouble() < MUTATION_PROB)
             {
-                m_genome[i] = Action.getRandom();
+                m_genome[i] = Action.getRandom(isFirst?0:1, state);
             }
         }
     }

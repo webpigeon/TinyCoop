@@ -326,5 +326,15 @@ public class CoopGame implements GameState {
         return score;
     }
 
+	@Override
+	public Action[] getLegalActions(int playerID) {
+		return new Action[]{Action.NOOP, Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT};
+	}
+
+	@Override
+	public int getActionLength() {
+		return 5;
+	}
+
 	
 }

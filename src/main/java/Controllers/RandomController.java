@@ -11,6 +11,6 @@ public class RandomController extends Controller {
 
     @Override
     public Action get(GameState game) {
-        return Action.getRandom();
+        return Action.getRandom(-1, game);
     }
 }

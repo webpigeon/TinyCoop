@@ -22,7 +22,6 @@ public class GAController extends Controller {
     private boolean startOfGame;
 
     public GAController(boolean first) {
-        this.ga = new GA();
         this.first = first;
         this.currentAction = NOOP;
         this.macroPos = 0;
@@ -38,6 +37,10 @@ public class GAController extends Controller {
 
     @Override
     public Action get(GameState game) {
+    	if (this.ga == null) {
+    		this.ga = new GA(game.getLegalActions(first?0:1));
+    	}
+    	
         MacroAction nextAction = NOOP;
 
         if (startOfGame) {

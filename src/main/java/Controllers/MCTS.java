@@ -32,7 +32,7 @@ public class MCTS extends Controller {
 
     @Override
     public Action get(GameState game) {
-        MCTSNode root = new MCTSNode(2.0, this);
+        MCTSNode root = new MCTSNode(2.0, this, game.getActionLength());
         MCTSNode travel;
         GameState workingGame;
         int iterations = 0;
@@ -80,24 +80,26 @@ class MCTSNode {
 
     private MCTSNode parent;
     private MCTSNode[] children;
-    private int childLength = Action.allActions.length;
+    private int childLength;
 
     private MCTS mcts;
 
     // Root
-    public MCTSNode(double explorationConstant, MCTS mcts) {
+    public MCTSNode(double explorationConstant, MCTS mcts, int actionLength) {
         this.explorationConstant = explorationConstant;
         this.currentDepth = 0;
         this.mcts = mcts;
+        this.childLength = actionLength;
     }
 
     // Child
-    public MCTSNode(MCTSNode parent, Action moveToThisState) {
+    public MCTSNode(MCTSNode parent, Action moveToThisState, int actionLength) {
         this.parent = parent;
         this.explorationConstant = parent.explorationConstant;
         this.moveToThisState = moveToThisState;
         this.currentDepth = parent.currentDepth + 1;
         this.mcts = parent.mcts;
+        this.childLength = actionLength;
     }
 
     protected MCTSNode select(GameState state) {
@@ -106,17 +108,17 @@ class MCTSNode {
             if (current.isFullyExpanded()) {
                 current = current.selectBestChild();
                 if (mcts.isFirst()) {
-                    state.update(current.getMoveToThisState(), Action.getRandom());
+                    state.update(current.getMoveToThisState(), Action.getRandom(1, state));
                 } else {
-                    state.update(Action.getRandom(), current.getMoveToThisState());
+                    state.update(Action.getRandom(0, state), current.getMoveToThisState());
                 }
             } else {
                 /// Expand
                 MCTSNode expandedChild = current.expand(state);
                 if (mcts.isFirst()) {
-                    state.update(expandedChild.getMoveToThisState(), Action.getRandom());
+                    state.update(expandedChild.getMoveToThisState(), Action.getRandom(1, state));
                 } else {
-                    state.update(Action.getRandom(), expandedChild.getMoveToThisState());
+                    state.update(Action.getRandom(0, state), expandedChild.getMoveToThisState());
                 }
                 return expandedChild;
             }
@@ -177,8 +179,9 @@ class MCTSNode {
                 bestValue = x;
             }
         }
-
-        children[bestAction] = new MCTSNode(this, Action.allActions[bestAction]);
+ 
+        Action[] allActions = state.getLegalActions(0);
+        children[bestAction] = new MCTSNode(this, allActions[bestAction], state.getActionLength());
         childrenExpandedSoFar++;
         return children[bestAction];
     }
@@ -186,7 +189,7 @@ class MCTSNode {
     public double rollout(GameState state) {
         int rolloutDepth = this.currentDepth;
         while (!state.hasWon() && rolloutDepth < mcts.getMaxRolloutDepth()) {
-            state.update(Action.getRandom(), Action.getRandom());
+            state.update(Action.getRandom(0, state), Action.getRandom(0, state));
             rolloutDepth++;
         }
         return state.getScore();
