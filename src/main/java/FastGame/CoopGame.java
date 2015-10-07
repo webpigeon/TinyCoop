@@ -7,13 +7,15 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import gamesrc.GameState;
+
 import static FastGame.GroundTypes.WALKABLE;
 import static FastGame.ObjectTypes.*;
 
 /**
  * Created by pwillic on 25/06/2015.
  */
-public class CoopGame {
+public class CoopGame implements GameState {
 
     private int[] data;
     private int width, height, layers;

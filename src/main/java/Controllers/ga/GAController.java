@@ -3,6 +3,7 @@ package Controllers.ga;
 import Controllers.Controller;
 import FastGame.Action;
 import FastGame.CoopGame;
+import gamesrc.GameState;
 
 /**
  * GA controller for CoopGame, modified from PTSP.
@@ -36,7 +37,7 @@ public class GAController extends Controller {
     }
 
     @Override
-    public Action get(CoopGame game) {
+    public Action get(GameState game) {
         MacroAction nextAction = NOOP;
 
         if (startOfGame) {

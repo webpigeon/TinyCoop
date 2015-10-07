@@ -4,6 +4,7 @@ import Controllers.AStar;
 import Controllers.Controller;
 import FastGame.Action;
 import FastGame.CoopGame;
+import gamesrc.GameState;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class AStarBetter extends Controller {
     }
 
     @Override
-    public Action get(CoopGame game) {
+    public Action get(GameState game) {
         System.out.println("requested move");
         GameNode start = new GameNode(game, lastMove);
         List<MovePair> pairs = find.getPath(game, start);

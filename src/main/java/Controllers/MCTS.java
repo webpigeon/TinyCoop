@@ -2,6 +2,7 @@ package Controllers;
 
 import FastGame.Action;
 import FastGame.CoopGame;
+import gamesrc.GameState;
 
 import java.util.Random;
 
@@ -30,10 +31,10 @@ public class MCTS extends Controller {
     }
 
     @Override
-    public Action get(CoopGame game) {
+    public Action get(GameState game) {
         MCTSNode root = new MCTSNode(2.0, this);
         MCTSNode travel;
-        CoopGame workingGame;
+        GameState workingGame;
         int iterations = 0;
         while (iterations < iterationLimit) {
             workingGame = game.getClone();
@@ -99,7 +100,7 @@ class MCTSNode {
         this.mcts = parent.mcts;
     }
 
-    protected MCTSNode select(CoopGame state) {
+    protected MCTSNode select(GameState state) {
         MCTSNode current = this;
         while (current.currentDepth < mcts.getMaxUCTDepth() && !state.hasWon()) {
             if (current.isFullyExpanded()) {
@@ -164,7 +165,7 @@ class MCTSNode {
         current.numberOfVisits++;
     }
 
-    private MCTSNode expand(CoopGame state) {
+    private MCTSNode expand(GameState state) {
         int bestAction = 0;
         double bestValue = -Double.MAX_VALUE;
         if (children == null) children = new MCTSNode[childLength];
@@ -182,7 +183,7 @@ class MCTSNode {
         return children[bestAction];
     }
 
-    public double rollout(CoopGame state) {
+    public double rollout(GameState state) {
         int rolloutDepth = this.currentDepth;
         while (!state.hasWon() && rolloutDepth < mcts.getMaxRolloutDepth()) {
             state.update(Action.getRandom(), Action.getRandom());
