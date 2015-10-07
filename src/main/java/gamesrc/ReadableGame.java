@@ -10,9 +10,11 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
+import Controllers.ArrowController;
 import Controllers.Controller;
 import Controllers.MCTS;
 import Controllers.RandomController;
+import Controllers.WASDController;
 import Controllers.VariGA.VariGA;
 import FastGame.Action;
 
@@ -20,11 +22,13 @@ public class ReadableGame {
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
 		String[] levels = new String[]{
+			"maps/level7.txt",
 			"maps/level1.txt",
 			"maps/level2.txt",
 			"maps/level3.txt",
 			"maps/level4.txt",
-			"maps/level5.txt"
+			"maps/level5.txt",
+			"maps/level6.txt"
 		};
 		
 		GameLevel[] levelList = new GameLevel[levels.length];
@@ -44,22 +48,24 @@ public class ReadableGame {
 		frame.pack();
 		frame.setVisible(true);
 		
-		List<Controller> controllers = Arrays.asList(
+		/*List<Controller> controllers = Arrays.asList(
 				new MCTS(true, 500),
 				new MCTS(true, 250),
-				new RandomController()
-				);
+				new RandomController(),
+				new WASDController()
+				);*/
 		
+		Controller c1 = new WASDController();
 		for (GameLevel level : levelList) {
 			GameState initalStateS = new SimpleGame(level);
 			
-			for (Controller c1 : controllers) {
-				Controller c2 = new MCTS(false, 500);
+			//for (Controller c1 : controllers) {
+				Controller c2 = new ArrowController();
 				
 				frame.setTitle("TinyCoop "+c1.getSimpleName()+" and "+c2.getSimpleName());
 				
 				runGraphicalGame(initalStateS, viewer, c1, c2);
-			}
+			//}
 		}
 	}
 	
