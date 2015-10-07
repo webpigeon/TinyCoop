@@ -13,12 +13,10 @@ public class Button extends GameObject {
 
 	@Override
 	public void onContact(ObservableGameState state, int playerId) {
-		System.out.println("signal raised");
 		state.setSignalState(signal, true);
 	}
 	
 	public void onContactEnd(ObservableGameState state, int pid) {
-		System.out.println("signal lowered");
 		state.setSignalState(signal, false);
 	}
 
