@@ -31,15 +31,19 @@ public class WASDController extends Controller implements KeyListener {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyChar()) {
             case 'a':
+            case 'j':
                 actionID = 2;
                 break;
             case 's':
+            case 'k':
                 actionID = 1;
                 break;
             case 'd':
+            case 'l':
                 actionID = 3;
                 break;
             case 'w':
+            case 'i':
                 actionID = 4;
                 break;
         }

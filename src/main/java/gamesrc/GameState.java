@@ -1,7 +1,5 @@
 package gamesrc;
 
-import java.awt.Point;
-
 import FastGame.Action;
 
 public interface GameState {
@@ -10,6 +8,8 @@ public interface GameState {
 	public double getScore();
 	public boolean hasWon();
 	public void update(Action p1, Action p2);
-	public Point getPos(int i);
+	
+	public int getWidth();
+	public int getHeight();
 
 }

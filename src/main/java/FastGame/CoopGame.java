@@ -325,4 +325,30 @@ public class CoopGame implements GameState {
     public double getScore() {
         return score;
     }
+
+	@Override
+	public void setSignalState(int signal, boolean state) {
+		throw new RuntimeException("FastGame does not allow singal setting");
+	}
+
+	@Override
+	public boolean isSignalHigh(int signal) {
+		throw new RuntimeException("FastGame does not allow singal getting");
+	}
+
+	@Override
+	public void setVisited(int agent, int goalID) {
+		throw new RuntimeException("FastGame does not allow visting setting");
+	}
+
+	@Override
+	public boolean hasVisited(int agent, int goalID) {
+		throw new RuntimeException("FastGame does not provide visit infomation");
+	}
+
+	@Override
+	public int getFloor(int x, int y) {
+		throw new RuntimeException("FastGame does not provide floor infomation");
+	}
+	
 }

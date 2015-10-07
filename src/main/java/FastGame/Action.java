@@ -32,6 +32,10 @@ public final class Action {
     public int getY() {
         return y;
     }
+    
+    public boolean isNoop() {
+    	return x==0 && y==0;
+    }
 
     @Override
     public boolean equals(Object o) {
