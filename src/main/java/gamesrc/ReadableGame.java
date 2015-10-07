@@ -22,13 +22,14 @@ public class ReadableGame {
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
 		String[] levels = new String[]{
-			"maps/level7.txt",
+			"maps/level8.txt",
 			"maps/level1.txt",
 			"maps/level2.txt",
 			"maps/level3.txt",
 			"maps/level4.txt",
 			"maps/level5.txt",
-			"maps/level6.txt"
+			"maps/level6.txt",
+			"maps/level7.txt"
 		};
 		
 		GameLevel[] levelList = new GameLevel[levels.length];

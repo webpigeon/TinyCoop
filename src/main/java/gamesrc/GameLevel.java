@@ -55,25 +55,6 @@ public class GameLevel {
 		spawnLocations[playerId] = point;		
 	}
 
-	/**
-	 * A button emits a signal when you step on it.
-	 * 
-	 * @param point the x,y position for the button
-	 * @param signal the signal the button should emit
-	 */
-	public void setButton(Point point, int signal) {
-		setObject(point.x, point.y, new Button(signal));	
-	}
-
-	/**
-	 * A door is solid unless a signal is emitted.
-	 * 
-	 * @param point the x,y position for the door
-	 * @param signal the signal the door should open for
-	 */
-	public void setDoor(Point point, int signal) {
-		setObject(point.x, point.y, new Door(signal));
-	}
 
 	/**
 	 * A goal must be visited by agents in order to increase their score.

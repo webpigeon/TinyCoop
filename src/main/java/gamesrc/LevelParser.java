@@ -8,8 +8,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class LevelParser {
-	public static final Integer OBJ_DOOR = 3;
-	public static final Integer OBJ_GOAL = 4;
 	
 	public static GameLevel buildParser(String filename) throws IOException {
 		Scanner scanner = new Scanner(new FileInputStream(filename));
@@ -54,14 +52,17 @@ public class LevelParser {
 			case 1:
 				level.setSpawnPoint(new Point(x,y), extra);
 				break;
-			case 2:
-				level.setButton(new Point(x, y), extra);
-				break;
-			case 3:
-				level.setDoor(new Point(x, y), extra);
-				break;
 			case 4:
 				level.setGoal(new Point(x, y));
+				break;
+			case 2:
+				level.setObject(x, y, new Button(extra));
+				break;
+			case 3:
+				level.setObject(x, y, new Door(extra));
+				break;
+			case 5:
+				level.setObject(x, y, new TrapDoor(extra));
 				break;
 		}
 		
