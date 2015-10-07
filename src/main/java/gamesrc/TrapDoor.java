@@ -7,6 +7,12 @@ import java.awt.Graphics;
 
 import FastGame.ObjectTypes;
 
+/**
+ * Trap door object.
+ * 
+ * Once someone walks though the trap door object, the door will subtract 1 from the signal
+ * state (disabling it).
+ */
 public class TrapDoor extends GameObject {
 	private final Integer signal;
 	
