@@ -9,8 +9,10 @@ public interface ObservableGameState extends GameState {
 	public GameObject getObject(int x, int y);
 	public Point getPos(int i);
 	public int getFloor(int x, int y);
+	public int getSignalState(int signal);
+	public int getGoalsCount();
 
 	public void setVisited(int agent, int goalID);
 	public void setSignalState(int signal, boolean state);
-	public int getGoalsCount();
+
 }

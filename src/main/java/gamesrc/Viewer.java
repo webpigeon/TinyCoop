@@ -22,9 +22,17 @@ public class Viewer extends JComponent {
         this.game = game;
     }
 
+    public void setState(ObservableGameState game) {
+    	this.game = game;
+    }
+    
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
+        if (game == null) {
+        	return;
+        }
     	
         for (int x = 0; x < game.getWidth(); x++) {
             for (int y = 0; y < game.getHeight(); y++) {

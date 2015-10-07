@@ -3,7 +3,9 @@ package gamesrc;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import FastGame.Action;
 
@@ -18,13 +20,13 @@ public class SimpleGame implements ObservableGameState {
 	private GameLevel level;
 	private Point[] positions;
 	private boolean[] visitList;
-	private Set<Integer> signals;
+	private Map<Integer,Integer> signals;
 	
 	public SimpleGame(GameLevel level) {
 		this.level = level;
 		this.positions = new Point[level.getPlayerCount()];
 		this.visitList = new boolean[level.getGoalCount() * level.getPlayerCount()];
-		this.signals = new HashSet<Integer>();
+		this.signals = new TreeMap<Integer,Integer>();
 		
 		for (int i=0; i<positions.length; i++) {
 			positions[i] = level.getSpawnLocation(i);
@@ -35,7 +37,7 @@ public class SimpleGame implements ObservableGameState {
 		this.level = game.level;
 		this.positions = Arrays.copyOf(game.positions, game.positions.length);
 		this.visitList = Arrays.copyOf(game.visitList, game.visitList.length);
-		this.signals = new HashSet<Integer>();
+		this.signals = new TreeMap<Integer,Integer>(game.signals);
 	}
 
 	@Override
@@ -88,19 +90,28 @@ public class SimpleGame implements ObservableGameState {
 
 	@Override
 	public void setSignalState(int signal, boolean state) {
+		Integer i = signals.get(signal);
+		i = i == null ? 0 : i;
+		
 		if (state) {
-			signals.add(signal);
+			signals.put(signal, i+1);
 		} else {
-			signals.remove(signal);
+			signals.put(signal, i-1);
 		}
-		System.out.println(signals);
 	}
 
 	@Override
 	public boolean isSignalHigh(int signal) {
-		return signals.contains(signal);
+		int signalValue = getSignalState(signal);
+		return signalValue >= 1;
 	}
 
+	@Override
+	public int getSignalState(int signal) {
+		Integer i = signals.get(signal);
+		return i == null ? 0 : i;
+	}
+	
 	@Override
 	public void setVisited(int agent, int goalID) {
 		visitList[agent * level.getGoalCount() + goalID] = true;

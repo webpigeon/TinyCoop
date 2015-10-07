@@ -9,36 +9,55 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-import Controllers.ArrowController;
 import Controllers.Controller;
 import Controllers.MCTS;
-import Controllers.RandomController;
-import Controllers.WASDController;
 import FastGame.Action;
-import FastGame.CoopGame;
 
 public class ReadableGame {
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
-		GameLevel level = buildLevel("maps/level1.txt");
-		GameState initalStateS = new SimpleGame(level);
+		String[] levels = new String[]{
+			"maps/level1.txt",
+			"maps/level2.txt",
+			"maps/level3.txt",
+			"maps/level4.txt",
+			"maps/level5.txt"
+		};
 		
-		Controller c1 = new WASDController();
-		Controller c2 = new ArrowController();
+		GameLevel[] levelList = new GameLevel[levels.length];
+		for (int i=0; i<levelList.length; i++) {
+			levelList[i] = buildLevel(levels[i]);
+		}
 		
-		runGraphicalGame(initalStateS, c1, c2);
-	}
-	
-	public static void runGraphicalGame(GameState initial, Controller p1, Controller p2) throws InterruptedException {
 		System.out.println("graphical game");
 		JFrame frame = new JFrame("TinyCoop - GRIDWORLD");
 		frame.setPreferredSize(new Dimension(800, 600));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		ObservableGameState state = (ObservableGameState)initial.getClone();
-		JComponent viewer = new Viewer(state);
+		Viewer viewer = new Viewer(null);
 		viewer.setFocusable(true);
+		frame.add(viewer);
 		
+		frame.pack();
+		frame.setVisible(true);
+		
+		for (GameLevel level : levelList) {
+			GameState initalStateS = new SimpleGame(level);
+			
+			Controller c1 = new MCTS(true, 500);
+			Controller c2 = new MCTS(false, 500);
+			
+			runGraphicalGame(initalStateS, viewer, c1, c2);
+		}
+	}
+	
+	public static void runGraphicalGame(GameState initial, Viewer viewer, Controller p1, Controller p2) throws InterruptedException {
+		
+		ObservableGameState state = (ObservableGameState)initial.getClone();
+
+		viewer.setState(state);
+		
+		viewer.setFocusable(true);
 		if (p1 instanceof KeyListener) {
 			viewer.setFocusable(true);
 			viewer.requestFocus();
@@ -50,21 +69,18 @@ public class ReadableGame {
 			viewer.requestFocus();
 			viewer.addKeyListener((KeyListener)p2);
 		}
-
-		frame.add(viewer);
 		
-		frame.pack();
-		frame.setVisible(true);
-		
+		int ticks = 0;
 		while(!state.hasWon()) {
 			Action a1 = p1.get(state.getClone());
 			Action a2 = p2.get(state.getClone());
 			state.update(a1, a2);
-			frame.repaint();
-			Thread.sleep(1000);
+			viewer.repaint();
+			Thread.sleep(500);
+			ticks++;
 		}
 		
-		System.out.println("game over");
+		System.out.println("Complete: "+ticks);
 	}
 	
 	public static double runGames(GameState initialState, int runs, int tickLimit, Controller p1, Controller p2) {
