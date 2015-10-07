@@ -72,6 +72,10 @@ public class Viewer extends JComponent {
         	}
         }
         
+        paintDebugInfo(g);
+    }
+    
+    protected void paintDebugInfo(Graphics g) {
         for (int goalID=0; goalID<game.getGoalsCount(); goalID++) {
         	for (int agent=0; agent<2; agent++) {
 	        	g.setColor(Color.YELLOW);
