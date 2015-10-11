@@ -74,6 +74,10 @@ public class PathFind {
 
         return new LinkedList<MovePair>();
     }
+    
+    public static Queue<Action> findPath(GameState state, Point curr, Point goal) {
+    	return null;
+    }
 
     public static LinkedList<MovePair> buildPath(GameNode current, Map<GameNode,GameNode> cameFrom) {
         LinkedList<MovePair> path = new LinkedList<>();
@@ -90,8 +94,8 @@ public class PathFind {
     public static List<MovePair> getAvailableMoves(GameState game){
 
         List<MovePair> legalActions = new ArrayList<MovePair>();
-        for (Action p1 : Action.allActions) {
-            for (Action p2 : Action.allActions) {
+        for (Action p1 : game.getLegalActions(0)) {
+            for (Action p2 : game.getLegalActions(1)) {
                 legalActions.add(new MovePair(p1, p2));
             }
         }

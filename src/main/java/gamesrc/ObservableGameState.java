@@ -13,7 +13,7 @@ public interface ObservableGameState extends GameState {
 	public int getGoalsCount();
 	
 	public boolean getBeep(int agent);
-	public Point getAgent(int agent);
+	public Point getFlare(int agent);
 
 	public void setVisited(int agent, int goalID);
 	public void setSignalState(int signal, boolean state);

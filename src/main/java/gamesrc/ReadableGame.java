@@ -89,6 +89,9 @@ public class ReadableGame {
 			viewer.addKeyListener((KeyListener)p2);
 		}
 		
+		p1.startGame();
+		p2.startGame();
+		
 		int ticks = 0;
 		while(!state.hasWon()) {
 			Action a1 = p1.get(state.getClone());

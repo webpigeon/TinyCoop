@@ -10,6 +10,10 @@ import gamesrc.GameState;
 public abstract class Controller {
 
     public Controller getClone() { return this; }
+    
+    public void startGame() {
+    	
+    }
 
     public Action get(GameState game) {
         return Action.NOOP;

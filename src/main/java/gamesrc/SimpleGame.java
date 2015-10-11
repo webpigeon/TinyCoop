@@ -180,7 +180,7 @@ public class SimpleGame implements ObservableGameState {
 	}
 
 	@Override
-	public Point getAgent(int agent) {
+	public Point getFlare(int agent) {
 		return flares[agent];
 	}
 
