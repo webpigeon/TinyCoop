@@ -10,7 +10,7 @@
 \usepackage{array}
 \usepackage{caption}
 \usepackage{float}
-\captionsetup{belowskip=12pt,aboveskip=4pt}
+\captionsetup{belowskip=8pt,aboveskip=4pt}
 \graphicspath{{stats-processing/}{stats-processing/data/maps/}}
 
 \newacronym{mcts}{MCTS}{Monte Carlo Tree Search}
@@ -60,6 +60,7 @@ Creating \gls{ggp} agents that can co-operate with other players would open the 
 
 Standard \gls{mcts} plays best when it is able to search far enough to locate states that provide a reward. \gls{mcts} tends to stumble when the time or search depth limit given to it is not sufficient to allow it to locate any sequence of actions that provides a reward in order to differentiate the root's children \cite{perez2012monte}. When \gls{mcts} can not find any single state that contained a reward, all children of the node will contain identical values and the algorithm will be forced to make a random choice.
 
+The rest of this paper is structured as follows. Section II describes the problem and the experiment, including the \gls{ai} controllers that were used. Section III describes the results of the experiment and Section IV provides a discussion of the results. Section V concludes and introduces avenues of future research.
 \section{The Experiment}
 The main premise was to put \gls{mcts} in a situation where it would rely on other AI Agents in order to achieve its objectives, as well as provide a code base for further work with communication between \emph{Agents}. In order to do this, a problem domain was created.
 \subsection{The Problem Domain}
@@ -73,7 +74,7 @@ We created the following problem domain that is a simple grid world consisting o
 \item{\emph{Goals -} Goals are passable and reward all \emph{Agents} with a portion of the score. All \emph{Goals} are worth the same amount and the maximum score of $1$ is achieved when every \emph{Agent} has visited every \emph{Goal} at least once. Re-visiting a \emph{Goal} has no effect. All \emph{Agents} are aware of the current score achieved, and therefore can calculate if a \emph{Goal} is reached. \emph{Goals} are rendered in Bright Yellow}
 \end{itemize}
 
-The \emph{Agents} are provided with a forward model, that allows simulation of potential moves up to the end of the game. The \emph{Agents} are not allowed to directly query any information about the game state other than the score at any given state (current or simulated).
+The \emph{Agents} are provided with a forward model, that allows simulation of potential action pairs up to the end of the game. The \emph{Agents} are not allowed to directly query any information about the game state other than the score at any given state (current or simulated). There is no way to determine the presence of in-game objects other than potentially the \emph{Goal} due to its effect on score.
 
 Each \emph{Agent} is able to make a single action in each game tick. The actions are polled from each \emph{Agent} that is given the state of the game. When every \emph{Agent} has returned an action, the game is updated with these actions. The actions are implemented sequentially, if two \emph{Agents} return actions that result in occupying the same space, the \emph{Agent} with the lowest ID number will succeed while the other \emph{Agent} will fail and execute a \emph{No-Op}. The available 5 actions are:
 \begin{itemize}
@@ -88,7 +89,7 @@ All levels are defined by a simple text file format.
 
 The problems are designed to require \emph{Agents} to co-operate in order to achieve their goals. Unlike other domains where \gls{mcts} can solve tasks at its own pace and by itself, this domain requires the agents to sometimes sit patiently on a button for another \emph{Agent} to do something else.
 
-We feel that this creates a very interesting problem domain, due to the reward space for each \emph{Agent} being tied to the activities of other \emph{Agents}.
+We feel that this creates a very interesting problem domain, due to placing each \emph{Agent} that is typically designed to solve problems by themselves in an environment where they must rely on another \emph{Agent} performing certain sequences of actions without being able to communicate that sequence or anything else.
 \begin{comment}
 \subsection{Initial Testing}
 Initially, observations were made to see how \gls{mcts} handled the problem. At first, with a small computational budget it seemed like \gls{mcts} would perform poorly, with near random movement seeming to emerge.
@@ -265,6 +266,9 @@ Figure \ref{avgScoreAllMaps} shows the average score that each AI Agent achieved
 Airlock - shown in Figure \ref{Airlock} - poses a particular problem for many of the agents (see Figure \ref{avgScoreMap5}). The asymmetric nature of the level, and the delayed reward caused great difficulty for the Agents. Relying on two button presses and the other agent to get through the open doors - in order - greatly reduced performance. The top agent, \emph{High MCTS}, only managed an average score of $0.44$ compared to its total average of just over $0.8$.
 
 \section{Discussion}
+\subsection{Random Assumptions}
+The \gls{mcts} and \gls{ai} algorithms are required to run simulations of the game state in order to function. Even just a single look ahead of this problem domain requires the algorithm to make a selection of what the other play would do. In all cases, the assumption of a random strategy was chosen due to the availability only of agents that could play generally. Whilst nesting these could enhance play, as explored by Tristan Cazenave \cite{cazenave2007reflexive}, it comes at a significant computational cost and must in the case of \gls{ggp} feature a very simple or Random player at the base of the stack. Random is exceedingly fast to calculate, and provides the ability for techniques like \gls{mcts} to sample how its behaviour works almost regardless of what the other agent does. This gives \gls{mcts} the ability to make moves that it believes would help a worst case scenario player - something that in this problem domain is likely to also help a more intelligent player. When \gls{mcts} is sitting on the button, an intelligent player would go through the open door and a random player would eventually go through the door. \gls{mcts} even has the option of locking the random player on the other side, forcing it to eventually complete some other task.
+
 \subsection{MCTS}
 \gls{mcts} performed very well in this problem domain. 
 
@@ -279,8 +283,11 @@ As seen in Figure \ref{avgScorePairAllMaps} and Figure \ref{avgTicksPairAllMaps}
 The \gls{ga} algorithms do not have the stored tree structure of \gls{mcts} with which to gain the statistical model for what happens when they pursue certain actions. This leads to a seemingly poor performance for the \gls{ga} despite \gls{ga} and \gls{mcts} typically performing equally well in other domains.
 \subsection{Random}
 The \emph{RandomController} performed poorly in this problem domain. On average, the \emph{RandomController} finished under the 2000 tick limit and scored less than half the maximum on average.
+
+\subsection{A* Search}
+A* search was considered to be unsuitable for this domain, as searching across the action space of two \emph{Agents} was far too high a branching factor. 
 \section{Conclusions}
-In this paper, we found that a strong MCTS player can solve simple cooperative problems without requiring communication between agents. We also found that a number of other \gls{ai} techniques experienced difficulty when the problem became cooperative. Further work is required in this area.
+In this paper, we found that a strong \gls{mcts} player can solve simple cooperative problems without requiring communication between agents. We also found that a number of other \gls{ai} techniques experienced difficulty when the problem became cooperative. We hypothesised that \gls{mcts}'s use of a stored tree guiding its explorations (Something that \gls{ga}'s lack) was a major advantage in solving problems that rely on the other agent. \gls{ga}'s were found to perform poorly in the experiment, despite being capable of goal finding without the co-operative obstacles. Further work is required in this area to determine exactly why \gls{mcts} performs well.
 
 \subsection{Further Work}
 There is scope for more work in a number of areas.
