@@ -59,14 +59,14 @@ public class ReadableGame {
 				new WASDController()
 				);*/
 		
-		Controller c1 = new WASDController();
+		Controller c1 = new RandomController();
 		//Controller c1 = new MCTS(true, 500);
 		for (GameLevel level : levelList) {
 			GameState initalStateS = new SimpleGame(level);
 			
 			//for (Controller c1 : controllers) {
 				//Controller c2 = new PassiveController();
-				Controller c2 = new MCTS(false, 500);
+				Controller c2 = new PassiveController();
 				//Controller c2 = new NoOp();
 				
 				frame.setTitle("TinyCoop "+c1.getSimpleName()+" and "+c2.getSimpleName());

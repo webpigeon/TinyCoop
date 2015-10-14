@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import FastGame.Action;
+import FastGame.TalkAction;
 
 /**
  * TinyCoop implementation designed for planners.
@@ -170,7 +171,22 @@ public class SimpleGame implements ObservableGameState {
 
 	@Override
 	public Action[] getLegalActions(int playerID) {
-		return new Action[]{Action.NOOP, Action.BEEP, Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT};
+		Action[] orginalActions = new Action[]{Action.NOOP, Action.BEEP, Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT};
+		Action[] actions = new Action[orginalActions.length + level.getWidth()*level.getHeight()];
+		
+		int i=0;
+		for (int x = 0; x < level.getWidth(); x++) {
+			for (int y=0; y < level.getHeight(); y++) {
+				actions[i++] = new TalkAction(playerID, x, y);
+			}
+		}
+		
+		int remaining = actions.length - i;
+		for (int j=0; j<remaining; j++) {
+			actions[i++] = orginalActions[j];
+		}
+		
+		return actions;
 	}
 
 	@Override
