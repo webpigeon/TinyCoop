@@ -11,7 +11,7 @@ public abstract class Controller {
 
     public Controller getClone() { return this; }
     
-    public void startGame() {
+    public void startGame(int agentID) {
     	
     }
 

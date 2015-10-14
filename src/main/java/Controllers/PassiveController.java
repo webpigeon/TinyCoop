@@ -1,9 +1,10 @@
 package Controllers;
 
 import java.awt.Point;
+import java.util.LinkedList;
 import java.util.Queue;
 
-import Controllers.astar.PathFind;
+import Controllers.astar.PathFinder;
 import FastGame.Action;
 import gamesrc.GameState;
 import gamesrc.ObservableGameState;
@@ -16,39 +17,59 @@ import gamesrc.ObservableGameState;
  * out what is going on (I'm evil and won't tell it ;P).
  */
 public class PassiveController extends Controller {
-	private Queue<Action> nextMoves;
-	private Point flarePos;
+	private static final Action DEFAULT_MOVE = Action.NOOP;
+	private Queue<Point> nextMoves;
+	private int agentID;
 	
     @Override
-	public void startGame() {
-    	this.nextMoves = null;
-    	this.flarePos = null;
+	public void startGame(int agentID) {
+    	this.nextMoves = new LinkedList<>();
+    	this.agentID = agentID;
 	}
 
 	@Override
     public Action get(GameState game) {
     	ObservableGameState gameState = (ObservableGameState)game;
     	
-    	Point newFlarePos = gameState.getFlare(0);
-    	if (newFlarePos != null) {
-    		flarePos = newFlarePos;
-    		nextMoves = null;
+    	Point flarePos = gameState.getFlare(agentID==0?1:0);
+    	if (flarePos != null) {
+    		nextMoves = PathFinder.getPath(gameState, gameState.getPos(agentID), flarePos, agentID);
+    		if (!nextMoves.isEmpty()) {
+    			System.out.println("I got an instruction and found a path: "+nextMoves);
+    		} else {
+    			System.out.println("I got an instruction and could not find a path!");
+    		}
     	}
     	
-    	if (flarePos != null && nextMoves == null) {
-    		nextMoves = PathFind.findPath(game, gameState.getPos(0), flarePos);
-    	}
-    	
-    	if (nextMoves == null || nextMoves.isEmpty() ) {
-    		return Action.NOOP;
-    	} else {
-        	Action nextMove = nextMoves.poll();
-        	if (nextMoves.isEmpty()) {
-        		nextMoves = null;
-        		flarePos = null;
+		Action nextMove = DEFAULT_MOVE;
+    	if ( !nextMoves.isEmpty() ) {
+    		
+        	Point nextMovePoint = nextMoves.peek();
+        	if (!gameState.isWalkable(agentID, nextMovePoint.x, nextMovePoint.y)) {
+        		return nextMove;
+        	} else {
+        		nextMoves.poll();
         	}
-            return nextMove;
+        	
+        	
+        	for (Action action : gameState.getLegalActions(agentID)) {
+        		
+        		Point actionResult = gameState.getPos(agentID);
+        		if (action.isMovement()) {
+        			actionResult.x += action.getX();
+        			actionResult.y += action.getY();
+        			
+            		if (actionResult.equals(nextMovePoint)) {
+            			System.out.println("I am going to move now! "+action);
+            			nextMove = action;
+            		}
+        		}
+        		
+        	}
+        	
     	}
+    	
+    	return nextMove;
     }
 	
 }

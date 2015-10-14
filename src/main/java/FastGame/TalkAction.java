@@ -7,12 +7,12 @@ public class TalkAction extends Action {
 
 	private int signal;
 	
-	protected TalkAction(int signal) {
+	public TalkAction(int signal) {
 		super("BEEP", 0, 0);
 		this.signal = signal;
 	}
 	
-	protected TalkAction(int signal, int x, int y) {
+	public TalkAction(int signal, int x, int y) {
 		super("FLARE", x, y);
 		this.signal = signal;
 	}

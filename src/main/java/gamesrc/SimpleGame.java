@@ -82,6 +82,10 @@ public class SimpleGame implements ObservableGameState {
 	}
 	
 	protected void doAction(int pid, Action action) {
+		if (action.isNoop()) {
+			return;
+		}
+		
 		Point newPos = new Point(positions[pid]);
 		newPos.x = newPos.x + action.getX();
 		newPos.y = newPos.y + action.getY();
@@ -102,7 +106,7 @@ public class SimpleGame implements ObservableGameState {
 
 	@Override
 	public Point getPos(int i) {
-		return positions[i];
+		return new Point(positions[i]);
 	}
 
 	@Override
@@ -182,6 +186,11 @@ public class SimpleGame implements ObservableGameState {
 	@Override
 	public Point getFlare(int agent) {
 		return flares[agent];
+	}
+
+	@Override
+	public boolean isWalkable(int pid, int x, int y) {
+		return level.isWalkable(pid, new Point(x,y), this);
 	}
 
 }

@@ -2,6 +2,7 @@ package gamesrc;
 
 import java.awt.Dimension;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +14,8 @@ import javax.swing.JFrame;
 import Controllers.ArrowController;
 import Controllers.Controller;
 import Controllers.MCTS;
+import Controllers.NoOp;
+import Controllers.PassiveController;
 import Controllers.RandomController;
 import Controllers.WASDController;
 import Controllers.VariGA.VariGA;
@@ -22,7 +25,7 @@ public class ReadableGame {
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
 		String[] levels = new String[]{
-			"maps/level8.txt",
+			//"maps/level8.txt",
 			"maps/level1.txt",
 			"maps/level2.txt",
 			"maps/level3.txt",
@@ -57,11 +60,14 @@ public class ReadableGame {
 				);*/
 		
 		Controller c1 = new WASDController();
+		//Controller c1 = new MCTS(true, 500);
 		for (GameLevel level : levelList) {
 			GameState initalStateS = new SimpleGame(level);
 			
 			//for (Controller c1 : controllers) {
-				Controller c2 = new ArrowController();
+				//Controller c2 = new PassiveController();
+				Controller c2 = new MCTS(false, 500);
+				//Controller c2 = new NoOp();
 				
 				frame.setTitle("TinyCoop "+c1.getSimpleName()+" and "+c2.getSimpleName());
 				
@@ -81,16 +87,22 @@ public class ReadableGame {
 			viewer.setFocusable(true);
 			viewer.requestFocus();
 			viewer.addKeyListener((KeyListener)p1);
+			if (p1 instanceof MouseListener) {
+				viewer.addMouseListener((MouseListener)p1);
+			}
 		}
 		
 		if (p2 instanceof KeyListener) {
 			viewer.setFocusable(true);
 			viewer.requestFocus();
 			viewer.addKeyListener((KeyListener)p2);
+			if (p1 instanceof MouseListener) {
+				viewer.addMouseListener((MouseListener)p2);
+			}
 		}
 		
-		p1.startGame();
-		p2.startGame();
+		p1.startGame(0);
+		p2.startGame(1);
 		
 		int ticks = 0;
 		while(!state.hasWon()) {

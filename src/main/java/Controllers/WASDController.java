@@ -2,24 +2,51 @@ package Controllers;
 
 import FastGame.Action;
 import FastGame.CoopGame;
+import FastGame.TalkAction;
 import gamesrc.GameState;
+import gamesrc.ObservableGameState;
+import gamesrc.Viewer;
 
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * Created by pwillic on 23/06/2015.
  */
-public class WASDController extends Controller implements KeyListener {
-    Action[] actions = new Action[]{Action.NOOP, Action.DOWN, Action.LEFT, Action.RIGHT, Action.UP, Action.BEEP};
-
-    int actionID = 0;
-
+public class WASDController extends Controller implements KeyListener, MouseListener {
+    private Action action;
+    private Point flarePos;
+    private int agentID;
+    
     @Override
+	public void startGame(int agentID) {
+    	this.action = Action.NOOP;
+    	this.flarePos = null;
+    	this.agentID = agentID;
+	}
+
+	@Override
     public Action get(GameState game) {
-        int id = actionID;
-        actionID = 0;
-        return actions[id];
+		Action[] actions = game.getLegalActions(agentID);
+		
+		if (flarePos != null) {
+			for (Action action : actions) {
+				if (action.isTalk()) {
+					return Action.NOOP;
+				}
+				
+				Point flarePos2 = new Point(flarePos);
+				flarePos = null;
+				return new TalkAction(agentID, flarePos2.x, flarePos2.y);	
+			}
+		}
+		
+		Action nextAction = action;
+		action = Action.NOOP;
+        return nextAction;
     }
 
     @Override
@@ -31,19 +58,19 @@ public class WASDController extends Controller implements KeyListener {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyChar()) {
             case 'a':
-                actionID = 2;
+                action = Action.LEFT;
                 break;
             case 's':
-                actionID = 1;
+                action = Action.DOWN;
                 break;
             case 'd':
-                actionID = 3;
+                action = Action.RIGHT;
                 break;
             case 'w':
-                actionID = 4;
+                action = Action.UP;
                 break;
             case 'x':
-                actionID = 5;
+                action = Action.BEEP;
                 break;
         }
 //        System.out.println("Action: " + actions[actionID]);
@@ -53,4 +80,35 @@ public class WASDController extends Controller implements KeyListener {
     public void keyReleased(KeyEvent e) {
 
     }
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		int x = arg0.getX() / Viewer.GRID_SIZE;
+		int y = arg0.getY() / Viewer.GRID_SIZE;
+		flarePos = new Point(x,y);
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 }

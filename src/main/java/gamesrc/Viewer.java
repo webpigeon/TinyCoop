@@ -16,7 +16,7 @@ import static FastGame.ObjectTypes.DOOR;
 public class Viewer extends JComponent {
 
     private ObservableGameState game;
-    private final Integer gridSize = 50;
+    public final static Integer GRID_SIZE = 50;
 
     public Viewer(ObservableGameState game) {
         this.game = game;
@@ -33,7 +33,7 @@ public class Viewer extends JComponent {
         if (game == null) {
         	return;
         }
-    	
+        
         for (int x = 0; x < game.getWidth(); x++) {
             for (int y = 0; y < game.getHeight(); y++) {
                 int groundValue = game.getFloor(x, y);
@@ -46,31 +46,35 @@ public class Viewer extends JComponent {
                         g.setColor(Color.BLACK);
                         break;
                 }
-                g.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
+                g.fillRect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                 
                 GameObject object = game.getObject(x, y);
                 if (object != null) {
-                	object.paint(x, y, gridSize, game, g);
+                	object.paint(x, y, GRID_SIZE, game, g);
                 }
+            }
+        }
+        
+        // Draw the grid
+        g.setColor(Color.BLACK);
+        for (int x = 0; x < game.getWidth(); x++) {
+            for (int y = 0; y < game.getHeight(); y++) {
+                g.drawRect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
             }
         }
         
         for (int i=0; i<2; i++) {
         	Point p = game.getPos(i);
         	g.setColor(Color.WHITE);
-        	g.fillOval(p.x * gridSize, p.y * gridSize, gridSize, gridSize);
+        	g.fillOval(p.x * GRID_SIZE, p.y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
         	g.setColor(Color.BLACK);
-        	g.drawString("" + i, p.x * gridSize + gridSize / 2, (p.y * gridSize) + gridSize / 2);
-        }
-
-        // Draw the grid
-        g.setColor(Color.BLACK);
-        for (int x = 0; x < game.getWidth(); x++) {
-            for (int y = 0; y < game.getHeight(); y++) {
-                g.drawRect(x * gridSize, y * gridSize, gridSize, gridSize);
-            }
+        	g.drawString("" + i, p.x * GRID_SIZE + GRID_SIZE / 2, (p.y * GRID_SIZE) + GRID_SIZE / 2);
         }
         
+        paintDebugInfo(g);
+    }
+    
+    protected void paintDebugInfo(Graphics g) {
         for (int i=0; i<10; i++) {
         	g.setColor(Color.CYAN);
         	if (game.isSignalHigh(i)) {
@@ -79,11 +83,7 @@ public class Viewer extends JComponent {
         		g.drawRect(i*10, 0, 10, 10);
         	}
         }
-        
-        paintDebugInfo(g);
-    }
-    
-    protected void paintDebugInfo(Graphics g) {
+    	
         for (int goalID=0; goalID<game.getGoalsCount(); goalID++) {
         	for (int agent=0; agent<2; agent++) {
 	        	g.setColor(Color.YELLOW);
@@ -97,16 +97,24 @@ public class Viewer extends JComponent {
         
         for (int agent=0; agent<2; agent++) {
         	g.setColor(Color.RED);
-        	if (game.getBeep(agent)) {
+        	if (game.getBeep(agent) || game.getFlare(agent) != null) {
+            	if (game.getFlare(agent) != null) {
+            		Point p = game.getFlare(agent);
+            		g.setColor(Color.WHITE);
+            		g.drawRect(p.x * GRID_SIZE, p.y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+            	}
+        		
         		g.fillRect(agent*10, 30, 10, 10);
         	} else {
+            	g.setColor(Color.RED);
         		g.drawRect(agent*10, 30, 10, 10);
         	}
+        	
         }
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(game.getWidth() * gridSize, game.getHeight() * gridSize);
+        return new Dimension(game.getWidth() * GRID_SIZE, game.getHeight() * GRID_SIZE);
     }
 }
