@@ -17,6 +17,7 @@ import Controllers.MCTS;
 import Controllers.NoOp;
 import Controllers.PassiveController;
 import Controllers.RandomController;
+import Controllers.SortOfRandomController;
 import Controllers.WASDController;
 import Controllers.VariGA.VariGA;
 import FastGame.Action;
@@ -59,7 +60,7 @@ public class ReadableGame {
 				new WASDController()
 				);*/
 		
-		Controller c1 = new RandomController();
+		Controller c1 = new SortOfRandomController();
 		//Controller c1 = new MCTS(true, 5000);
 		for (GameLevel level : levelList) {
 			GameState initalStateS = new SimpleGame(level);
