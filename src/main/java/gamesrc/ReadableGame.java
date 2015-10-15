@@ -60,17 +60,18 @@ public class ReadableGame {
 				);*/
 		
 		Controller c1 = new RandomController();
-		//Controller c1 = new MCTS(true, 500);
+		//Controller c1 = new MCTS(true, 5000);
 		for (GameLevel level : levelList) {
 			GameState initalStateS = new SimpleGame(level);
 			
 			//for (Controller c1 : controllers) {
-				//Controller c2 = new PassiveController();
 				Controller c2 = new PassiveController();
+				//Controller c2 = new RandomController();
 				//Controller c2 = new NoOp();
 				
 				frame.setTitle("TinyCoop "+c1.getSimpleName()+" and "+c2.getSimpleName());
 				
+				System.out.println(level);
 				runGraphicalGame(initalStateS, viewer, c1, c2);
 			//}
 		}
@@ -109,8 +110,8 @@ public class ReadableGame {
 			Action a1 = p1.get(state.getClone());
 			Action a2 = p2.get(state.getClone());
 			state.update(a1, a2);
-			viewer.repaint();
-			Thread.sleep(500);
+			//viewer.repaint();
+			//Thread.sleep(500);
 			ticks++;
 		}
 		

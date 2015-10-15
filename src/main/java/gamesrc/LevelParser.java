@@ -15,7 +15,7 @@ public class LevelParser {
 		int width = scanner.nextInt();
 		int height = scanner.nextInt();
 		
-		GameLevel level = new GameLevel(width, height);
+		GameLevel level = new GameLevel(filename, width, height);
 		
 		for (int row=0; row<height; row++) {
 			for (int col=0; col<width; col++) {

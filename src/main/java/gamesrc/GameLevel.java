@@ -3,6 +3,7 @@ package gamesrc;
 import java.awt.Point;
 
 public class GameLevel {
+	private String name;
 	private int width;
 	private int height;
 	private Point[] spawnLocations;
@@ -10,7 +11,8 @@ public class GameLevel {
 	private GameObject[] objects;
 	private int goalCount = 0;
 	
-	public GameLevel(int width, int height) {
+	public GameLevel(String name, int width, int height) {
+		this.name = name;
 		this.width = width;
 		this.height = height;
 		this.spawnLocations = new Point[2];
@@ -107,6 +109,11 @@ public class GameLevel {
 
 	public Point getSpawnLocation(int i) {
 		return spawnLocations[i];
+	}
+	
+	@Override
+	public String toString(){
+		return name;
 	}
 
 }

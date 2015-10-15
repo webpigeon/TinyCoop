@@ -67,7 +67,6 @@ public class PathFinder {
 			path.addFirst(current);
 		}
 		
-		System.out.println(path);
 		return path;
 	}
 	

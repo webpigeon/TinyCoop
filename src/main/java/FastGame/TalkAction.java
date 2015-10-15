@@ -24,7 +24,7 @@ public class TalkAction extends Action {
     public boolean isMovement() {
     	return false;
     }
-	
+
 	public boolean isTalk() {
 		return true;
 	}

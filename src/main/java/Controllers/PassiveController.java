@@ -35,9 +35,9 @@ public class PassiveController extends Controller {
     	if (flarePos != null) {
     		nextMoves = PathFinder.getPath(gameState, gameState.getPos(agentID), flarePos, agentID);
     		if (!nextMoves.isEmpty()) {
-    			System.out.println("I got an instruction and found a path: "+nextMoves);
+    			//System.out.println("I got an instruction and found a path: "+nextMoves);
     		} else {
-    			System.out.println("I got an instruction and could not find a path!");
+    			//System.out.println("I got an instruction and could not find a path!");
     		}
     	}
     	
@@ -60,7 +60,7 @@ public class PassiveController extends Controller {
         			actionResult.y += action.getY();
         			
             		if (actionResult.equals(nextMovePoint)) {
-            			System.out.println("I am going to move now! "+action);
+            			//System.out.println("I am going to move now! "+action);
             			nextMove = action;
             		}
         		}
