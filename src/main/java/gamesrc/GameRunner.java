@@ -5,7 +5,13 @@ import java.io.IOException;
 import javax.swing.JFrame;
 
 import Controllers.Controller;
+import Controllers.MCTS;
+import Controllers.PassiveController;
 import Controllers.RandomController;
+import Controllers.SortOfRandomController;
+import Controllers.enhanced.NestedControllerPredictor;
+import Controllers.enhanced.Predictor;
+import Controllers.enhanced.PredictorMCTS;
 import utils.StatSummary;
 
 public class GameRunner {
@@ -20,14 +26,21 @@ public class GameRunner {
 		frame.pack();
 		frame.setVisible(true);
 		
-		Controller p1 = new RandomController();
-		Controller p2 = new RandomController();
+		Controller predictorController = new PassiveController();
+		Predictor predictor = new NestedControllerPredictor(predictorController);
+		Controller p1 = new PredictorMCTS(true, 5000, 1000, 1000, predictor);
+		
+		
+		Controller p2 = new PassiveController();
 		
 		
 		StatSummary scores = new StatSummary();
 		StatSummary ticks = new StatSummary();
 		
 		for (int i=0; i<10; i++) {
+			
+			p1.startGame(0);
+			p2.startGame(1);
 			
 			int tickCount = 0;
 			while (!game.hasWon()) {

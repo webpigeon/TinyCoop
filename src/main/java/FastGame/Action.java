@@ -15,7 +15,6 @@ public class Action {
     public static final Action RIGHT = new MoveAction("RIGHT", 1, 0);
     public static final Action NOOP = new Action("NOOP", 0, 0);
     public static final Action BEEP = new TalkAction(0, 0, 0);
-    private static final Random random = new Random();
     //public static final Action[] allActions = {NOOP, UP, DOWN, LEFT, RIGHT};
 
     private int x, y;
@@ -26,12 +25,7 @@ public class Action {
         this.x = x;
         this.y = y;
     }
-
-    public static Action getRandom(int actionID, GameState state) {
-    	Action[] allActions = state.getLegalActions(actionID);
-        return allActions[random.nextInt(allActions.length)];
-    }
-
+    
     public int getX() {
         return x;
     }

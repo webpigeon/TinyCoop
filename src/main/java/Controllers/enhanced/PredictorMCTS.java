@@ -1,4 +1,4 @@
-package Controllers;
+package Controllers.enhanced;
 
 import FastGame.Action;
 import FastGame.CoopGame;
@@ -6,31 +6,43 @@ import gamesrc.GameState;
 
 import java.util.Random;
 
+import Controllers.Controller;
+
 /**
  * Created by pwillic on 23/06/2015.
  */
-public class MCTS extends Controller {
+public class PredictorMCTS extends Controller {
 
     private Random random = new Random();
     private int maxUCTDepth = 5;
     private int maxRolloutDepth = 30;
     private int iterationLimit = 0;
+    private Predictor predictor;
 
     private boolean first;
 
-    public MCTS(boolean first, int iterationLimit, int maxUCTDepth, int maxRolloutDepth) {
+    public PredictorMCTS(boolean first, int iterationLimit, int maxUCTDepth, int maxRolloutDepth, Predictor predictor) {
         this.first = first;
         this.iterationLimit = iterationLimit;
         this.maxUCTDepth = maxUCTDepth;
         this.maxRolloutDepth = maxRolloutDepth;
+        this.predictor = predictor;
     }
 
-    public MCTS(boolean first, int iterationLimit){
+    public PredictorMCTS(boolean first, int iterationLimit){
         this.first = first;
         this.iterationLimit = iterationLimit;
     }
 
+    
+    
     @Override
+	public void startGame(int agentID) {
+		super.startGame(agentID);
+		predictor.init(agentID);
+	}
+
+	@Override
     public Action get(GameState game) {
         MCTSNode root = new MCTSNode(2.0, this, game.getActionLength());
         MCTSNode travel;
@@ -82,10 +94,10 @@ private class MCTSNode {
     private MCTSNode[] children;
     private int childLength;
 
-    private MCTS mcts;
+    private PredictorMCTS mcts;
 
     // Root
-    public MCTSNode(double explorationConstant, MCTS mcts, int actionLength) {
+    public MCTSNode(double explorationConstant, PredictorMCTS mcts, int actionLength) {
         this.explorationConstant = explorationConstant;
         this.currentDepth = 0;
         this.mcts = mcts;
@@ -134,9 +146,7 @@ private class MCTSNode {
     }
     
     protected Action getOppAction(int playerID, GameState state) {
-    	Action[] legalActions = state.getLegalActions(playerID);
-    	int id = random.nextInt(legalActions.length);
-    	return legalActions[id];
+    	return predictor.predict(playerID, state);
     }
 
     protected MCTSNode selectBestChild() {
