@@ -1,7 +1,5 @@
 package gamesrc;
 
-import java.awt.Graphics;
-
 import FastGame.ObjectTypes;
 
 public class Button extends GameObject {
@@ -12,13 +10,13 @@ public class Button extends GameObject {
 	}
 
 	@Override
-	public void onContact(ObservableGameState state, int playerId) {
+	public void onContact(SimpleGame state, int playerId) {
 		if (state.getSignalState(signal) >= 0) {
 			state.setSignalState(signal, true);
 		}
 	}
 	
-	public void onContactEnd(ObservableGameState state, int pid) {
+	public void onContactEnd(SimpleGame state, int pid) {
 		state.setSignalState(signal, false);
 	}
 

@@ -98,10 +98,10 @@ public class Viewer extends JComponent {
         for (int agent=0; agent<2; agent++) {
         	g.setColor(Color.RED);
         	if (game.getBeep(agent) || game.getFlare(agent) != null) {
-            	if (game.getFlare(agent) != null) {
-            		Point p = game.getFlare(agent);
+        		Point p = game.getFlare(agent);
+            	if (p != null) {
             		g.setColor(Color.WHITE);
-            		g.drawRect(p.x * GRID_SIZE, p.y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+	            	g.drawRect(p.x * GRID_SIZE, p.y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
             	}
         		
         		g.fillRect(agent*10, 30, 10, 10);

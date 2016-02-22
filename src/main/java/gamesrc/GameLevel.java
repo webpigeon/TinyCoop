@@ -83,7 +83,7 @@ public class GameLevel {
 		return objects[x * height + y];
 	}
 
-	public void onStep(ObservableGameState state, int pid, Point oldPos, Point newPos) {
+	public void onStep(SimpleGame state, int pid, Point oldPos, Point newPos) {
 		GameObject oldObject = getObject(oldPos.x, oldPos.y);
 		GameObject newObject = getObject(newPos.x, newPos.y);
 		
@@ -103,7 +103,7 @@ public class GameLevel {
 		return floors[x * height + y];
 	}
 
-	public void setFloor(int x, int y, int floorId) {
+	protected void setFloor(int x, int y, int floorId) {
 		floors[x * height + y] = floorId;
 	}
 

@@ -110,7 +110,6 @@ public class SimpleGame implements ObservableGameState {
 		return new Point(positions[i]);
 	}
 
-	@Override
 	public void setSignalState(int signal, boolean state) {
 		Integer i = signals.get(signal);
 		i = i == null ? 0 : i;
@@ -134,8 +133,7 @@ public class SimpleGame implements ObservableGameState {
 		return i == null ? 0 : i;
 	}
 	
-	@Override
-	public void setVisited(int agent, int goalID) {
+	protected void setVisited(int agent, int goalID) {
 		visitList[agent * level.getGoalCount() + goalID] = true;
 	}
 

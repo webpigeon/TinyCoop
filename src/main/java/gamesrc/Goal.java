@@ -10,7 +10,7 @@ public class Goal extends GameObject {
 	}
 
 	@Override
-	public void onContact(ObservableGameState state, int playerId) {
+	public void onContact(SimpleGame state, int playerId) {
 		state.setVisited(playerId, goalId);
 	}
 	

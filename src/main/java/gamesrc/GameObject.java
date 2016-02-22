@@ -7,13 +7,13 @@ import java.awt.Graphics;
 
 public abstract class GameObject {
 
-	public boolean isWalkable(ObservableGameState state, int playerId) {
+	public boolean isWalkable(SimpleGame state, int playerId) {
 		return true;
 	}
 	
-	public abstract void onContact(ObservableGameState state, int playerId);
+	public abstract void onContact(SimpleGame state, int playerId);
 
-	public void onContactEnd(ObservableGameState state, int pid) {}
+	public void onContactEnd(SimpleGame state, int pid) {}
 
 	public abstract int getSignal();
 	public abstract int getType();

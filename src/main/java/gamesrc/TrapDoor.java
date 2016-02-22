@@ -21,12 +21,12 @@ public class TrapDoor extends GameObject {
 	}
 
 	@Override
-	public boolean isWalkable(ObservableGameState state, int playerId) {
+	public boolean isWalkable(SimpleGame state, int playerId) {
 		return state.isSignalHigh(signal);
 	}
 	
 	@Override
-	public void onContact(ObservableGameState state, int playerId) {
+	public void onContact(SimpleGame state, int playerId) {
 		state.setSignalState(signal, false);
 	}
 
