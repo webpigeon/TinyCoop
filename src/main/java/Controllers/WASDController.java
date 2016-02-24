@@ -86,6 +86,7 @@ public class WASDController extends Controller implements KeyListener, MouseList
 		int x = arg0.getX() / Viewer.GRID_SIZE;
 		int y = arg0.getY() / Viewer.GRID_SIZE;
 		flarePos = new Point(x,y);
+		System.out.println(flarePos);
 	}
 
 	@Override
