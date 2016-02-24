@@ -11,7 +11,7 @@ import gamesrc.GameState;
  * Created by pwillic on 30/06/2015.
  */
 public class SortOfRandomController extends Controller {
-	private final Double COMM_CHANCE = 0.5;
+	private final Double COMM_CHANCE = 0.75;
 	
 	private Random random;
 	private int agentID;
@@ -28,7 +28,7 @@ public class SortOfRandomController extends Controller {
 	@Override
     public Action get(GameState game) {
     	
-		Action[] actions = new Action[]{Action.NOOP, Action.BEEP, Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT};
+		Action[] actions = new Action[]{Action.NOOP, Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT};
 		
 		//half of the time replace the actions with communication actions
     	if (random.nextDouble() > COMM_CHANCE) {
