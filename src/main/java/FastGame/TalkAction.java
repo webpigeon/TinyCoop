@@ -35,4 +35,8 @@ public class TalkAction extends Action {
 	public boolean isTalk() {
 		return true;
 	}
+	
+	public String toString() {
+		return String.format("(%d,%d) - %s", getX(), getY(), super.toString());
+	}
 }
