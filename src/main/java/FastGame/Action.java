@@ -1,9 +1,11 @@
 package FastGame;
 
+import java.awt.Point;
 import java.util.Objects;
 import java.util.Random;
 
 import gamesrc.GameState;
+import gamesrc.SimpleGame;
 
 /**
  * Created by pwillic on 23/06/2015.
@@ -62,6 +64,15 @@ public class Action {
     }
 
 	public boolean isTalk() {
+		return false;
+	}
+	
+	//are these relative to a game object?
+	public boolean isRelative() {
+		return true;
+	}
+	
+	public boolean isBeep() {
 		return false;
 	}
 	

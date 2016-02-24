@@ -29,7 +29,7 @@ public class GameRunner implements Callable<GameResult> {
 		level.setLegalMoves("basic", Filters.getBasicActions());
 
 		GameLevel level2 = LevelParser.buildParser("data/maps/level1.txt");
-		level2.setLegalMoves("full", Filters.getAllActions(level2.getWidth(), level2.getHeight()));
+		level2.setLegalMoves("relative", Filters.getAllRelativeActions());
 
 		// setup the games
 		List<GameRunner> tasks = new ArrayList<GameRunner>(10);

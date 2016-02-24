@@ -70,6 +70,17 @@ public class Filters {
 		return legalActions;
 	}
 	
+	public static List<Action> getAllRelativeActions() {
+
+		List<Action> legalActions = new ArrayList<Action>();
+	
+		legalActions.addAll(getBasicActions());
+		legalActions.addAll(generateRelativeFlares());
+		
+		return legalActions;
+	}
+	
+	
 	public static List<Action> getBasicActions() {
 		return Arrays.asList(Action.NOOP, Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT);
 	}
@@ -85,10 +96,14 @@ public class Filters {
 		//generate full grid talk actions
 		for (int x = 0; x < width; x++) {
 			for (int y=0; y < height; y++) {
-				legalActions.add(new TalkAction(x, y));
+				legalActions.add(new TalkAction(x, y, false));
 			}
 		}
 		return legalActions;
+	}
+	
+	public static List<Action> generateRelativeFlares() {
+		return Arrays.asList(TalkAction.FLARE_DOWN, TalkAction.FLARE_UP, TalkAction.FLARE_LEFT, TalkAction.FLARE_RIGHT);
 	}
 	
 }

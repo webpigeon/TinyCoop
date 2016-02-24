@@ -87,7 +87,7 @@ public class SimpleGame implements ObservableGameState {
 		if (action.isNoop()) {
 			return;
 		}
-		
+
 		Point newPos = new Point(positions[pid]);
 		newPos.x = newPos.x + action.getX();
 		newPos.y = newPos.y + action.getY();
@@ -98,10 +98,16 @@ public class SimpleGame implements ObservableGameState {
 		}
 		
 		if (action.isTalk()) {
-			if (action.getX() != 0 && action.getY() != 0) {
-				flares[pid] = new Point(action.getX(), action.getY());
-			} else {
+			if (action.isBeep()) {
 				beeps[pid] = true;
+			} else {
+				Point flarePoint = new Point(action.getX(), action.getY());
+				if (action.isRelative()) {
+					int otherPlayer = pid==1?0:1;
+					flarePoint.x += positions[otherPlayer].x;
+					flarePoint.y += positions[otherPlayer].y;
+				}
+				flares[pid] = flarePoint;
 			}
 		}
 	}
