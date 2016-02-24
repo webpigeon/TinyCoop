@@ -3,9 +3,11 @@ package Controllers.enhanced;
 import Controllers.Controller;
 import FastGame.Action;
 import gamesrc.GameState;
+import gamesrc.ObservableGameState;
 
 public class NestedControllerPredictor implements Predictor {
 	private Controller controller;
+	private int agentID;
 	
 	public NestedControllerPredictor(Controller controller){
 		this.controller = controller;
@@ -14,6 +16,7 @@ public class NestedControllerPredictor implements Predictor {
 	@Override
 	public void init(int agentID) {
 		int oppID = agentID == 0?1:0;
+		this.agentID = agentID;
 		controller.startGame(oppID);
 	}
 	
