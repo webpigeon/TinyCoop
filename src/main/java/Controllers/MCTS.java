@@ -195,6 +195,8 @@ private class MCTSNode {
             if (x > bestValue && children[i] == null) {
                 bestAction = i;
                 bestValue = x;
+            } else if (x == bestValue && children[i] == null && random.nextBoolean()) {
+            	bestAction = i;
             }
         }
  
