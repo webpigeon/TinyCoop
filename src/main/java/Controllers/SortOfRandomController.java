@@ -1,10 +1,12 @@
 package Controllers;
 
+import java.util.List;
 import java.util.Random;
 
 import FastGame.Action;
 import FastGame.CoopGame;
 import FastGame.TalkAction;
+import gamesrc.Filters;
 import gamesrc.GameState;
 
 /**
@@ -16,8 +18,6 @@ public class SortOfRandomController extends Controller {
 	private Random random;
 	private int agentID;
 
-	
-	
     @Override
 	public void startGame(int agentID) {
 		super.startGame(agentID);
@@ -28,23 +28,18 @@ public class SortOfRandomController extends Controller {
 	@Override
     public Action get(GameState game) {
     	
-		Action[] actions = new Action[]{Action.NOOP, Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT};
+		//get only the movement actions
+		List<Action> actions = Filters.filterMovement(game.getLegalActions(agentID));
 		
 		//half of the time replace the actions with communication actions
     	if (random.nextDouble() > COMM_CHANCE) {
-    		
-    		actions = new Action[game.getWidth() * game.getHeight()];
-    		
-    		int i=0;
-    		for (int x = 0; x < game.getWidth(); x++) {
-    			for (int y=0; y < game.getHeight(); y++) {
-    				actions[i++] = new TalkAction(agentID, x, y);
-    			}
+    		List<Action> talkActions = Filters.filterTalk(game.getLegalActions(agentID));
+    		if (!talkActions.isEmpty()) {
+    			actions = talkActions;
     		}
     		
     	}
     	
-		return actions[random.nextInt(actions.length)];
-
+		return actions.get(random.nextInt(actions.size()));
     }
 }

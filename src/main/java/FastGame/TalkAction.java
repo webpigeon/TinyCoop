@@ -5,23 +5,16 @@ package FastGame;
  */
 public class TalkAction extends Action {
 
-	private int signal;
 	private boolean isBeep;
 	
-	public TalkAction(int signal) {
+	public TalkAction() {
 		super("BEEP", -1, -1);
-		this.signal = signal;
 		this.isBeep = true;
 	}
 	
-	public TalkAction(int signal, int x, int y) {
+	public TalkAction(int x, int y) {
 		super("FLARE", x, y);
-		this.signal = signal;
 		this.isBeep = false;
-	}
-	
-	public int getSignal() {
-		return signal;
 	}
 	
 	public boolean isBeep() {

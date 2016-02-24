@@ -14,7 +14,7 @@ public class Action {
     public static final Action LEFT = new MoveAction("LEFT", -1, 0);
     public static final Action RIGHT = new MoveAction("RIGHT", 1, 0);
     public static final Action NOOP = new Action("NOOP", 0, 0);
-    public static final Action BEEP = new TalkAction(0, 0, 0);
+    public static final Action BEEP = new TalkAction();
     //public static final Action[] allActions = {NOOP, UP, DOWN, LEFT, RIGHT};
 
     private int x, y;
@@ -64,4 +64,5 @@ public class Action {
 	public boolean isTalk() {
 		return false;
 	}
+	
 }

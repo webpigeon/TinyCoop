@@ -3,6 +3,7 @@ package gamesrc;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -169,20 +170,10 @@ public class SimpleGame implements ObservableGameState {
 
 	@Override
 	public Action[] getLegalActions(int playerID) {
-		Action[] orginalActions = new Action[]{Action.NOOP, Action.BEEP, Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT};
-		Action[] actions = new Action[orginalActions.length + level.getWidth()*level.getHeight()];
+		List<Action> legalActions = level.getLegalMoves();
 		
-		int i=0;
-		for (int x = 0; x < level.getWidth(); x++) {
-			for (int y=0; y < level.getHeight(); y++) {
-				actions[i++] = new TalkAction(playerID, x, y);
-			}
-		}
-		
-		int remaining = actions.length - i;
-		for (int j=0; j<remaining; j++) {
-			actions[i++] = orginalActions[j];
-		}
+		Action[] actions = new Action[legalActions.size()];
+		legalActions.toArray(actions);
 		
 		return actions;
 	}

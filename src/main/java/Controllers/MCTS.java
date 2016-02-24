@@ -44,7 +44,7 @@ public class MCTS extends Controller {
             iterations++;
         }
                 
-        System.out.println(root.getChildrenExpandedSoFar() + "Nodes: " + root.getNodesInTree());
+        //System.out.println(root.getChildrenExpandedSoFar() + "Nodes: " + root.getNodesInTree());
 //        System.out.println("Iterations : " + iterations);
 //        System.out.println(root.getBestAction());
         return root.getBestAction();

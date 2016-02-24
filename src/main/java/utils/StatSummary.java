@@ -152,8 +152,7 @@ public class StatSummary {
         }
     }
 
-    @Override
-	public String toString() {
+	public String toLongString() {
         String s = (name == null) ? "" : name;
         s +=  " min = " + min() + "\n" +
                 " max = " + max() + "\n" +
@@ -164,8 +163,12 @@ public class StatSummary {
                 " sumsq  = " + sumsq + "\n" +
                 " n   = " + n;
         return s;
-
     }
+	
+	@Override
+	public String toString() {
+		return String.format("mean=%.5f, sd=%.5f, sdErr=%.5f", mean(), sd(), stdErr());
+	}
 
     public double sum(){
         return sum;

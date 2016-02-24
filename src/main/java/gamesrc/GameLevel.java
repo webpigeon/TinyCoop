@@ -1,15 +1,22 @@
 package gamesrc;
 
 import java.awt.Point;
+import java.util.Collections;
+import java.util.List;
+
+import FastGame.Action;
 
 public class GameLevel {
-	private String name;
-	private int width;
-	private int height;
-	private Point[] spawnLocations;
-	private int[] floors;
-	private GameObject[] objects;
-	private int goalCount = 0;
+	private final String name;
+	private final Integer width;
+	private final Integer height;
+	private final Point[] spawnLocations;
+	private final int[] floors;
+	private final GameObject[] objects;
+	private Integer goalCount = 0;
+	
+	private String actionSetName;
+	private List<Action> legalMoves;
 	
 	public GameLevel(String name, int width, int height) {
 		this.name = name;
@@ -19,6 +26,18 @@ public class GameLevel {
 		this.floors = new int[width*height];
 		this.objects = new GameObject[width*height];
 		this.goalCount = 0;
+		
+		this.legalMoves = Filters.getAllActions(width, height);
+		this.actionSetName = "fullActions";
+	}
+	
+	public List<Action> getLegalMoves() {
+		return Collections.unmodifiableList(legalMoves);
+	}
+	
+	public void setLegalMoves(String name, List<Action> legalMoves) {
+		this.actionSetName = name;
+		this.legalMoves = legalMoves;
 	}
 
 	public boolean isWalkable(int pid, Point pos, SimpleGame state) {
@@ -116,4 +135,12 @@ public class GameLevel {
 		return name;
 	}
 
+	public String getLevelName() {
+		return name;
+	}
+
+	public String getActionSetName() {
+		return actionSetName;
+	}
+	
 }
