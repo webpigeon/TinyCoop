@@ -43,6 +43,8 @@ public class MCTS extends Controller {
             travel.updateValues(result);
             iterations++;
         }
+                
+        System.out.println(root.getChildrenExpandedSoFar() + "Nodes: " + root.getNodesInTree());
 //        System.out.println("Iterations : " + iterations);
 //        System.out.println(root.getBestAction());
         return root.getBestAction();
@@ -81,6 +83,7 @@ private class MCTSNode {
     private MCTSNode parent;
     private MCTSNode[] children;
     private int childLength;
+    private int nodesInTree = 0;
 
     private MCTS mcts;
 
@@ -115,10 +118,10 @@ private class MCTSNode {
             } else {
                 /// Expand
                 MCTSNode expandedChild = current.expand(state);
+                nodesInTree++;
                 if (mcts.isFirst()) {
                     state.update(expandedChild.getMoveToThisState(), getOppAction(1, state));
                 } else {
-                	
                     state.update(getOppAction(0, state), expandedChild.getMoveToThisState());
                 }
                 return expandedChild;
@@ -248,6 +251,10 @@ private class MCTSNode {
 
     public int getChildLength() {
         return childLength;
+    }
+    
+    public int getNodesInTree(){
+    	return nodesInTree;
     }
 
     public double calculateChild() {
