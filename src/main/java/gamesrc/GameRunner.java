@@ -18,9 +18,9 @@ public class GameRunner {
 
 	public static void main(String[] args) throws IOException {
 		GameLevel level = LevelParser.buildParser("data/maps/level1.txt");
-		SimpleGame game = new SimpleGame(level);
+		SimpleGame gameClean = new SimpleGame(level);
 
-		Viewer viewer = new Viewer(game);
+		Viewer viewer = new Viewer(gameClean);
 		JFrame frame = new JFrame("Tiny CoOp - Observerable Edition");
 		frame.add(viewer);
 		frame.pack();
@@ -37,16 +37,36 @@ public class GameRunner {
 		StatSummary scores = new StatSummary();
 		StatSummary ticks = new StatSummary();
 		
-		for (int i=0; i<10; i++) {
-			
+		long lastTime = System.nanoTime();
+		for (int i=0; i<1000; i++) {
+			ObservableGameState game = (ObservableGameState)gameClean.getClone();
 			p1.startGame(0);
 			p2.startGame(1);
+			viewer.setState(game);
 			
 			int tickCount = 0;
 			while (!game.hasWon()) {
-				game.update(p1.get(game.getClone()), p2.get(game.getClone()));
+				Action p1Move = p1.get(game.getClone());
+				Action p2Move = p2.get(game.getClone());
+				
+				game.update(p1Move, p2Move);
 				frame.repaint();
 				tickCount++;
+				
+				try {
+					//Thread.sleep(1000);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				
+				if(tickCount % 100 == 0) {
+					long time = System.nanoTime();
+					//System.out.println("tickTimer: "+(time - lastTime) / 100f);
+					lastTime = time;
+				}
+				
+				//System.out.println(p1Move + " " + p2Move);
+				//System.out.println("tick "+System.currentTimeMillis());
 			}
 			
 			scores.add(game.getScore());
