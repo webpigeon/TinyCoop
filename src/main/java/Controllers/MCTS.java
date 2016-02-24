@@ -162,6 +162,8 @@ private class MCTSNode {
             if (childValue > bestValue) {
                 bestValue = childValue;
                 selected = child;
+            } else if (childValue == bestValue && random.nextBoolean()) {
+                selected = child;
             }
         }
         if (selected == -1) return Action.NOOP;
