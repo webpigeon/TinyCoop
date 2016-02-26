@@ -5,7 +5,7 @@ import FastGame.CoopGame;
 import FastGame.TalkAction;
 import gamesrc.GameState;
 import gamesrc.ObservableGameState;
-import gamesrc.Viewer;
+import gamesrc.viewer.Viewer;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;

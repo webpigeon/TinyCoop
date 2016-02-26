@@ -74,7 +74,7 @@ public class PredictorMCTS extends Controller {
 
     @Override
     public String getSimpleName() {
-        return "MCTS: (" + iterationLimit + ";" + maxUCTDepth + ";" + maxRolloutDepth + ")";
+        return "PredictorMCTS: (" + iterationLimit + ";" + maxUCTDepth + ";" + maxRolloutDepth + ")";
     }
 
 

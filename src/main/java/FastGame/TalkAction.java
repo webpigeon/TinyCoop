@@ -41,6 +41,6 @@ public class TalkAction extends Action {
 	}
 	
 	public String toString() {
-		return String.format("(%d,%d) - %s", getX(), getY(), super.toString());
+		return String.format("%s - (%d|%d)", super.toString(), getX(), getY());
 	}
 }

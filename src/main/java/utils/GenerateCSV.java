@@ -19,7 +19,12 @@ public class GenerateCSV {
         StringBuilder buff = new StringBuilder();
 
         for (int i=0; i<values.length; i++) {
-            buff.append(values[i].toString());
+        	if (values[i] != null) {
+        		String rawValue = values[i].toString();
+        		buff.append(rawValue.replaceAll(",", ";"));
+        	} else {
+        		buff.append("NULL");
+        	}
             if (i != values.length-1) {
                 buff.append(DELIMITER);
             }

@@ -1,4 +1,4 @@
-package gamesrc;
+package gamesrc.viewer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +12,12 @@ import Controllers.PassiveRefindController;
 import Controllers.enhanced.NestedControllerPredictor;
 import Controllers.enhanced.PredictorMCTS;
 import FastGame.Action;
+import gamesrc.Filters;
+import gamesrc.GameLevel;
+import gamesrc.LevelParser;
+import gamesrc.SimpleGame;
+import gamesrc.experiment.GameResult;
+import gamesrc.experiment.GameSetup;
 
 public class GameViewer implements Callable<GameResult> {
 	private static final Integer SLEEP_TIME = 5;
@@ -80,7 +86,7 @@ public class GameViewer implements Callable<GameResult> {
 			}
 
 			game.update(p1Move, p2Move);
-			result.recordMoves(p1Move, p2Move);
+			result.recordMoves(tickCount, p1Move, p2Move);
 			viewer.repaint();
 			Thread.sleep(SLEEP_TIME);
 			

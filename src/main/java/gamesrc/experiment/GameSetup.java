@@ -1,4 +1,4 @@
-package gamesrc;
+package gamesrc.experiment;
 
 public class GameSetup {
 	public String p1;

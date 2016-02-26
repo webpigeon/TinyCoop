@@ -1,6 +1,10 @@
-package gamesrc;
+package gamesrc.viewer;
 
 import javax.swing.*;
+
+import gamesrc.GameObject;
+import gamesrc.ObservableGameState;
+
 import java.awt.*;
 
 import static FastGame.GroundTypes.GROUND;
