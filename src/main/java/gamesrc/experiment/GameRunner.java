@@ -36,7 +36,7 @@ import utils.StatSummary;
 public class GameRunner implements Callable<GameResult> {
 	private static final Integer TICK_LIMIT = 2000;
 	private static final Integer NUMBER_REPEATS = 100; //number of files
-	private static final Integer NUMBER_RUNS = 10; //runs per file
+	private static final Integer NUMBER_RUNS = 5; //runs per file
 	private static AtomicInteger referenceCount = new AtomicInteger();
 
 	//combined summary stats
@@ -50,22 +50,32 @@ public class GameRunner implements Callable<GameResult> {
 	
 	public static void main(String[] args) throws IOException {
 		
-		ExecutorService service = Executors.newFixedThreadPool(5);
+		ExecutorService service = Executors.newFixedThreadPool(4);
 		
-		GameLevel level1 = LevelParser.buildParser("data/maps/level1.txt");
-		level1.setLegalMoves("full", Filters.getAllActions(level1.getWidth(), level1.getHeight()));
-
-		GameLevel level2 = LevelParser.buildParser("data/maps/level1.txt");
-		level2.setLegalMoves("relative", Filters.getAllRelativeActions());
-		
-		GameLevel level3 = LevelParser.buildParser("data/maps/level1.txt");
-		level2.setLegalMoves("simple", Filters.getBasicActions());
-		
-		GameLevel[] levels = new GameLevel[]{
-				level1,
-				level2,
-				level3
+		String[] levelStrings = new String[] {
+			"data/maps/level1.txt",
+			"data/maps/level1E.txt",
+			"data/maps/level7.txt"
 		};
+		
+		List<GameLevel> levels = new ArrayList<GameLevel>();
+		List<GameLevel> simpleLevels = new ArrayList<GameLevel>();
+		
+		for (String levelString : levelStrings) {
+			GameLevel level = LevelParser.buildParser(levelString);
+			level.setLegalMoves("full", Filters.getAllActions(level.getWidth(), level.getHeight()));
+
+			GameLevel levelRel = LevelParser.buildParser(levelString);
+			levelRel.setLegalMoves("relative", Filters.getAllRelativeActions());
+			
+			GameLevel levelSimp = LevelParser.buildParser(levelString);
+			levelSimp.setLegalMoves("simple", Filters.getBasicActions());
+			
+			levels.add(level);
+			levels.add(levelRel);
+			levels.add(levelSimp);
+			simpleLevels.add(levelSimp);
+		}
 		
 		GenerateCSV csv = new GenerateCSV(String.format(CSV_FILE, System.currentTimeMillis()));
 		csv.writeLine(
@@ -84,7 +94,8 @@ public class GameRunner implements Callable<GameResult> {
 			PrintStream out = new PrintStream(new FileOutputStream(String.format(RUN_STATS_FILE, runStarted)));
 			
 			// setup the games
-			List<GameRunner> tasks = new ArrayList<GameRunner>(7 * NUMBER_RUNS);
+			List<GameRunner> tasks = new ArrayList<GameRunner>(7 * NUMBER_RUNS);		
+			
 			for (int j = 0; j < NUMBER_RUNS; j++) {
 				for (GameLevel level : levels) {
 					
@@ -100,9 +111,11 @@ public class GameRunner implements Callable<GameResult> {
 					tasks.add(new GameRunner(level, new PredictorMCTS(true, 500, 10, 45, predictorP1), new PredictorMCTS(false, 500, 10, 45, predictorP2), TICK_LIMIT));
 					
 					// MCTS co-op tests
-					NestedControllerPredictor predictor = new NestedControllerPredictor(new PassiveRefindController());
-					tasks.add(new GameRunner(level, new MCTS(true, 500, 10, 45), new PassiveRefindController(), TICK_LIMIT));
-					tasks.add(new GameRunner(level, new PredictorMCTS(true, 500, 10, 45, predictor), new PassiveRefindController(), TICK_LIMIT));
+					if (!simpleLevels.equals(level)) {
+						NestedControllerPredictor predictor = new NestedControllerPredictor(new PassiveRefindController());
+						tasks.add(new GameRunner(level, new MCTS(true, 500, 10, 45), new PassiveRefindController(), TICK_LIMIT));
+						tasks.add(new GameRunner(level, new PredictorMCTS(true, 500, 10, 45, predictor), new PassiveRefindController(), TICK_LIMIT));
+					}
 				}
 			}
 			referenceCount.addAndGet(tasks.size());
@@ -275,8 +288,8 @@ public class GameRunner implements Callable<GameResult> {
 		result.score = game.getScore();
 		result.ticks = tickCount;	
 		moves.close();
-		
-		//System.out.println("game over, "+result.setup+" left: "+referenceCount.getAndDecrement()+" ticks: "+result.ticks);
+
+		System.out.println("game over, "+result.setup+" left: "+referenceCount.getAndDecrement()+" ticks: "+result.ticks);
 
 		return result;
 	}
