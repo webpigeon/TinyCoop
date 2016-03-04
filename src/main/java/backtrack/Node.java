@@ -1,11 +1,14 @@
 package backtrack;
 
+import FastGame.Action;
+import gamesrc.GameState;
+
 public class Node implements Comparable<Node> {
 	public Node parent;
 	public int cost;
 	public int depth;
-	public State state;
-
+	public GameState state;
+	public Action action;
 	
 	public boolean equals(Object object) {
 		Node other = (Node)object;

@@ -9,30 +9,39 @@ import javax.swing.JFrame;
 import Controllers.Controller;
 import Controllers.MCTS;
 import Controllers.PassiveRefindController;
+import Controllers.RandomController;
+import Controllers.SortOfRandomController;
+import Controllers.WASDController;
 import Controllers.enhanced.NestedControllerPredictor;
 import Controllers.enhanced.PredictorMCTS;
+import Controllers.enhanced.RandomPredictor;
 import FastGame.Action;
 import gamesrc.Filters;
 import gamesrc.GameLevel;
 import gamesrc.LevelParser;
 import gamesrc.SimpleGame;
 import gamesrc.experiment.GameResult;
+import gamesrc.experiment.GameRunner;
 import gamesrc.experiment.GameSetup;
+import utils.StatSummary;
 
 public class GameViewer implements Callable<GameResult> {
 	private static final Integer SLEEP_TIME = 5;
 	
 	public static void main(String[] args) throws Exception {
-		GameLevel level = LevelParser.buildParser("data/maps/level1.txt");
-		level.setLegalMoves("relative", Filters.getAllRelativeActions());
+		//GameViewer viewer = new GameViewer(level, p1, p2);
+		//viewer.call();
+
+		GameLevel level = LevelParser.buildParser("data/maps/level3.txt");
+		level.setLegalMoves("full", Filters.getAllActions(level.getWidth(), level.getHeight()));
 		
-		
-		NestedControllerPredictor predictor = new NestedControllerPredictor(new PassiveRefindController());
-		Controller p1 = new PredictorMCTS(true, 5000, 100, 450, predictor);
+		Controller p1 = new WASDController();
 		Controller p2 = new PassiveRefindController();
-		GameViewer viewer = new GameViewer(level, p1, p2);
 		
+		GameViewer viewer = new GameViewer(level, p1, p2);
 		viewer.call();
+		
+
 
 	}
 
@@ -66,6 +75,13 @@ public class GameViewer implements Callable<GameResult> {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Viewer viewer = new Viewer(game);
 		frame.add(viewer);
+		
+		if (p1 instanceof WASDController) {
+			viewer.addMouseListener((WASDController)p1);
+			viewer.addKeyListener((WASDController)p1);
+			viewer.setFocusable(true);
+			viewer.requestFocus();
+		}
 		
 		frame.pack();
 		frame.setVisible(true);

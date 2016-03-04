@@ -4,73 +4,53 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-public class BredthFirstSearch implements Search {
+import FastGame.Action;
+import gamesrc.GameState;
+
+public class BredthFirstSearch extends AbstractSearch {
 	private Queue<Node> stack;
-	private Set<State> discovered;
+	private Set<GameState> discovered;
 	
 	public BredthFirstSearch() {
-		this.stack = new LinkedList<Node>();
-		this.discovered = new HashSet<State>();
+		this.stack = new LinkedList<>();
+		this.discovered = new HashSet<>();
 	}
 	
-	
-	public List<State> search(State start, State goal) {
-		Node startNode = new Node();
-		startNode.cost = 0;
-		startNode.depth = 0;
-		startNode.parent = null;
-		startNode.state = start;
-		stack.add(build(start, null));
-		
-		while(!stack.isEmpty()) {
-			System.out.println(stack);
-			
-			Node node = nextNode();
-			
-			discovered.add(node.state);
-			if (goal.equals(node.state)) {
-				return buildPath(node);
-			}
-			
-			expand(node);
-		}
-		
-		return null;
+	public boolean discover(Node node) {
+		discovered.add(node.state);
+		return true;
 	}
-	
-	public List<State> buildPath(Node node) {
-		List<State> path = new ArrayList<State>();
-		while (node != null) {
-			path.add(node.state);
-			node = node.parent;
-		}
-		
-		return path;
-	}
-	
-	public Node build(State state, Node parent) {
-		Node node = new Node();
-		node.parent = parent;
-		node.cost = parent!=null?parent.cost + 1:0;
-		node.depth = parent!=null?parent.depth + 1:0;
-		node.state = state;
-		return node;
-	}
-	
-	public void expand(Node state) {
-		for (State child : state.state.expand()) {
-			if (!discovered.contains(child)) {
-				stack.add(build(child, state));
-			}
-		}
-	}
-	
-	public Node nextNode() {
+
+	@Override
+	public Node getNext() {
 		return stack.poll();
 	}
+
+	@Override
+	public boolean isFinished() {
+		return stack.isEmpty();
+	}
 	
+
+	@Override
+	public Node addNode(GameState state, ActionPair previous) {
+		if (discovered.contains(state)) {
+			return null;
+		}
+		
+		System.out.println("expanding: "+previous);
+		Node node = new Node();
+		//node.cost = parent!=null?parent.cost + 1:0;
+		//node.depth = parent!=null?parent.depth + 1:0;
+		node.state = state;
+		stack.add(node);
+		
+		cameFrom.put(state, previous);
+		return node;
+	}
 	
 }

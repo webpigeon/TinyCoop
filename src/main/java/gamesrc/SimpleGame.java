@@ -2,6 +2,7 @@ package gamesrc;
 
 import java.awt.Point;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -26,13 +27,18 @@ public class SimpleGame implements ObservableGameState {
 	private boolean[] visitList;
 	private Map<Integer,Integer> signals;
 	
+	private boolean hasWon;
+	private double score;
+	
 	public SimpleGame(GameLevel level) {
 		this.level = level;
 		this.beeps = new boolean[level.getPlayerCount()];
 		this.flares = new Point[level.getPlayerCount()];
 		this.positions = new Point[level.getPlayerCount()];
 		this.visitList = new boolean[level.getGoalCount() * level.getPlayerCount()];
-		this.signals = new TreeMap<Integer,Integer>();
+		this.signals = new HashMap<Integer,Integer>();
+		this.hasWon = false;
+		this.score = 0;
 		
 		for (int i=0; i<positions.length; i++) {
 			positions[i] = level.getSpawnLocation(i);
@@ -45,7 +51,9 @@ public class SimpleGame implements ObservableGameState {
 		this.flares = Arrays.copyOf(game.flares, game.flares.length);
 		this.positions = Arrays.copyOf(game.positions, game.positions.length);
 		this.visitList = Arrays.copyOf(game.visitList, game.visitList.length);
-		this.signals = new TreeMap<Integer,Integer>(game.signals);
+		this.signals = new HashMap<Integer,Integer>(game.signals);
+		this.hasWon = game.hasWon;
+		this.score = game.score;
 	}
 
 	@Override
@@ -54,31 +62,34 @@ public class SimpleGame implements ObservableGameState {
 	}
 
 	@Override
-	public double getScore() {
-		double score = 0;
-		for (boolean goal : visitList) {
-			if (goal) {
-				score += 1;
-			}
-		}
-		
-		return score/visitList.length;
+	public double getScore() {		
+		return score;
 	}
 
 	@Override
 	public boolean hasWon() {
+		return hasWon;
+	}
+	
+	private void calcuateHasWon() {
+		int visits = 0;
 		for (boolean b : visitList) {
-			if (!b) {
-				return false;
+			if (b) {
+				visits++;
 			}
 		}
-		return true;
+		score = visits/(double)visitList.length;
+		hasWon = (visits == visitList.length);
 	}
 
 	@Override
 	public void update(Action p1, Action p2) {
-		beeps = new boolean[level.getPlayerCount()];
-		flares = new Point[level.getPlayerCount()];
+		//reset the com actions
+		int playerCount = level.getPlayerCount();
+		beeps = new boolean[playerCount];
+		flares = new Point[playerCount];
+		
+		//perform new actions
 		doAction(0, p1);
 		doAction(1, p2);
 	}
@@ -140,8 +151,9 @@ public class SimpleGame implements ObservableGameState {
 		return i == null ? 0 : i;
 	}
 	
-	protected void setVisited(int agent, int goalID) {
+	public void setVisited(int agent, int goalID) {
 		visitList[agent * level.getGoalCount() + goalID] = true;
+		calcuateHasWon();
 	}
 
 	@Override
@@ -204,4 +216,51 @@ public class SimpleGame implements ObservableGameState {
 		return level.isWalkable(pid, new Point(x,y), this);
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(beeps);
+		result = prime * result + Arrays.hashCode(flares);
+		result = prime * result + ((level == null) ? 0 : level.hashCode());
+		result = prime * result + Arrays.hashCode(positions);
+		result = prime * result + ((signals == null) ? 0 : signals.hashCode());
+		result = prime * result + Arrays.hashCode(visitList);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SimpleGame other = (SimpleGame) obj;
+		if (!Arrays.equals(beeps, other.beeps))
+			return false;
+		if (!Arrays.equals(flares, other.flares))
+			return false;
+		if (level == null) {
+			if (other.level != null)
+				return false;
+		} else if (!level.equals(other.level))
+			return false;
+		if (!Arrays.equals(positions, other.positions))
+			return false;
+		if (signals == null) {
+			if (other.signals != null)
+				return false;
+		} else if (!signals.equals(other.signals))
+			return false;
+		if (!Arrays.equals(visitList, other.visitList))
+			return false;
+		return true;
+	}
+	
+	public String toString() {
+		return String.format("%s %f", Arrays.toString(positions), score);
+	}
+	
 }

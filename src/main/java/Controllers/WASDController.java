@@ -40,7 +40,7 @@ public class WASDController extends Controller implements KeyListener, MouseList
 				
 				Point flarePos2 = new Point(flarePos);
 				flarePos = null;
-				return new TalkAction(agentID, flarePos2.x, flarePos2.y);	
+				return new TalkAction(flarePos2.x, flarePos2.y, false);	
 			}
 		}
 		

@@ -17,29 +17,37 @@ public class PredictorMCTS extends Controller {
     private int maxUCTDepth = 5;
     private int maxRolloutDepth = 30;
     private int iterationLimit = 0;
+    private double gamma;
     private Predictor predictor;
 
     private boolean first;
 
-    public PredictorMCTS(boolean first, int iterationLimit, int maxUCTDepth, int maxRolloutDepth, Predictor predictor) {
-        this.first = first;
+    public PredictorMCTS(int iterationLimit, int maxUCTDepth, int maxRolloutDepth, Predictor predictor) {
         this.iterationLimit = iterationLimit;
         this.maxUCTDepth = maxUCTDepth;
         this.maxRolloutDepth = maxRolloutDepth;
         this.predictor = predictor;
+        this.gamma = 0.99;
+    }
+    
+    public PredictorMCTS(int iterationLimit, int maxUCTDepth, int maxRolloutDepth, float gamma, Predictor predictor) {
+        this.iterationLimit = iterationLimit;
+        this.maxUCTDepth = maxUCTDepth;
+        this.maxRolloutDepth = maxRolloutDepth;
+        this.predictor = predictor;
+        this.gamma = gamma;
     }
 
     public PredictorMCTS(boolean first, int iterationLimit){
         this.first = first;
         this.iterationLimit = iterationLimit;
     }
-
-    
     
     @Override
 	public void startGame(int agentID) {
 		super.startGame(agentID);
 		predictor.init(agentID);
+		this.first = agentID==0;
 	}
 
 	@Override
@@ -130,7 +138,6 @@ private class MCTSNode {
                 if (mcts.isFirst()) {
                     state.update(expandedChild.getMoveToThisState(), getOppAction(1, state));
                 } else {
-                	
                     state.update(getOppAction(0, state), expandedChild.getMoveToThisState());
                 }
                 return expandedChild;
@@ -215,11 +222,22 @@ private class MCTSNode {
 
     public double rollout(GameState state) {
         int rolloutDepth = this.currentDepth;
+        
+        double score = state.getScore();
+        double weightedScore = score;
+        
         while (!state.hasWon() && rolloutDepth < mcts.getMaxRolloutDepth()) {
             state.update(getRandomAction(0, state), getRandomAction(0, state));
+            
+            if (score != state.getScore()) {
+            	double deltaScore = state.getScore() - score;
+            	weightedScore += (deltaScore * Math.pow(gamma, rolloutDepth));
+            	score = state.getScore();
+            }
+            
             rolloutDepth++;
         }
-        return state.getScore();
+        return weightedScore;
     }
 
     private boolean isFullyExpanded() {

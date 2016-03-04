@@ -6,18 +6,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+import FastGame.Action;
+import gamesrc.GameState;
+
 public class Dijkstra implements Search {
-	private Map<State, Integer> distance;
-	private Map<State, State> cameFrom;
+	private Map<GameState, Integer> distance;
+	private Map<GameState, GameState> cameFrom;
 	private PriorityQueue<Node> queue;
 	
 	public Dijkstra(){
 		this.queue = new PriorityQueue<Node>();
-		this.distance = new HashMap<State, Integer>();
-		this.cameFrom = new HashMap<State, State>();
+		this.distance = new HashMap<>();
+		this.cameFrom = new HashMap<>();
 	}
 
-	public List<State> search(State start, State end) {
+	public List<Action> search(GameState start, GameState end) {
 		queue.add(build(start, null));
 		distance.put(start, 0);
 		
@@ -27,23 +30,23 @@ public class Dijkstra implements Search {
 				return buildPath(u);
 			}
 			
-			expand(u);			
+			expand(u, 1);			
 		}
 
 		return null;
 	}
 
-	public List<State> buildPath(Node node) {
-		List<State> path = new ArrayList<State>();
+	public List<Action> buildPath(Node node) {
+		List<Action> path = new ArrayList<Action>();
 		while (node != null) {
-			path.add(node.state);
+			path.add(node.action);
 			node = node.parent;
 		}
 		
 		return path;
 	}
 	
-	public Node build(State state, Node parent) {
+	public Node build(GameState state, Node parent) {
 		Node node = new Node();
 		node.parent = parent;
 		node.cost = parent!=null?parent.cost + 1:0;
@@ -52,9 +55,22 @@ public class Dijkstra implements Search {
 		return node;
 	}
 	
-	public void expand(Node node) {
-		for (State child : node.state.expand()) {
-			int cost = distance.get(node.state) + child.getCost();
+	public Action getOtherAgentMove() {
+		return Action.NOOP;
+	}
+	
+	public int getCost(GameState state) {
+		return 1;
+	}
+	
+	public void expand(Node node, int pid) {
+		GameState parent = node.state.getClone();
+		
+		for (Action action : parent.getLegalActions(pid)) {
+			GameState child = parent.getClone();
+			child.update(getOtherAgentMove(), action);
+			
+			int cost = distance.get(node.state) + getCost(child);
 			Integer currCost = distance.get(child);
 			if (currCost == null) {
 				currCost = Integer.MAX_VALUE;

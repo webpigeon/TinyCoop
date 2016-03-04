@@ -103,18 +103,18 @@ public class GameRunner implements Callable<GameResult> {
 					tasks.add(new GameRunner(level, new MCTS(true, 500, 10, 45), new MCTS(false, 500, 10, 45), TICK_LIMIT));
 					tasks.add(new GameRunner(level, new RandomController(), new RandomController(), TICK_LIMIT));
 					tasks.add(new GameRunner(level, new SortOfRandomController(), new SortOfRandomController(), TICK_LIMIT));
-					tasks.add(new GameRunner(level, new MCTS(true, 500, 10, 45), new MCTS(true, 500, 10, 45), TICK_LIMIT));
+					tasks.add(new GameRunner(level, new MCTS(true, 500, 10, 45), new MCTS(false, 500, 10, 45), TICK_LIMIT));
 					
 					//predictor MCTS duel pairing
 					NestedControllerPredictor predictorP1 = new NestedControllerPredictor(new MCTS(false, 500, 10, 45));
 					NestedControllerPredictor predictorP2 = new NestedControllerPredictor(new MCTS(true, 500, 10, 45));
-					tasks.add(new GameRunner(level, new PredictorMCTS(true, 500, 10, 45, predictorP1), new PredictorMCTS(false, 500, 10, 45, predictorP2), TICK_LIMIT));
+					tasks.add(new GameRunner(level, new PredictorMCTS(500, 10, 45, predictorP1), new PredictorMCTS(500, 10, 45, predictorP2), TICK_LIMIT));
 					
 					// MCTS co-op tests
 					if (!simpleLevels.equals(level)) {
 						NestedControllerPredictor predictor = new NestedControllerPredictor(new PassiveRefindController());
 						tasks.add(new GameRunner(level, new MCTS(true, 500, 10, 45), new PassiveRefindController(), TICK_LIMIT));
-						tasks.add(new GameRunner(level, new PredictorMCTS(true, 500, 10, 45, predictor), new PassiveRefindController(), TICK_LIMIT));
+						tasks.add(new GameRunner(level, new PredictorMCTS(500, 10, 45, predictor), new PassiveRefindController(), TICK_LIMIT));
 					}
 				}
 			}
@@ -289,7 +289,7 @@ public class GameRunner implements Callable<GameResult> {
 		result.ticks = tickCount;	
 		moves.close();
 
-		System.out.println("game over, "+result.setup+" left: "+referenceCount.getAndDecrement()+" ticks: "+result.ticks);
+		//System.out.println("game over, "+result.setup+" left: "+referenceCount.getAndDecrement()+" ticks: "+result.ticks);
 
 		return result;
 	}

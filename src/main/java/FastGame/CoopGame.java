@@ -3,6 +3,7 @@ package FastGame;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -68,7 +69,7 @@ public class CoopGame implements GameState {
         other.maxIDs = new int[this.maxIDs.length];
         System.arraycopy(this.maxIDs, 0, other.maxIDs, 0, this.maxIDs.length);
         other.score = this.score;
-        other.playerPos = new TreeMap<>(this.playerPos);
+        other.playerPos = new HashMap<>(this.playerPos);
         other.agentLocations = new int[this.agentLocations.length];
         System.arraycopy(this.agentLocations, 0, other.agentLocations, 0, this.agentLocations.length);
         return other;

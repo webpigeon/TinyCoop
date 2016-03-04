@@ -1,6 +1,7 @@
 package gamesrc;
 
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -142,5 +143,71 @@ public class GameLevel {
 	public String getActionSetName() {
 		return actionSetName;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((actionSetName == null) ? 0 : actionSetName.hashCode());
+		result = prime * result + Arrays.hashCode(floors);
+		result = prime * result + ((goalCount == null) ? 0 : goalCount.hashCode());
+		result = prime * result + ((height == null) ? 0 : height.hashCode());
+		result = prime * result + ((legalMoves == null) ? 0 : legalMoves.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + Arrays.hashCode(objects);
+		result = prime * result + Arrays.hashCode(spawnLocations);
+		result = prime * result + ((width == null) ? 0 : width.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GameLevel other = (GameLevel) obj;
+		if (actionSetName == null) {
+			if (other.actionSetName != null)
+				return false;
+		} else if (!actionSetName.equals(other.actionSetName))
+			return false;
+		if (!Arrays.equals(floors, other.floors))
+			return false;
+		if (goalCount == null) {
+			if (other.goalCount != null)
+				return false;
+		} else if (!goalCount.equals(other.goalCount))
+			return false;
+		if (height == null) {
+			if (other.height != null)
+				return false;
+		} else if (!height.equals(other.height))
+			return false;
+		if (legalMoves == null) {
+			if (other.legalMoves != null)
+				return false;
+		} else if (!legalMoves.equals(other.legalMoves))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (!Arrays.equals(objects, other.objects))
+			return false;
+		if (!Arrays.equals(spawnLocations, other.spawnLocations))
+			return false;
+		if (width == null) {
+			if (other.width != null)
+				return false;
+		} else if (!width.equals(other.width))
+			return false;
+		return true;
+	}
+	
+	
 	
 }
