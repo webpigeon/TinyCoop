@@ -15,6 +15,8 @@ public class GameResult {
 	public int ticks;
 	public int disquals = 0;
 	public List<MovePair> moves;
+	public float userTime;
+	public float wallTime;
 	
 	public GameResult(GameSetup setup) {
 		this.setup = setup;

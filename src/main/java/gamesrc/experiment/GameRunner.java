@@ -55,15 +55,16 @@ public class GameRunner implements Callable<GameResult> {
 		String[] levelStrings = new String[] {
 			"data/maps/level1.txt",
 			"data/maps/level1E.txt",
-			"data/maps/level7.txt"
+			"data/maps/level7.txt",
+			"data/maps/level6.txt"
 		};
 		
 		List<GameLevel> levels = new ArrayList<GameLevel>();
 		List<GameLevel> simpleLevels = new ArrayList<GameLevel>();
 		
 		for (String levelString : levelStrings) {
-			GameLevel level = LevelParser.buildParser(levelString);
-			level.setLegalMoves("full", Filters.getAllActions(level.getWidth(), level.getHeight()));
+			//GameLevel level = LevelParser.buildParser(levelString);
+			//level.setLegalMoves("full", Filters.getAllActions(level.getWidth(), level.getHeight()));
 
 			GameLevel levelRel = LevelParser.buildParser(levelString);
 			levelRel.setLegalMoves("relative", Filters.getAllRelativeActions());
@@ -71,7 +72,7 @@ public class GameRunner implements Callable<GameResult> {
 			GameLevel levelSimp = LevelParser.buildParser(levelString);
 			levelSimp.setLegalMoves("simple", Filters.getBasicActions());
 			
-			levels.add(level);
+			//levels.add(level);
 			levels.add(levelRel);
 			levels.add(levelSimp);
 			simpleLevels.add(levelSimp);
@@ -165,7 +166,9 @@ public class GameRunner implements Callable<GameResult> {
 					result.setup.actionSet,
 					result.score,
 					result.ticks,
-					result.disquals
+					result.disquals,
+					result.userTime,
+					result.wallTime
 					);
 			
 			scores.add(result.score);
@@ -195,7 +198,9 @@ public class GameRunner implements Callable<GameResult> {
 
 	@Override
 	public GameResult call() throws Exception {
-
+		long startTimeUser = GameTimer.getUserTime();
+		long startTimeWall = System.nanoTime();
+		
 		UUID id = UUID.randomUUID();
 		GenerateCSV moves = new GenerateCSV(String.format(CSV_TRACE, id.toString()));
 		moves.writeLine(
@@ -284,9 +289,14 @@ public class GameRunner implements Callable<GameResult> {
 			tickCount++;
 		}
 
+		long timeTakenUser = GameTimer.getUserTime() - startTimeUser;
+		long timeTakenWall = System.nanoTime() - startTimeWall;
+		
 		// record results
 		result.score = game.getScore();
-		result.ticks = tickCount;	
+		result.ticks = tickCount;
+		result.userTime = timeTakenUser/1_000_000f;
+		result.wallTime = timeTakenWall/1_000_000f;
 		moves.close();
 
 		//System.out.println("game over, "+result.setup+" left: "+referenceCount.getAndDecrement()+" ticks: "+result.ticks);
