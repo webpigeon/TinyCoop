@@ -17,21 +17,33 @@ public class GAIndividual
     public boolean isFirst;
     public double m_fitness;
     public final double MUTATION_PROB = 0.2; //0.834=5/6   //0.2;
+    public Random random;
 
     public GAIndividual(int a_genomeLength)
     {
         m_genome = new Action[a_genomeLength];
         m_fitness = 0;
+        this.random = new Random();
     }
 
     public void randomize(Random a_rnd, GameState state, int a_numActions)
     {
         for(int i = 0; i < m_genome.length; ++i)
-        {
-            m_genome[i] = Action.getRandom(-1, state);
+        {   
+            m_genome[i] = getAction(a_rnd, state);
         }
     }
 
+    public Action getAction(Random rnd, GameState state) {
+    	Action[] legalActions = state.getLegalActions(isFirst?0:1);
+        return legalActions[rnd.nextInt(legalActions.length)];
+    }
+    
+    public Action getOppAction(Random rnd, GameState state) {
+    	Action[] legalActions = state.getLegalActions(-1);
+        return legalActions[rnd.nextInt(legalActions.length)];
+    }
+    
     public GameState evaluate(GameState a_gameState, boolean isFirst)
     {
         GameState thisGameCopy = a_gameState.getClone();
@@ -43,9 +55,9 @@ public class GAIndividual
             for(int j =0; !end && j < GAConstants.MACRO_ACTION_LENGTH; ++j)
             {
                 if (isFirst) {
-                    thisGameCopy.update(thisAction, Action.getRandom(isFirst?0:1, a_gameState));
+                    thisGameCopy.update(thisAction, getOppAction(random, a_gameState));
                 } else {
-                    thisGameCopy.update(Action.getRandom(isFirst?0:1, a_gameState), thisAction);
+                    thisGameCopy.update(getOppAction(random, a_gameState), thisAction);
                 }
                 end = thisGameCopy.hasWon();
             }
@@ -59,7 +71,7 @@ public class GAIndividual
         for (int i = 0; i < m_genome.length; i++) {
             if(a_rnd.nextDouble() < MUTATION_PROB)
             {
-                m_genome[i] = Action.getRandom(isFirst?0:1, state);
+                m_genome[i] = getOppAction(a_rnd, state);
             }
         }
     }
