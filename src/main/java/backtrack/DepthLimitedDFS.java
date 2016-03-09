@@ -8,72 +8,59 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
-public class DepthLimitedDFS implements Search {
+import FastGame.Action;
+import backtrack.AbstractSearch.ActionPair;
+import gamesrc.GameState;
+
+public class DepthLimitedDFS extends AbstractSearch {
 	private Stack<Node> stack;
-	private Set<State> discovered;
-	private int depth;
+	private Set<GameState> discovered;
+	private int limit;
 	
-	public DepthLimitedDFS(int maxDepth) {
-		this.stack = new Stack<Node>();
-		this.discovered = new HashSet<State>();
-		this.depth = maxDepth;
+	public DepthLimitedDFS(int limit) {
+		this.stack = new Stack<>();
+		this.discovered = new HashSet<>();
 	}
 	
-	
-	public List<State> search(State start, State goal) {
-		Node startNode = new Node();
-		startNode.cost = 0;
-		startNode.depth = 0;
-		startNode.parent = null;
-		startNode.state = start;
-		stack.add(build(start, null));
-		
-		while(!stack.isEmpty()) {
-			System.out.println(stack);
-			Node node = nextNode();
-			if (!discovered.contains(node.state)) {
-				
-				discovered.add(node.state);
-				if (goal.equals(node.state)) {
-					return buildPath(node);
-				}
-				
-				if (node.depth < depth) {
-					expand(node);
-				}
-			}
+	public boolean discover(Node node) {
+		if (discovered.contains(node.state)) {
+			return false;
 		}
 		
-		return null;
+		discovered.add(node.state);
+		return true;
 	}
-	
-	public List<State> buildPath(Node node) {
-		List<State> path = new ArrayList<State>();
-		while (node != null) {
-			path.add(node.state);
-			node = node.parent;
+
+	@Override
+	public Node getNext() {
+		return stack.pop();
+	}
+
+
+	@Override
+	public boolean isFinished() {
+		return stack.isEmpty();
+	}
+
+
+	@Override
+	public Node addNode(GameState state, ActionPair previous, Node parent) {
+		if (discovered.contains(state)) {
+			return null;
 		}
 		
-		return path;
-	}
-	
-	public Node build(State state, Node parent) {
+		if (limit > parent.depth) {
+			return null;
+		}
+		
 		Node node = new Node();
-		node.parent = parent;
 		node.cost = parent!=null?parent.cost + 1:0;
 		node.depth = parent!=null?parent.depth + 1:0;
 		node.state = state;
+		stack.add(node);
+		
+		cameFrom.put(state, previous);
 		return node;
-	}
-	
-	public void expand(Node state) {
-		for (State child : state.state.expand()) {
-			stack.add(build(child, state));
-		}
-	}
-	
-	public Node nextNode() {
-		return stack.pop();
 	}
 	
 	

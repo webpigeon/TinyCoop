@@ -17,7 +17,7 @@ public abstract class AbstractSearch implements Search {
 	
 	@Override
 	public List<Action> search(GameState start, GameState end) {
-		addNode(start, null);
+		addNode(start, null, null);
 		
 		while (!isFinished()) {
 			Node node = getNext();
@@ -45,7 +45,7 @@ public abstract class AbstractSearch implements Search {
 			/*for (Action p2Action : parent.getLegalActions(1) ) {*/
 				GameState child = parent.getClone();
 				child.update(p1Action, getOtherAgentsMove());
-				addNode(child, p1Action, getOtherAgentsMove(), parent);
+				addNode(child, p1Action, getOtherAgentsMove(), parent, node);
 			/*}*/
 		}
 	}
@@ -54,19 +54,19 @@ public abstract class AbstractSearch implements Search {
 		return true;
 	}
 	
-	public void addNode(GameState state, Action p1action, Action p2action, GameState parent){
+	public void addNode(GameState state, Action p1action, Action p2action, GameState parent, Node parentNode){
 		if (p1action != null && p2action != null && parent != null) {
 			ActionPair cameFrom = new ActionPair();
 			cameFrom.state = parent;
 			cameFrom.p1Action = p1action;
 			cameFrom.p2Action = p2action;
-			addNode(state, cameFrom);
+			addNode(state, cameFrom, parentNode);
 		} else {
-			addNode(state, null);
+			addNode(state, null, parentNode);
 		}
 	}
 	
-	public abstract Node addNode(GameState state, ActionPair cameFrom);
+	public abstract Node addNode(GameState state, ActionPair cameFrom, Node parent);
 	
 	public abstract Node getNext();
 	

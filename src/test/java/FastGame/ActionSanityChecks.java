@@ -31,7 +31,7 @@ public class ActionSanityChecks {
 	public ActionSanityChecks(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.action = new Action(x, y);
+		this.action = new Action("TEST", x, y);
 	}
 	
 	@Test

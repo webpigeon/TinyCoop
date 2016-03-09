@@ -4,13 +4,15 @@ import java.awt.Point;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class LevelParser {
 	
 	public static GameLevel buildParser(String filename) throws IOException {
-		Scanner scanner = new Scanner(new FileInputStream(filename));
+		InputStream stream = LevelParser.class.getClassLoader().getResourceAsStream(filename);
+		Scanner scanner = new Scanner(stream);
 		
 		int width = scanner.nextInt();
 		int height = scanner.nextInt();

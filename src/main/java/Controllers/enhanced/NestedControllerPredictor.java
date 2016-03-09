@@ -29,5 +29,9 @@ public class NestedControllerPredictor implements Predictor {
 	public Action predict(int pid, GameState state) {
 		return controller.get(state.getClone());
 	}
+	
+	public String toString() {
+		return controller.toString();
+	}
 
 }

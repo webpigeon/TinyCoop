@@ -37,4 +37,8 @@ public class RandomPredictor implements Predictor {
     	return legalActions[id];
     }
     
+    public String toString() {
+    	return "Random";
+    }
+    
 }

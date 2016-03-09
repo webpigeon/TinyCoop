@@ -25,6 +25,8 @@ import Controllers.RandomController;
 import Controllers.SortOfRandomController;
 import Controllers.enhanced.NestedControllerPredictor;
 import Controllers.enhanced.PredictorMCTS;
+import Controllers.enhanced.RandomPredictor;
+import Controllers.ga.GAController;
 import FastGame.Action;
 import gamesrc.Filters;
 import gamesrc.GameLevel;
@@ -36,7 +38,7 @@ import utils.StatSummary;
 public class GameRunner implements Callable<GameResult> {
 	private static final Integer TICK_LIMIT = 2000;
 	private static final Integer NUMBER_REPEATS = 100; //number of files
-	private static final Integer NUMBER_RUNS = 5; //runs per file
+	private static final Integer NUMBER_RUNS = 7; //runs per file
 	private static AtomicInteger referenceCount = new AtomicInteger();
 
 	//combined summary stats
@@ -56,7 +58,9 @@ public class GameRunner implements Callable<GameResult> {
 			"data/maps/level1.txt",
 			"data/maps/level1E.txt",
 			"data/maps/level7.txt",
-			"data/maps/level6.txt"
+			"data/maps/level6.txt",
+			"data/maps/level5.txt",
+			"data/maps/level4.txt",
 		};
 		
 		List<GameLevel> levels = new ArrayList<GameLevel>();
@@ -105,6 +109,10 @@ public class GameRunner implements Callable<GameResult> {
 					tasks.add(new GameRunner(level, new RandomController(), new RandomController(), TICK_LIMIT));
 					tasks.add(new GameRunner(level, new SortOfRandomController(), new SortOfRandomController(), TICK_LIMIT));
 					tasks.add(new GameRunner(level, new MCTS(true, 500, 10, 45), new MCTS(false, 500, 10, 45), TICK_LIMIT));
+					tasks.add(new GameRunner(level, new GAController(true), new GAController(false), TICK_LIMIT));
+					
+					//MCTS emulator - only difference is predictor choice
+					tasks.add(new GameRunner(level, new PredictorMCTS(500, 10, 45, new RandomPredictor()), new PredictorMCTS(500, 10, 45, new RandomPredictor()), TICK_LIMIT));
 					
 					//predictor MCTS duel pairing
 					NestedControllerPredictor predictorP1 = new NestedControllerPredictor(new MCTS(false, 500, 10, 45));

@@ -37,7 +37,7 @@ public class BredthFirstSearch extends AbstractSearch {
 	
 
 	@Override
-	public Node addNode(GameState state, ActionPair previous) {
+	public Node addNode(GameState state, ActionPair previous, Node parent) {
 		if (discovered.contains(state)) {
 			return null;
 		}

@@ -11,7 +11,7 @@ import Controllers.Controller;
 /**
  * Created by pwillic on 23/06/2015.
  */
-public class PredictorMCTS extends Controller {
+public class PredictorMCTSSmallReturns extends Controller {
 
     private Random random = new Random();
     private int maxUCTDepth = 5;
@@ -22,7 +22,7 @@ public class PredictorMCTS extends Controller {
 
     private boolean first;
 
-    public PredictorMCTS(int iterationLimit, int maxUCTDepth, int maxRolloutDepth, Predictor predictor) {
+    public PredictorMCTSSmallReturns(int iterationLimit, int maxUCTDepth, int maxRolloutDepth, Predictor predictor) {
         this.iterationLimit = iterationLimit;
         this.maxUCTDepth = maxUCTDepth;
         this.maxRolloutDepth = maxRolloutDepth;
@@ -30,7 +30,7 @@ public class PredictorMCTS extends Controller {
         this.gamma = 0.99;
     }
     
-    public PredictorMCTS(int iterationLimit, int maxUCTDepth, int maxRolloutDepth, float gamma, Predictor predictor) {
+    public PredictorMCTSSmallReturns(int iterationLimit, int maxUCTDepth, int maxRolloutDepth, float gamma, Predictor predictor) {
         this.iterationLimit = iterationLimit;
         this.maxUCTDepth = maxUCTDepth;
         this.maxRolloutDepth = maxRolloutDepth;
@@ -38,7 +38,7 @@ public class PredictorMCTS extends Controller {
         this.gamma = gamma;
     }
 
-    public PredictorMCTS(boolean first, int iterationLimit){
+    public PredictorMCTSSmallReturns(boolean first, int iterationLimit){
         this.first = first;
         this.iterationLimit = iterationLimit;
     }
@@ -82,7 +82,7 @@ public class PredictorMCTS extends Controller {
 
     @Override
     public String getSimpleName() {
-        return "PredictorMCTS: (" + iterationLimit + ";" + maxUCTDepth + ";" + maxRolloutDepth + ";"+predictor+")";
+        return "PredictorMCTS: (" + iterationLimit + ";" + maxUCTDepth + ";" + maxRolloutDepth + ")";
     }
 
 
@@ -102,10 +102,10 @@ private class MCTSNode {
     private MCTSNode[] children;
     private int childLength;
 
-    private PredictorMCTS mcts;
+    private PredictorMCTSSmallReturns mcts;
 
     // Root
-    public MCTSNode(double explorationConstant, PredictorMCTS mcts, int actionLength) {
+    public MCTSNode(double explorationConstant, PredictorMCTSSmallReturns mcts, int actionLength) {
         this.explorationConstant = explorationConstant;
         this.currentDepth = 0;
         this.mcts = mcts;
@@ -221,12 +221,23 @@ private class MCTSNode {
     }
 
     public double rollout(GameState state) {
-        int rolloutDepth = this.currentDepth;    
+        int rolloutDepth = this.currentDepth;
+        
+        double score = state.getScore();
+        double weightedScore = score;
+        
         while (!state.hasWon() && rolloutDepth < mcts.getMaxRolloutDepth()) {
             state.update(getRandomAction(0, state), getRandomAction(0, state));
+            
+            if (score != state.getScore()) {
+            	double deltaScore = state.getScore() - score;
+            	weightedScore += (deltaScore * Math.pow(gamma, rolloutDepth));
+            	score = state.getScore();
+            }
+            
             rolloutDepth++;
         }
-        return state.getScore();
+        return weightedScore;
     }
 
     private boolean isFullyExpanded() {

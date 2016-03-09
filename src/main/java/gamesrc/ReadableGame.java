@@ -11,7 +11,6 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-import Controllers.ArrowController;
 import Controllers.Controller;
 import Controllers.MCTS;
 import Controllers.NoOp;

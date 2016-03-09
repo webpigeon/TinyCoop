@@ -37,7 +37,8 @@ public class AStarBetter extends Controller {
 
         if (pairs.isEmpty()) {
             System.out.println("Unable to find path, perform random");
-            return Action.getRandom();
+            return Action.NOOP;
+            //return Action.getRandom();
         }
 
         if (pairs.size() == 1) {

@@ -18,7 +18,7 @@ public class FastGameMain {
         JFrame frame = new JFrame("Game");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         WASDController wasd = new WASDController();
-        ArrowController arrows = new ArrowController();
+        //ArrowController arrows = new ArrowController();
 
 //        Controller c1 = new GAController(true);
 
@@ -42,7 +42,7 @@ public class FastGameMain {
 
         Viewer viewer = new Viewer(game);
         viewer.addKeyListener(wasd);
-        viewer.addKeyListener(arrows);
+        //viewer.addKeyListener(arrows);
         viewer.setFocusable(true);
         viewer.requestFocus();
 

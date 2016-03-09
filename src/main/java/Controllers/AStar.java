@@ -98,7 +98,7 @@ public class AStar extends Controller {
 
     public static List<ActionNode> getAvailableMoves(ActionNode current, boolean isFirst){
         List<ActionNode> nextActions = new ArrayList<>();
-        for (FastGame.Action action : Action.allActions) {
+        for (Action action : current.game.getLegalActions(isFirst?0:1)) {
             //Action other = Action.getRandom();
             Action other = Action.NOOP;
             CoopGame clone = current.game.getClone();

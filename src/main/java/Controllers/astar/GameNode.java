@@ -27,10 +27,7 @@ public class GameNode implements Comparable<GameNode> {
     }
 
     public boolean gameEquals(GameState game2, GameState game3) {
-        if (game2.getScore() != game3.getScore()) return false;
-        if (!game2.getPos(0).equals(game3.getPos(0))) return false;
-        if (!game2.getPos(1).equals(game3.getPos(1))) return false;
-        return true;
+        return game2.equals(game3);
     }
 
     @Override
@@ -54,6 +51,6 @@ public class GameNode implements Comparable<GameNode> {
     }
 
     public String toString() {
-        return actions.toString()+" "+game.getScore()+",P1{"+game.getPos(0)+"},P2{"+game.getPos(1)+"}";
+        return actions.toString()+" "+game.getScore();
     }
 }

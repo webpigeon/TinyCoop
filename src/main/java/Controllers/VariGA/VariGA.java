@@ -23,12 +23,14 @@ public class VariGA extends Controller {
     private ActionSequence parent;
     private double parentFitness;
     private GameState fastForwardedGame;
+    private Random random;
 
     private int[] params;
 
     public VariGA(boolean first, int iterations) {
         this.first = first;
         this.iterations = iterations;
+        this.random = new Random();
     }
 
     public VariGA(boolean first, int iterations, double[] chances, int[] params){
@@ -53,6 +55,15 @@ public class VariGA extends Controller {
         return new ActionSequence(params[0], params[1], params[2], params[3], actionList);
     }
 
+    public Action getRandom(int pid, GameState state) {
+    	Action[] legalActions = state.getLegalActions(pid);
+    	return legalActions[random.nextInt(legalActions.length)];
+    }
+    
+    public Action getOppMove(int pid, GameState state) {
+    	return getRandom(pid, state);
+    }
+    
     @Override
     public Action get(GameState game) {
         if (currentBest == null || currentUsage >= currentBest.getFirstActionLength()) {
@@ -63,10 +74,10 @@ public class VariGA extends Controller {
             for(int i = 0 ;!fastForwardedGame.hasWon() &&  i < currentBest.getFirstActionLength(); i++){
                 if(first){
                 	Action[] actionList = fastForwardedGame.getLegalActions(0);
-                    fastForwardedGame.update(currentBest.getActionAt(i, actionList), Action.getRandom(1, game));
+                    fastForwardedGame.update(currentBest.getActionAt(i, actionList), getRandom(1, game));
                 }else{
                 	Action[] actionList = fastForwardedGame.getLegalActions(1);
-                    fastForwardedGame.update(Action.getRandom(0, game), currentBest.getActionAt(i, actionList));
+                    fastForwardedGame.update(getRandom(0, game), currentBest.getActionAt(i, actionList));
                 }
             }
             currentUsage = 0;
@@ -165,6 +176,11 @@ class ActionSequence {
         }
     }
 
+    public Action getRandom(int pid, GameState state) {
+    	Action[] legalActions = state.getLegalActions(pid);
+    	return legalActions[random.nextInt(legalActions.length)];
+    }
+    
     public double evaluate(GameState state, boolean first) {
         int totalScore = 0;
         int totalLength = getTotalLength();
@@ -175,10 +191,10 @@ class ActionSequence {
             for (int i = 0; !game.hasWon() && i < totalLength; i++) {
                 if (first) {
                     Action[] actionList = state.getLegalActions(0);
-                    game.update(getActionAt(i, actionList), Action.getRandom(1, state));
+                    game.update(getActionAt(i, actionList), getRandom(1, state));
                 } else {
                     Action[] actionList = state.getLegalActions(1);
-                    game.update(Action.getRandom(0, state), getActionAt(i, actionList));
+                    game.update(getRandom(0, state), getActionAt(i, actionList));
                 }
             }
             totalScore += game.getScore();
