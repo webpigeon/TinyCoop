@@ -1,5 +1,6 @@
 package gamesrc.experiment;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -42,15 +43,18 @@ public class GameRunner implements Callable<GameResult> {
 	private static AtomicInteger referenceCount = new AtomicInteger();
 
 	//combined summary stats
-	private static final String CSV_FILE="/home/webpigeon/tinycoop/results-tinycoop-%d.csv";
+	private static final String CSV_FILE="results/results-tinycoop-%d.csv";
 	
 	//game records
-	private static final String CSV_TRACE="/home/webpigeon/tinycoop/moves/trace-%s.csv";
+	private static final String CSV_TRACE="results/moves/trace-%s.csv";
 	
 	//batch summary stats
-	private static final String RUN_STATS_FILE="/home/webpigeon/tinycoop/results/results-tinycoop-%d.txt";
+	private static final String RUN_STATS_FILE="results/results-tinycoop-%d.txt";
 	
 	public static void main(String[] args) throws IOException {
+	
+		File directory = new File("results/moves");
+		directory.mkdirs();
 		
 		ExecutorService service = Executors.newFixedThreadPool(4);
 		
@@ -196,22 +200,37 @@ public class GameRunner implements Callable<GameResult> {
 	private Controller p1;
 	private Controller p2;
 	private int tickLimit;
+	private UUID id;
+	private GenerateCSV moves;
 
-	public GameRunner(GameLevel level, Controller p1, Controller p2, int tickLimit) {
+	public GameRunner(GameLevel level, Controller p1, Controller p2, int tickLimit, GenerateCSV moves) {
 		this.level = level;
 		this.p1 = p1;
 		this.p2 = p2;
 		this.tickLimit = tickLimit;
+		this.id = UUID.randomUUID();
+		this.moves = moves;
 	}
+	
+	public GameRunner(GameLevel level, Controller p1, Controller p2, int tickLimit) throws FileNotFoundException {
+		this.level = level;
+		this.p1 = p1;
+		this.p2 = p2;
+		this.tickLimit = tickLimit;
+		
+		UUID id = UUID.randomUUID();
+		moves = new GenerateCSV(String.format(CSV_TRACE, id.toString()));
+	}
+	
 
 	@Override
 	public GameResult call() throws Exception {
 		long startTimeUser = GameTimer.getUserTime();
 		long startTimeWall = System.nanoTime();
 		
-		UUID id = UUID.randomUUID();
-		GenerateCSV moves = new GenerateCSV(String.format(CSV_TRACE, id.toString()));
+
 		moves.writeLine(
+				"type",
 				"uuid",
 				"player1",
 				"player2",
@@ -261,7 +280,8 @@ public class GameRunner implements Callable<GameResult> {
 			Action p2Move = p2.get(game.getClone());
 
 			result.recordMoves(tickCount, p1Move, p2Move);
-			moves.writeLine(id,
+			moves.writeLine("MOVE",
+					id,
 					setup.p1,
 					setup.p2,
 					setup.levelID,
@@ -283,7 +303,9 @@ public class GameRunner implements Callable<GameResult> {
 					game.getSignalState(4),
 					game.getSignalState(5),
 					game.hasVisited(0, 0),
-					game.hasVisited(1, 0)
+					game.hasVisited(1, 0),
+					GameTimer.getUserTime(),
+					System.nanoTime()
 					);
 			
 			if (!legalMoves1.contains(p1Move) || !legalMoves2.contains(p2Move)) {
@@ -305,6 +327,21 @@ public class GameRunner implements Callable<GameResult> {
 		result.ticks = tickCount;
 		result.userTime = timeTakenUser/1_000_000f;
 		result.wallTime = timeTakenWall/1_000_000f;
+		
+		moves.writeLine(
+				"RESULTS",
+				result.id,
+				result.setup.p1, 
+				result.setup.p2,
+				result.setup.levelID,
+				result.setup.actionSet,
+				result.score,
+				result.ticks,
+				result.disquals,
+				result.userTime,
+				result.wallTime
+				);
+		
 		moves.close();
 
 		//System.out.println("game over, "+result.setup+" left: "+referenceCount.getAndDecrement()+" ticks: "+result.ticks);
