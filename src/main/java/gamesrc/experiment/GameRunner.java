@@ -52,7 +52,7 @@ public class GameRunner implements Callable<GameResult> {
 	private static final String RUN_STATS_FILE="results/results-tinycoop-%d.txt";
 	
 	public static void main(String[] args) throws IOException {
-	
+		
 		File directory = new File("results/moves");
 		directory.mkdirs();
 		
@@ -151,6 +151,16 @@ public class GameRunner implements Callable<GameResult> {
 	private static void printStats(Collection<Future<GameResult>> resultFutures, PrintStream out, GenerateCSV csv)
 			throws ExecutionException, InterruptedException, FileNotFoundException {
 		
+		out.printf("MACHINE,%s,%s,%s,%s,%s,%s,%d,%d\n",
+				System.getProperty("os.name").toLowerCase(),
+				System.getProperty("os.version").toLowerCase(),
+				System.getProperty("os.arch").toLowerCase(),		
+				System.getProperty("java.vendor").toLowerCase(),
+				System.getProperty("java.version").toLowerCase(),
+				getHostname(),
+				Runtime.getRuntime().availableProcessors(),
+				Runtime.getRuntime().totalMemory());
+		
 		Map<GameSetup, StatSummary> scoreMap = new HashMap<GameSetup, StatSummary>();
 		Map<GameSetup, StatSummary> tickMap = new HashMap<GameSetup, StatSummary>();
 
@@ -218,17 +228,19 @@ public class GameRunner implements Callable<GameResult> {
 		this.p2 = p2;
 		this.tickLimit = tickLimit;
 		
-		UUID id = UUID.randomUUID();
-		moves = new GenerateCSV(String.format(CSV_TRACE, id.toString()));
+		this.id = UUID.randomUUID();
 	}
 	
 
 	@Override
 	public GameResult call() throws Exception {
+		if (moves == null) {
+			moves = new GenerateCSV(String.format(CSV_TRACE, id.toString()));
+		}
+		
 		long startTimeUser = GameTimer.getUserTime();
 		long startTimeWall = System.nanoTime();
 		
-
 		moves.writeLine(
 				"type",
 				"uuid",
@@ -342,11 +354,37 @@ public class GameRunner implements Callable<GameResult> {
 				result.wallTime
 				);
 		
+		moves.writeLine(
+				"MACHINE",
+				System.getProperty("os.name").toLowerCase(),
+				System.getProperty("os.version").toLowerCase(),
+				System.getProperty("os.arch").toLowerCase(),		
+				System.getProperty("java.vendor").toLowerCase(),
+				System.getProperty("java.version").toLowerCase(),
+				getHostname(),
+				Runtime.getRuntime().availableProcessors(),
+				Runtime.getRuntime().totalMemory()
+				);
+		
 		moves.close();
 
 		//System.out.println("game over, "+result.setup+" left: "+referenceCount.getAndDecrement()+" ticks: "+result.ticks);
 
 		return result;
+	}
+	
+	public static String getHostname() {
+		String hostname = System.getenv("HOSTNAME");
+		if (hostname != null) {
+			return hostname;
+		}
+		
+		hostname = System.getenv("COMPUTERNAME");
+		if (hostname != null) {
+			return hostname;
+		}
+		
+		return "UNKNOWN_HOST";
 	}
 
 }
