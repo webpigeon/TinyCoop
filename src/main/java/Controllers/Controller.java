@@ -22,4 +22,8 @@ public abstract class Controller {
     public String getSimpleName(){
         return this.getClass().getSimpleName();
     }
+    
+    public String toString() {
+    	return getSimpleName();
+    }
 }
