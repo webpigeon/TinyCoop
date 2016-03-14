@@ -17,29 +17,17 @@ public class PredictorMCTS extends Controller {
     private int maxUCTDepth = 5;
     private int maxRolloutDepth = 30;
     private int iterationLimit = 0;
-    private double gamma;
     private Predictor predictor;
-
-    private boolean first;
+    private int agentID;
 
     public PredictorMCTS(int iterationLimit, int maxUCTDepth, int maxRolloutDepth, Predictor predictor) {
         this.iterationLimit = iterationLimit;
         this.maxUCTDepth = maxUCTDepth;
         this.maxRolloutDepth = maxRolloutDepth;
         this.predictor = predictor;
-        this.gamma = 0.99;
-    }
-    
-    public PredictorMCTS(int iterationLimit, int maxUCTDepth, int maxRolloutDepth, float gamma, Predictor predictor) {
-        this.iterationLimit = iterationLimit;
-        this.maxUCTDepth = maxUCTDepth;
-        this.maxRolloutDepth = maxRolloutDepth;
-        this.predictor = predictor;
-        this.gamma = gamma;
     }
 
     public PredictorMCTS(boolean first, int iterationLimit){
-        this.first = first;
         this.iterationLimit = iterationLimit;
     }
     
@@ -47,7 +35,7 @@ public class PredictorMCTS extends Controller {
 	public void startGame(int agentID) {
 		super.startGame(agentID);
 		predictor.init(agentID);
-		this.first = agentID==0;
+		this.agentID = agentID;
 	}
 
 	@Override
@@ -77,7 +65,7 @@ public class PredictorMCTS extends Controller {
     }
 
     public boolean isFirst() {
-        return first;
+        return agentID == GameState.PLAYER_0;
     }
 
     @Override
@@ -87,9 +75,8 @@ public class PredictorMCTS extends Controller {
 
 
 private class MCTSNode {
-
     private static final double EPSILON = 1e-6;
-
+	
     private double explorationConstant;
     private Action moveToThisState;
 

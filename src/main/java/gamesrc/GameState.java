@@ -3,6 +3,9 @@ package gamesrc;
 import FastGame.Action;
 
 public interface GameState {
+	public static final Integer PLAYER_0 = 0;
+	public static final Integer PLAYER_1 = 1;
+	
 	
 	public GameState getClone();
 	public double getScore();
