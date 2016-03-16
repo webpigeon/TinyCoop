@@ -18,9 +18,12 @@ public class GameResult {
 	public float userTime;
 	public float wallTime;
 	
+	public List<GameTick> trace;
+	
 	public GameResult(GameSetup setup) {
 		this.setup = setup;
 		this.moves = new ArrayList<MovePair>();
+		this.trace = new ArrayList<GameTick>();
 	}
 	
 	public void recordMoves(int tickCount, Action p1, Action p2) {
