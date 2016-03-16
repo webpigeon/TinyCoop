@@ -157,7 +157,7 @@ public class GameRunner implements Callable<GameResult> {
 				System.getProperty("os.arch").toLowerCase(),		
 				System.getProperty("java.vendor").toLowerCase(),
 				System.getProperty("java.version").toLowerCase(),
-				getHostname(),
+				Utils.getHostname(),
 				Runtime.getRuntime().availableProcessors(),
 				Runtime.getRuntime().totalMemory());
 		
@@ -361,7 +361,7 @@ public class GameRunner implements Callable<GameResult> {
 				System.getProperty("os.arch").toLowerCase(),		
 				System.getProperty("java.vendor").toLowerCase(),
 				System.getProperty("java.version").toLowerCase(),
-				getHostname(),
+				Utils.getHostname(),
 				Runtime.getRuntime().availableProcessors(),
 				Runtime.getRuntime().totalMemory()
 				);
@@ -371,20 +371,6 @@ public class GameRunner implements Callable<GameResult> {
 		//System.out.println("game over, "+result.setup+" left: "+referenceCount.getAndDecrement()+" ticks: "+result.ticks);
 
 		return result;
-	}
-	
-	public static String getHostname() {
-		String hostname = System.getenv("HOSTNAME");
-		if (hostname != null) {
-			return hostname;
-		}
-		
-		hostname = System.getenv("COMPUTERNAME");
-		if (hostname != null) {
-			return hostname;
-		}
-		
-		return "UNKNOWN_HOST";
 	}
 
 }
