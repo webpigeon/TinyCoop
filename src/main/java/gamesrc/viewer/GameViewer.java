@@ -32,7 +32,7 @@ public class GameViewer implements Callable<GameResult> {
 		//GameViewer viewer = new GameViewer(level, p1, p2);
 		//viewer.call();
 
-		GameLevel level = LevelParser.buildParser("data/maps/level3.txt");
+		GameLevel level = LevelParser.buildParser("data/norm_maps/empty.txt");
 		level.setLegalMoves("full", Filters.getAllActions(level.getWidth(), level.getHeight()));
 		
 		Controller p1 = new WASDController();
