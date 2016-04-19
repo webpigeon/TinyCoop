@@ -47,7 +47,7 @@ public class ActionSanityChecks {
 	
 	@Test
 	public void testEqualsSameVals() {
-		Action cloneAction = new Action(x, y);
+		Action cloneAction = new Action("TEST", x, y);
 		
 		assertEquals(cloneAction, action);
 	}
