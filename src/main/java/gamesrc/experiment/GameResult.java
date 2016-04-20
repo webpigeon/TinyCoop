@@ -41,4 +41,8 @@ public class GameResult {
 			this.p2 = p2;
 		}
 	}
+	
+	public String toString() {
+		return String.format("(%s): %f %d ", setup.toString(), score, ticks);
+	}
 }
