@@ -13,9 +13,6 @@ public interface ObservableGameState extends GameState {
 	public int getGoalsCount();
 	
 	public Flare getFlare(int agent);
-
-	/*public void setVisited(int agent, int goalID);
-	public void setSignalState(int signal, boolean state);*/
 	public boolean isWalkable(int pid, int x, int y);
 
 }
