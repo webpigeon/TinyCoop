@@ -9,26 +9,24 @@ import api.GameObject;
 import api.ObservableGameState;
 import gamesrc.SimpleGame;
 
-public abstract class AbstractGameObject implements GameObject {
+abstract class AbstractGameObject implements GameObject {
 
 	/* (non-Javadoc)
 	 * @see gamesrc.GameObjectI#isWalkable(gamesrc.SimpleGame, int)
 	 */
 	@Override
-	public boolean isWalkable(SimpleGame state, int playerId) {
+	public boolean isWalkable(ObservableGameState state, int playerId) {
 		return true;
 	}
 	
 	/* (non-Javadoc)
 	 * @see gamesrc.GameObjectI#onContact(gamesrc.SimpleGame, int)
 	 */
-	@Override
 	public abstract void onContact(SimpleGame state, int playerId);
 
 	/* (non-Javadoc)
 	 * @see gamesrc.GameObjectI#onContactEnd(gamesrc.SimpleGame, int)
 	 */
-	@Override
 	public void onContactEnd(SimpleGame state, int pid) {}
 
 	/* (non-Javadoc)

@@ -17,7 +17,7 @@ class Door extends AbstractGameObject {
 	}
 
 	@Override
-	public boolean isWalkable(SimpleGame state, int playerId) {
+	public boolean isWalkable(ObservableGameState state, int playerId) {
 		return state.isSignalHigh(signal);
 	}
 	

@@ -53,7 +53,7 @@ public class GameLevel {
 		assert pos.getX() >= 0 && pos.getY() >= 0 : "player "+pos+" position is negative!";
 		assert pos.getX() < width && pos.getY() < height : "player "+pos+" position is too high!";
 		
-		GameObject object = state.getObject(pos.x, pos.y);
+		GameObject object = getObject(pos.x, pos.y);
 		
 		return floors[pos.x * height + pos.y] == 0 && (object == null || object.isWalkable(state, pid));
 	}
@@ -108,8 +108,8 @@ public class GameLevel {
 	}
 
 	public void onStep(SimpleGame state, int pid, Point oldPos, Point newPos) {
-		GameObject oldObject = getObject(oldPos.x, oldPos.y);
-		GameObject newObject = getObject(newPos.x, newPos.y);
+		AbstractGameObject oldObject = getObject(oldPos.x, oldPos.y);
+		AbstractGameObject newObject = getObject(newPos.x, newPos.y);
 		
 		if (oldObject != null) oldObject.onContactEnd(state, pid);
 		if (newObject != null) newObject.onContact(state, pid);

@@ -9,9 +9,9 @@ import java.util.Map;
 import api.Action;
 import api.ActionType;
 import api.Flare;
+import api.GameObject;
 import api.GameState;
 import api.ObservableGameState;
-import gamesrc.level.AbstractGameObject;
 import gamesrc.level.GameLevel;
 
 /**
@@ -168,7 +168,7 @@ public class SimpleGame implements ObservableGameState {
 	}
 
 	@Override
-	public AbstractGameObject getObject(int x, int y) {
+	public GameObject getObject(int x, int y) {
 		return level.getObject(x, y);
 	}
 

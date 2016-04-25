@@ -1,14 +1,8 @@
 package api;
 
-import gamesrc.SimpleGame;
-
 public interface GameObject {
 
-	boolean isWalkable(SimpleGame state, int playerId);
-
-	void onContact(SimpleGame state, int playerId);
-
-	void onContactEnd(SimpleGame state, int pid);
+	boolean isWalkable(ObservableGameState state, int playerId);
 
 	int getSignal();
 

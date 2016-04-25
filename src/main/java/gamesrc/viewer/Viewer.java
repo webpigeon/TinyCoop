@@ -3,14 +3,17 @@ package gamesrc.viewer;
 import javax.swing.*;
 
 import api.Flare;
+import api.GameObject;
+import api.GameState;
 import api.ObservableGameState;
 import gamesrc.SimpleGame;
-import gamesrc.level.AbstractGameObject;
 
 import java.awt.*;
 
 import static FastGame.GroundTypes.GROUND;
 import static FastGame.GroundTypes.WALL;
+import static FastGame.ObjectTypes.OBJECT_COLOURS;
+import static FastGame.ObjectTypes.TEXT_COLOURS;
 
 /**
  * Created by pwillic on 25/06/2015.
@@ -49,10 +52,20 @@ public class Viewer extends JComponent {
                         break;
                 }
                 g.fillRect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                
-                AbstractGameObject object = game.getObject(x, y);
+                                
+                GameObject object = game.getObject(x, y);
                 if (object != null) {
-                	object.paint(x, y, GRID_SIZE, game, g);
+                	switch (object.getType()) {
+                		case 3:
+                			paintDoor(g, game, object, x, y);
+                			break;
+                		case 2:
+                		case 4:
+                			paintObject(g, game, object, x, y);
+                			break;
+                		default:
+                			System.err.println("something blew up!");
+                	}
                 }
             }
         }
@@ -74,6 +87,26 @@ public class Viewer extends JComponent {
         }
         
         paintDebugInfo(g);
+    }
+    
+	private void paintObject(Graphics g, ObservableGameState state, GameObject o, int x, int y) {
+		g.setColor(OBJECT_COLOURS[o.getType()]);
+        g.fillRect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+    	
+    	g.setColor(TEXT_COLOURS[o.getType()]);
+        g.drawString("" + o.getSignal(), x * GRID_SIZE + GRID_SIZE / 2, (y * GRID_SIZE) + GRID_SIZE / 2);
+	}
+    
+    private void paintDoor(Graphics g, ObservableGameState state, GameObject o, int x, int y) {
+    	g.setColor(OBJECT_COLOURS[o.getType()]);
+        if (game.isSignalHigh(o.getSignal())) {
+        	g.drawRect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+        } else{
+        	g.fillRect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+        }
+        	
+        g.setColor(TEXT_COLOURS[o.getType()]);
+        g.drawString("" + o.getSignal(), x * GRID_SIZE + GRID_SIZE / 2, (y * GRID_SIZE) + GRID_SIZE / 2);
     }
     
     protected void paintDebugInfo(Graphics g) {
