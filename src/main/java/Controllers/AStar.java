@@ -6,14 +6,14 @@ import java.util.*;
 import FastGame.FastAction;
 import FastGame.CoopGame;
 import FastGame.ObjectTypes;
-import actions.Action;
+import api.Action;
 
 /**
  * An implementation of A* for path finding
  */
 public class AStar extends Controller {
 
-    public static Queue<actions.Action> getPath(CoopGame game, ActionNode start, boolean isFirst) {
+    public static Queue<api.Action> getPath(CoopGame game, ActionNode start, boolean isFirst) {
         int maxExpands = 25;
 
         List<Point> goals = getGoals(game);
@@ -58,7 +58,7 @@ public class AStar extends Controller {
         }
 
         // we didn't find a path
-        return new LinkedList<actions.Action>();
+        return new LinkedList<api.Action>();
     }
 
     public static List<Point> getGoals(CoopGame cg) {
@@ -77,8 +77,8 @@ public class AStar extends Controller {
         return goals;
     }
 
-    public static LinkedList<actions.Action> buildPath(ActionNode current, Map<ActionNode,ActionNode> cameFrom, boolean first) {
-        LinkedList<actions.Action> path = new LinkedList<>();
+    public static LinkedList<api.Action> buildPath(ActionNode current, Map<ActionNode,ActionNode> cameFrom, boolean first) {
+        LinkedList<api.Action> path = new LinkedList<>();
         if (first) {
             path.addFirst(current.p1action);
         } else {

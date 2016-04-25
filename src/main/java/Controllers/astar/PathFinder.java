@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import actions.Action;
-import gamesrc.ObservableGameState;
+import api.Action;
+import api.ObservableGameState;
 
 /**
  * An implementation of A* for path finding

@@ -1,9 +1,9 @@
 package Controllers.ga;
 
-import actions.Action;
-import gamesrc.GameState;
-
 import java.util.Random;
+
+import api.Action;
+import api.GameState;
 
 /**
  * PTSP-Competition

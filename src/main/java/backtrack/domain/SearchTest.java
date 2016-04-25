@@ -3,10 +3,10 @@ package backtrack.domain;
 import java.io.IOException;
 import java.util.List;
 
-import actions.Action;
+import api.Action;
+import api.GameState;
 import gamesrc.Filters;
 import gamesrc.GameLevel;
-import gamesrc.GameState;
 import gamesrc.LevelParser;
 import gamesrc.SimpleGame;
 import backtrack.BredthFirstSearch;

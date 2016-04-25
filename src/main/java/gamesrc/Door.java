@@ -6,8 +6,9 @@ import static FastGame.ObjectTypes.TEXT_COLOURS;
 import java.awt.Graphics;
 
 import FastGame.ObjectTypes;
+import api.ObservableGameState;
 
-public class Door extends GameObject {
+public class Door extends AbstractGameObject {
 	private final Integer signal;
 	
 	public Door(int signal) {

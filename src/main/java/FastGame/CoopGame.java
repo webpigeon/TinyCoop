@@ -9,9 +9,9 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
-import actions.Action;
+import api.Action;
+import api.GameState;
 import gamesrc.Filters;
-import gamesrc.GameState;
 
 import static FastGame.GroundTypes.WALKABLE;
 import static FastGame.ObjectTypes.*;

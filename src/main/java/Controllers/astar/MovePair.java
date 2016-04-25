@@ -1,6 +1,6 @@
 package Controllers.astar;
 
-import actions.Action;
+import api.Action;
 
 /**
  * Created by jwalto on 02/07/2015.

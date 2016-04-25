@@ -2,8 +2,8 @@ package backtrack;
 
 import java.util.List;
 
-import actions.Action;
-import gamesrc.GameState;
+import api.Action;
+import api.GameState;
 
 public interface Search {
 

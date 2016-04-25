@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-import gamesrc.GameState;
+import api.GameState;
 
 public class DepthLimitedDFS extends AbstractSearch {
 	private Stack<Node> stack;

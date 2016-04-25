@@ -1,6 +1,6 @@
 package actions.relative;
 
-import actions.ActionType;
+import api.ActionType;
 
 public class RelativeFlare extends RelativeAction {
 

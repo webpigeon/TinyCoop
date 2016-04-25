@@ -2,7 +2,7 @@ package gamesrc;
 
 import FastGame.ObjectTypes;
 
-public class Goal extends GameObject {
+public class Goal extends AbstractGameObject {
 	private int goalId;
 	
 	public Goal(int goalId) {

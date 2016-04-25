@@ -1,4 +1,4 @@
-package actions;
+package api;
 
 public enum ActionType {
 	MOVEMENT(true, false, false),

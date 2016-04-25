@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import FastGame.FastAction;
-import actions.Action;
-import gamesrc.GameState;
+import api.Action;
+import api.GameState;
 
 public abstract class AbstractSearch implements Search {
 	protected Map<GameState, ActionPair> cameFrom;

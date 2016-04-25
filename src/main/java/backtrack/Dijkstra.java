@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-import actions.Action;
-import gamesrc.GameState;
+import api.Action;
+import api.GameState;
 
 public class Dijkstra implements Search {
 	private Map<GameState, Integer> distance;

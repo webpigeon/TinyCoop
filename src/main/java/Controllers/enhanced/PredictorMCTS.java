@@ -1,8 +1,8 @@
 package Controllers.enhanced;
 
 import FastGame.FastAction;
-import actions.Action;
-import gamesrc.GameState;
+import api.Action;
+import api.GameState;
 
 import java.util.Random;
 

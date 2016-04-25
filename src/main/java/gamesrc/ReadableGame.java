@@ -12,7 +12,9 @@ import javax.swing.JFrame;
 import Controllers.Controller;
 import Controllers.PassiveController;
 import Controllers.SortOfRandomController;
-import actions.Action;
+import api.Action;
+import api.GameState;
+import api.ObservableGameState;
 import gamesrc.viewer.Viewer;
 
 public class ReadableGame {
@@ -73,7 +75,7 @@ public class ReadableGame {
 	
 	public static void runGraphicalGame(GameState initial, Viewer viewer, Controller p1, Controller p2) throws InterruptedException {
 		
-		ObservableGameState state = (ObservableGameState)initial.getClone();
+		SimpleGame state = (SimpleGame)initial.getClone();
 
 		viewer.setState(state);
 		

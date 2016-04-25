@@ -2,9 +2,10 @@ package gamesrc.viewer;
 
 import javax.swing.*;
 
-import gamesrc.Flare;
-import gamesrc.GameObject;
-import gamesrc.ObservableGameState;
+import api.Flare;
+import api.ObservableGameState;
+import gamesrc.AbstractGameObject;
+import gamesrc.SimpleGame;
 
 import java.awt.*;
 
@@ -16,14 +17,14 @@ import static FastGame.GroundTypes.WALL;
  */
 public class Viewer extends JComponent {
 
-    private ObservableGameState game;
+    private SimpleGame game;
     public final static Integer GRID_SIZE = 50;
 
-    public Viewer(ObservableGameState game) {
+    public Viewer(SimpleGame game) {
         this.game = game;
     }
 
-    public void setState(ObservableGameState game) {
+    public void setState(SimpleGame game) {
     	this.game = game;
     }
     
@@ -49,7 +50,7 @@ public class Viewer extends JComponent {
                 }
                 g.fillRect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                 
-                GameObject object = game.getObject(x, y);
+                AbstractGameObject object = game.getObject(x, y);
                 if (object != null) {
                 	object.paint(x, y, GRID_SIZE, game, g);
                 }

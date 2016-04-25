@@ -1,8 +1,8 @@
 package Controllers.ga;
 
 import Controllers.Controller;
-import actions.Action;
-import gamesrc.GameState;
+import api.Action;
+import api.GameState;
 
 /**
  * GA controller for CoopGame, modified from PTSP.

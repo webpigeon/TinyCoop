@@ -2,8 +2,8 @@ package Controllers;
 
 
 import FastGame.TalkAction;
-import actions.Action;
-import gamesrc.GameState;
+import api.Action;
+import api.GameState;
 import gamesrc.viewer.Viewer;
 
 import java.awt.Point;

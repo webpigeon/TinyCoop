@@ -1,8 +1,8 @@
 package Controllers.enhanced;
 
 import Controllers.Controller;
-import actions.Action;
-import gamesrc.GameState;
+import api.Action;
+import api.GameState;
 
 public class NestedControllerPredictor implements Predictor {
 	private Controller controller;

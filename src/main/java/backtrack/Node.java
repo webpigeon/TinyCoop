@@ -1,7 +1,7 @@
 package backtrack;
 
 import FastGame.FastAction;
-import gamesrc.GameState;
+import api.GameState;
 
 public class Node implements Comparable<Node> {
 	public Node parent;

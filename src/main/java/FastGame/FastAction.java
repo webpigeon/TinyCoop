@@ -1,8 +1,9 @@
 package FastGame;
 
 import java.util.Objects;
-import actions.Action;
-import actions.ActionType;
+
+import api.Action;
+import api.ActionType;
 
 /**
  * Created by pwillic on 23/06/2015.

@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import Controllers.Controller;
 import Controllers.PassiveRefindController;
 import Controllers.WASDController;
-import actions.Action;
+import api.Action;
 import gamesrc.Filters;
 import gamesrc.GameLevel;
 import gamesrc.LevelParser;

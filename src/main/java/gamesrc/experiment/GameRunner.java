@@ -28,7 +28,7 @@ import Controllers.enhanced.NestedControllerPredictor;
 import Controllers.enhanced.PredictorMCTS;
 import Controllers.enhanced.RandomPredictor;
 import Controllers.ga.GAController;
-import actions.Action;
+import api.Action;
 import gamesrc.Filters;
 import gamesrc.GameLevel;
 import gamesrc.LevelParser;

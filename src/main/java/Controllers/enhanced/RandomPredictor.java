@@ -2,8 +2,8 @@ package Controllers.enhanced;
 
 import java.util.Random;
 
-import actions.Action;
-import gamesrc.GameState;
+import api.Action;
+import api.GameState;
 
 public class RandomPredictor implements Predictor {
 

@@ -1,6 +1,6 @@
 package Controllers.astar;
 
-import gamesrc.GameState;
+import api.GameState;
 
 /**
  * Created by jwalto on 02/07/2015.

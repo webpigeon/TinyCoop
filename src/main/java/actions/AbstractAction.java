@@ -1,5 +1,8 @@
 package actions;
 
+import api.Action;
+import api.ActionType;
+
 public abstract class AbstractAction implements Action {
 
 	private final String name;

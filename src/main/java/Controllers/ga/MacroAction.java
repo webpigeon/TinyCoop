@@ -1,6 +1,6 @@
 package Controllers.ga;
 
-import actions.Action;
+import api.Action;
 
 /**
  * PTSP-Competition

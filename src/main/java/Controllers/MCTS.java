@@ -1,9 +1,9 @@
 package Controllers;
 
-import actions.Action;
-import gamesrc.GameState;
-
 import java.util.Random;
+
+import api.Action;
+import api.GameState;
 
 /**
  * Created by pwillic on 23/06/2015.

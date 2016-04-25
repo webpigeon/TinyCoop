@@ -1,11 +1,11 @@
 package Controllers.astar;
 
 
-        import actions.Action;
-import gamesrc.GameState;
-
-import java.awt.Point;
+        import java.awt.Point;
         import java.util.*;
+
+import api.Action;
+import api.GameState;
 
 /**
  * An implementation of A* for path finding

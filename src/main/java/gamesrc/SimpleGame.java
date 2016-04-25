@@ -5,8 +5,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import actions.Action;
-import actions.ActionType;
+
+import api.Action;
+import api.ActionType;
+import api.Flare;
+import api.GameState;
+import api.ObservableGameState;
 
 /**
  * TinyCoop implementation designed for planners.
@@ -162,7 +166,7 @@ public class SimpleGame implements ObservableGameState {
 	}
 
 	@Override
-	public GameObject getObject(int x, int y) {
+	public AbstractGameObject getObject(int x, int y) {
 		return level.getObject(x, y);
 	}
 

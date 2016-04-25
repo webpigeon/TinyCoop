@@ -1,5 +1,8 @@
 package actions;
 
+import api.Action;
+import api.ActionType;
+
 public class NoopAction implements Action {
 
 	@Override

@@ -1,5 +1,6 @@
-package actions;
+package api;
 
+import actions.NoopAction;
 import actions.relative.MovePosition;
 import actions.relative.RelativeFlare;
 

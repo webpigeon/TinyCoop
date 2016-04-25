@@ -5,7 +5,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import actions.Action;
+import api.Action;
+import api.GameObject;
 
 
 public class GameLevel {
@@ -14,7 +15,7 @@ public class GameLevel {
 	private final Integer height;
 	private final Point[] spawnLocations;
 	private final int[] floors;
-	private final GameObject[] objects;
+	private final AbstractGameObject[] objects;
 	private Integer goalCount = 0;
 	
 	private String actionSetName;
@@ -26,7 +27,7 @@ public class GameLevel {
 		this.height = height;
 		this.spawnLocations = new Point[2];
 		this.floors = new int[width*height];
-		this.objects = new GameObject[width*height];
+		this.objects = new AbstractGameObject[width*height];
 		this.goalCount = 0;
 		
 		this.legalMoves = Filters.getAllActions(width, height);
@@ -95,12 +96,12 @@ public class GameLevel {
 	 * @param y y position of the object
 	 * @param object the object to store
 	 */
-	protected void setObject(int x, int y, GameObject object){
+	protected void setObject(int x, int y, AbstractGameObject object){
 		assert objects[x * height + y] == null : "object already set!";
 		objects[x * height + y] = object;
 	}
 	
-	protected GameObject getObject(int x, int y){
+	protected AbstractGameObject getObject(int x, int y){
 		return objects[x * height + y];
 	}
 

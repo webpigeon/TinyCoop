@@ -1,7 +1,7 @@
 package actions.relative;
 
 import actions.AbstractAction;
-import actions.ActionType;
+import api.ActionType;
 
 public abstract class RelativeAction extends AbstractAction {
 	

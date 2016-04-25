@@ -1,7 +1,7 @@
 package Controllers.enhanced;
 
-import actions.Action;
-import gamesrc.GameState;
+import api.Action;
+import api.GameState;
 
 public interface Predictor {
 	

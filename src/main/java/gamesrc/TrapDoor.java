@@ -6,6 +6,7 @@ import static FastGame.ObjectTypes.TEXT_COLOURS;
 import java.awt.Graphics;
 
 import FastGame.ObjectTypes;
+import api.ObservableGameState;
 
 /**
  * Trap door object.
@@ -13,7 +14,7 @@ import FastGame.ObjectTypes;
  * Once someone walks though the trap door object, the door will subtract 1 from the signal
  * state (disabling it).
  */
-public class TrapDoor extends GameObject {
+public class TrapDoor extends AbstractGameObject {
 	private final Integer signal;
 	
 	public TrapDoor(int signal) {

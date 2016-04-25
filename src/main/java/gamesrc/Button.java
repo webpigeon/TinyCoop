@@ -2,7 +2,7 @@ package gamesrc;
 
 import FastGame.ObjectTypes;
 
-public class Button extends GameObject {
+public class Button extends AbstractGameObject {
 	private final Integer signal;
 	
 	public Button(int signal) {

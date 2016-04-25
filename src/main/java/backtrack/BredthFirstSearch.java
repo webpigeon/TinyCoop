@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
-import gamesrc.GameState;
+import api.GameState;
 
 public class BredthFirstSearch extends AbstractSearch {
 	private Queue<Node> stack;

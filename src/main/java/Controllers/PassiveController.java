@@ -5,10 +5,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import Controllers.astar.PathFinder;
-import actions.Action;
-import gamesrc.Flare;
-import gamesrc.GameState;
-import gamesrc.ObservableGameState;
+import api.Action;
+import api.Flare;
+import api.GameState;
+import api.ObservableGameState;
 
 /**
  * This agent will do nothing unless the other agent uses flare, then it will
