@@ -1,4 +1,4 @@
-package gamesrc.experiment;
+package runner.experiment;
 
 import Controllers.Controller;
 import Controllers.MCTS;

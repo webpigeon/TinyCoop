@@ -1,4 +1,4 @@
-package gamesrc.experiment;
+package runner.experiment;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;

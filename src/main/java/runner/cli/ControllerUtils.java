@@ -1,4 +1,4 @@
-package gamesrc.cli;
+package runner.cli;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

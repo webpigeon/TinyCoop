@@ -1,6 +1,8 @@
 package FastGame;
 
 import Controllers.*;
+import runner.viewer.WASDController;
+
 import javax.swing.*;
 
 /**

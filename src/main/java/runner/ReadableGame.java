@@ -1,4 +1,4 @@
-package gamesrc;
+package runner;
 
 import java.awt.Dimension;
 import java.awt.event.KeyListener;
@@ -15,9 +15,10 @@ import Controllers.SortOfRandomController;
 import api.Action;
 import api.GameState;
 import api.ObservableGameState;
+import gamesrc.SimpleGame;
 import gamesrc.level.GameLevel;
 import gamesrc.level.LevelParser;
-import gamesrc.viewer.Viewer;
+import runner.viewer.Viewer;
 
 public class ReadableGame {
 	

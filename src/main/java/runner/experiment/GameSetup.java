@@ -1,4 +1,4 @@
-package gamesrc.experiment;
+package runner.experiment;
 
 public class GameSetup {
 	public String p1;

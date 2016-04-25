@@ -1,4 +1,4 @@
-package gamesrc.cli;
+package runner.cli;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,10 +18,10 @@ import org.apache.commons.cli.ParseException;
 
 import Controllers.Controller;
 import gamesrc.Filters;
-import gamesrc.experiment.GameResult;
-import gamesrc.experiment.GameRunner;
 import gamesrc.level.GameLevel;
 import gamesrc.level.LevelParser;
+import runner.experiment.GameResult;
+import runner.experiment.GameRunner;
 
 public class GameCli {
 	

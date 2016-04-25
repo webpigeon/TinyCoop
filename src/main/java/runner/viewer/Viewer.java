@@ -1,4 +1,4 @@
-package gamesrc.viewer;
+package runner.viewer;
 
 import javax.swing.*;
 

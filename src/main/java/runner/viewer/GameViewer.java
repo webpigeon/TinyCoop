@@ -1,4 +1,4 @@
-package gamesrc.viewer;
+package runner.viewer;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,15 +10,15 @@ import javax.swing.JFrame;
 
 import Controllers.Controller;
 import Controllers.PassiveRefindController;
-import Controllers.WASDController;
 import api.Action;
 import gamesrc.Filters;
 import gamesrc.SimpleGame;
-import gamesrc.experiment.GameResult;
-import gamesrc.experiment.GameSetup;
-import gamesrc.experiment.Utils;
+
 import gamesrc.level.GameLevel;
 import gamesrc.level.LevelParser;
+import runner.experiment.GameResult;
+import runner.experiment.GameSetup;
+import runner.experiment.Utils;
 
 public class GameViewer implements Callable<GameResult> {
 	private static final Integer SLEEP_TIME = 60/1;

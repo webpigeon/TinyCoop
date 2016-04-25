@@ -1,16 +1,16 @@
-package Controllers;
+package runner.viewer;
 
-
-import FastGame.TalkAction;
 import api.Action;
 import api.GameState;
-import gamesrc.viewer.Viewer;
+import gamesrc.actions.absolute.AbsoluteFlare;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
+import Controllers.Controller;
 
 /**
  * Created by pwillic on 23/06/2015.
@@ -35,7 +35,7 @@ public class WASDController extends Controller implements KeyListener, MouseList
 			for (Action action : actions) {
 				Point flarePos2 = new Point(flarePos);
 				flarePos = null;
-				return new TalkAction(flarePos2.x, flarePos2.y, false);	
+				return new AbsoluteFlare(flarePos2.x, flarePos2.y);	
 			}
 		}
 		

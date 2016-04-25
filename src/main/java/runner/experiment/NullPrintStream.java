@@ -1,4 +1,4 @@
-package gamesrc.experiment;
+package runner.experiment;
 
 import java.io.IOException;
 import java.io.OutputStream;
