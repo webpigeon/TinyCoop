@@ -1,7 +1,7 @@
-package actions.relative;
+package gamesrc.actions.relative;
 
-import actions.AbstractAction;
 import api.ActionType;
+import gamesrc.actions.AbstractAction;
 
 public abstract class RelativeAction extends AbstractAction {
 	

@@ -1,8 +1,8 @@
 package api;
 
-import actions.NoopAction;
-import actions.relative.MovePosition;
-import actions.relative.RelativeFlare;
+import gamesrc.actions.NoopAction;
+import gamesrc.actions.relative.MovePosition;
+import gamesrc.actions.relative.RelativeFlare;
 
 public interface Action {
 

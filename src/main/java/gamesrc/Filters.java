@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import actions.absolute.AbsoluteFlare;
 import api.Action;
 import api.ActionType;
+import gamesrc.actions.absolute.AbsoluteFlare;
 
 public class Filters {
 

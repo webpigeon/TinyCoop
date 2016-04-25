@@ -1,7 +1,7 @@
-package actions.absolute;
+package gamesrc.actions.absolute;
 
-import actions.AbstractAction;
 import api.ActionType;
+import gamesrc.actions.AbstractAction;
 
 public class AbsoluteFlare extends AbstractAction {
 

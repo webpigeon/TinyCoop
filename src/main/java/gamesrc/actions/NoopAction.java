@@ -1,4 +1,4 @@
-package actions;
+package gamesrc.actions;
 
 import api.Action;
 import api.ActionType;

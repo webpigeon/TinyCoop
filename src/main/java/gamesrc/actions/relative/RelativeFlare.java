@@ -1,4 +1,4 @@
-package actions.relative;
+package gamesrc.actions.relative;
 
 import api.ActionType;
 
