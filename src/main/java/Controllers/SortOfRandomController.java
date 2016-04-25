@@ -13,12 +13,21 @@ import gamesrc.GameState;
  * Created by pwillic on 30/06/2015.
  */
 public class SortOfRandomController extends Controller {
-	private final Double COMM_CHANCE = 0.75;
+	private static final Double COMM_CHANCE = 0.75;
 	
 	private Random random;
 	private int agentID;
+	private double commChance;
 
-    @Override
+    public SortOfRandomController(double bais) {
+		this.commChance = bais;
+	}
+
+    public SortOfRandomController() {
+    	this(COMM_CHANCE);
+    }
+    
+	@Override
 	public void startGame(int agentID) {
 		super.startGame(agentID);
     	this.agentID = agentID;
@@ -32,7 +41,7 @@ public class SortOfRandomController extends Controller {
 		List<Action> actions = Filters.filterMovement(game.getLegalActions(agentID));
 		
 		//half of the time replace the actions with communication actions
-    	if (random.nextDouble() > COMM_CHANCE) {
+    	if (random.nextDouble() > commChance) {
     		List<Action> talkActions = Filters.filterTalk(game.getLegalActions(agentID));
     		if (!talkActions.isEmpty()) {
     			actions = talkActions;

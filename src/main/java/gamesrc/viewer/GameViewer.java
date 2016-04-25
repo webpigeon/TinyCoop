@@ -1,7 +1,10 @@
 package gamesrc.viewer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import javax.swing.JFrame;
@@ -26,22 +29,39 @@ import gamesrc.experiment.GameSetup;
 import utils.StatSummary;
 
 public class GameViewer implements Callable<GameResult> {
-	private static final Integer SLEEP_TIME = 5;
+	private static final Integer SLEEP_TIME = 60/1;
 	
 	public static void main(String[] args) throws Exception {
 		//GameViewer viewer = new GameViewer(level, p1, p2);
 		//viewer.call();
 
-		GameLevel level = LevelParser.buildParser("data/norm_maps/empty.txt");
-		level.setLegalMoves("full", Filters.getAllActions(level.getWidth(), level.getHeight()));
+		String[] maps = new String[] {
+				"data/norm_maps/maze.txt",
+				//"data/norm_maps/airlock.txt",
+				//"data/norm_maps/butterfly.txt",
+				//"data/norm_maps/single_door.txt"
+				//"data/norm_maps/empty.txt"
+		};
 		
-		Controller p1 = new WASDController();
-		Controller p2 = new PassiveRefindController();
+		Map<String, GameResult> results = new HashMap<String, GameResult>();
 		
-		GameViewer viewer = new GameViewer(level, p1, p2);
-		viewer.call();
+		for (String map : maps) {
+			GameLevel level = LevelParser.buildParser(map);
+			level.setLegalMoves("simple", Filters.getBasicActions());
+			
+			Controller p1 = new WASDController();
+			Controller p2 = new PassiveRefindController();
+			
+			//Controller p1 = new RandomController();
+			//Controller p2 = new RandomController();
+			
+			
+			GameViewer viewer = new GameViewer(level, p1, p2);
+			GameResult r = viewer.call();
+			results.put(map, r);
+		}
 		
-
+		System.out.println(results);
 
 	}
 

@@ -12,6 +12,10 @@ public class LevelParser {
 	
 	public static GameLevel buildParser(String filename) throws IOException {
 		InputStream stream = LevelParser.class.getClassLoader().getResourceAsStream(filename);
+		if (stream == null) {
+			throw new FileNotFoundException(filename);
+		}
+		
 		Scanner scanner = new Scanner(stream);
 		
 		int width = scanner.nextInt();
