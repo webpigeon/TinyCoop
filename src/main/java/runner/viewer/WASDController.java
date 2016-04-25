@@ -2,6 +2,7 @@ package runner.viewer;
 
 import api.Action;
 import api.GameState;
+import gamesrc.Filters;
 import gamesrc.actions.absolute.AbsoluteFlare;
 
 import java.awt.Point;
@@ -53,16 +54,16 @@ public class WASDController extends Controller implements KeyListener, MouseList
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyChar()) {
             case 'a':
-                action = Action.MOVE_LEFT;
+                action = Filters.MOVE_LEFT;
                 break;
             case 's':
-                action = Action.MOVE_DOWN;
+                action = Filters.MOVE_DOWN;
                 break;
             case 'd':
-                action = Action.MOVE_RIGHT;
+                action = Filters.MOVE_RIGHT;
                 break;
             case 'w':
-                action = Action.MOVE_UP;
+                action = Filters.MOVE_UP;
                 break;
         }
 //        System.out.println("Action: " + actions[actionID]);

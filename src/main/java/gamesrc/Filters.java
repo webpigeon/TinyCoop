@@ -7,8 +7,18 @@ import java.util.List;
 import api.Action;
 import api.ActionType;
 import gamesrc.actions.absolute.AbsoluteFlare;
+import gamesrc.actions.relative.MovePosition;
+import gamesrc.actions.relative.RelativeFlare;
 
 public class Filters {
+    public static final Action MOVE_UP = new MovePosition("MOVE_UP", 0, -1);
+    public static final Action MOVE_DOWN = new MovePosition("MOVE_DOWN", 0, 1);
+    public static final Action MOVE_LEFT = new MovePosition("MOVE_LEFT", -1, 0);
+    public static final Action MOVE_RIGHT = new MovePosition("MOVE_RIGHT", 1, 0);
+    public static final Action FLARE_UP = new RelativeFlare("FLARE_UP", 0, -1);
+    public static final Action FLARE_DOWN = new RelativeFlare("FLARE_DOWN", 0, 1);
+    public static final Action FLARE_LEFT = new RelativeFlare("FLARE_LEFT", -1, 0);
+    public static final Action FLARE_RIGHT = new RelativeFlare("FLARE_RIGHT", 1, 0);
 
 	/**
 	 * Filter all actions and leave only movement actions
@@ -75,13 +85,13 @@ public class Filters {
 	
 	
 	public static List<Action> getBasicActions() {
-		return Arrays.asList(Action.NOOP, Action.MOVE_UP, Action.MOVE_DOWN, Action.MOVE_LEFT, Action.MOVE_RIGHT);
+		return Arrays.asList(Action.NOOP, MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT);
 	}
 	
 	public static List<Action> getBasicActionsWithComms() {
 		return Arrays.asList(Action.NOOP,
-				Action.MOVE_UP, Action.MOVE_DOWN, Action.MOVE_LEFT, Action.MOVE_RIGHT,
-				Action.FLARE_UP, Action.FLARE_DOWN, Action.FLARE_LEFT, Action.FLARE_RIGHT
+				MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT,
+				FLARE_UP, FLARE_DOWN, FLARE_LEFT, FLARE_RIGHT
 				);
 	}
 	
@@ -98,7 +108,7 @@ public class Filters {
 	}
 	
 	public static List<Action> generateRelativeFlares() {
-		return Arrays.asList(Action.FLARE_DOWN, Action.FLARE_UP, Action.FLARE_LEFT, Action.FLARE_RIGHT);
+		return Arrays.asList(FLARE_DOWN, FLARE_UP, FLARE_LEFT, FLARE_RIGHT);
 	}
 	
 }
