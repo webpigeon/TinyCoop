@@ -17,6 +17,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import Controllers.Controller;
+import api.GameState;
 import gamesrc.Filters;
 import gamesrc.level.GameLevel;
 import gamesrc.level.LevelParser;
@@ -99,8 +100,8 @@ public class GameCli {
 
 			for (String firstAgent : p1) {
 				for (String secondAgent : p2) {
-					Controller c1 = utils.parseDescription(firstAgent);
-					Controller c2 = utils.parseDescription(secondAgent);
+					Controller c1 = utils.parseDescription(GameState.PLAYER_0, firstAgent);
+					Controller c2 = utils.parseDescription(GameState.PLAYER_1, secondAgent);
 					tasks.add(new GameRunner(level, c1, c2, ticks));
 				}
 			}

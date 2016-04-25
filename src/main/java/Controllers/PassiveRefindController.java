@@ -29,6 +29,7 @@ public class PassiveRefindController extends Controller {
 	public void startGame(int agentID) {
     	this.nextMoves = new LinkedList<>();
     	this.agentID = agentID;
+    	this.flarePos = null;
 	}
 
 	@Override

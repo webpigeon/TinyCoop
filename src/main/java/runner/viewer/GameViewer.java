@@ -9,7 +9,9 @@ import java.util.concurrent.Callable;
 import javax.swing.JFrame;
 
 import Controllers.Controller;
+import Controllers.FollowTheFlare;
 import Controllers.PassiveRefindController;
+import Controllers.RandomController;
 import api.Action;
 import gamesrc.Filters;
 import gamesrc.SimpleGame;
@@ -29,10 +31,10 @@ public class GameViewer implements Callable<GameResult> {
 
 		String[] maps = new String[] {
 				"data/norm_maps/maze.txt",
-				//"data/norm_maps/airlock.txt",
-				//"data/norm_maps/butterfly.txt",
-				//"data/norm_maps/single_door.txt"
-				//"data/norm_maps/empty.txt"
+				"data/norm_maps/airlock.txt",
+				"data/norm_maps/butterfly.txt",
+				"data/norm_maps/single_door.txt",
+				"data/norm_maps/empty.txt"
 		};
 		
 		Map<String, GameResult> results = new HashMap<String, GameResult>();
@@ -44,8 +46,8 @@ public class GameViewer implements Callable<GameResult> {
 			//Controller p1 = new WASDController();
 			//Controller p2 = new PassiveRefindController();
 			
-			Controller p1 = Utils.buildPredictor(new PassiveRefindController());
-			Controller p2 = new PassiveRefindController();
+			Controller p1 = new RandomController();
+			Controller p2 = new FollowTheFlare();
 			
 			
 			GameViewer viewer = new GameViewer(level, p1, p2);
