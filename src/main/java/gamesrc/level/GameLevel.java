@@ -1,4 +1,4 @@
-package gamesrc;
+package gamesrc.level;
 
 import java.awt.Point;
 import java.util.Arrays;
@@ -7,6 +7,8 @@ import java.util.List;
 
 import api.Action;
 import api.GameObject;
+import gamesrc.Filters;
+import gamesrc.SimpleGame;
 
 
 public class GameLevel {
@@ -101,7 +103,7 @@ public class GameLevel {
 		objects[x * height + y] = object;
 	}
 	
-	protected AbstractGameObject getObject(int x, int y){
+	public AbstractGameObject getObject(int x, int y){
 		return objects[x * height + y];
 	}
 

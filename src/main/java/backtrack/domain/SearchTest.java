@@ -6,9 +6,9 @@ import java.util.List;
 import api.Action;
 import api.GameState;
 import gamesrc.Filters;
-import gamesrc.GameLevel;
-import gamesrc.LevelParser;
 import gamesrc.SimpleGame;
+import gamesrc.level.GameLevel;
+import gamesrc.level.LevelParser;
 import backtrack.BredthFirstSearch;
 import backtrack.Search;
 

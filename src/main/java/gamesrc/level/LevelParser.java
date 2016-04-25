@@ -1,4 +1,4 @@
-package gamesrc;
+package gamesrc.level;
 
 import java.awt.Point;
 import java.io.FileNotFoundException;

@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import FastGame.CoopGame;
 import gamesrc.Filters;
-import gamesrc.GameLevel;
-import gamesrc.LevelParser;
 import gamesrc.SimpleGame;
+import gamesrc.level.GameLevel;
+import gamesrc.level.LevelParser;
 
 public class Benchmark {
 

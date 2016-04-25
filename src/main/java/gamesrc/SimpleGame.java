@@ -11,6 +11,8 @@ import api.ActionType;
 import api.Flare;
 import api.GameState;
 import api.ObservableGameState;
+import gamesrc.level.AbstractGameObject;
+import gamesrc.level.GameLevel;
 
 /**
  * TinyCoop implementation designed for planners.

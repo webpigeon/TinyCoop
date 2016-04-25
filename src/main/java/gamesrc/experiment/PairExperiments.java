@@ -19,8 +19,8 @@ import Controllers.PassiveRefindController;
 import Controllers.RandomController;
 import Controllers.SortOfRandomController;
 import gamesrc.Filters;
-import gamesrc.GameLevel;
-import gamesrc.LevelParser;
+import gamesrc.level.GameLevel;
+import gamesrc.level.LevelParser;
 import utils.GenerateCSV;
 import utils.StatSummary;
 

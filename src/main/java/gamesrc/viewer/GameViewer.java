@@ -13,12 +13,12 @@ import Controllers.PassiveRefindController;
 import Controllers.WASDController;
 import api.Action;
 import gamesrc.Filters;
-import gamesrc.GameLevel;
-import gamesrc.LevelParser;
 import gamesrc.SimpleGame;
 import gamesrc.experiment.GameResult;
 import gamesrc.experiment.GameSetup;
 import gamesrc.experiment.Utils;
+import gamesrc.level.GameLevel;
+import gamesrc.level.LevelParser;
 
 public class GameViewer implements Callable<GameResult> {
 	private static final Integer SLEEP_TIME = 60/1;

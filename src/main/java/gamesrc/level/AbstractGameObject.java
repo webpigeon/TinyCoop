@@ -1,4 +1,4 @@
-package gamesrc;
+package gamesrc.level;
 
 import static FastGame.ObjectTypes.OBJECT_COLOURS;
 import static FastGame.ObjectTypes.TEXT_COLOURS;
@@ -7,6 +7,7 @@ import java.awt.Graphics;
 
 import api.GameObject;
 import api.ObservableGameState;
+import gamesrc.SimpleGame;
 
 public abstract class AbstractGameObject implements GameObject {
 

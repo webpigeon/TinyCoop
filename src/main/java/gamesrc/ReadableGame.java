@@ -15,6 +15,8 @@ import Controllers.SortOfRandomController;
 import api.Action;
 import api.GameState;
 import api.ObservableGameState;
+import gamesrc.level.GameLevel;
+import gamesrc.level.LevelParser;
 import gamesrc.viewer.Viewer;
 
 public class ReadableGame {

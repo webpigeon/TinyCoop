@@ -1,4 +1,4 @@
-package gamesrc;
+package gamesrc.level;
 
 import static FastGame.ObjectTypes.OBJECT_COLOURS;
 import static FastGame.ObjectTypes.TEXT_COLOURS;
@@ -7,11 +7,18 @@ import java.awt.Graphics;
 
 import FastGame.ObjectTypes;
 import api.ObservableGameState;
+import gamesrc.SimpleGame;
 
-public class Door extends AbstractGameObject {
+/**
+ * Trap door object.
+ * 
+ * Once someone walks though the trap door object, the door will subtract 1 from the signal
+ * state (disabling it).
+ */
+class TrapDoor extends AbstractGameObject {
 	private final Integer signal;
 	
-	public Door(int signal) {
+	public TrapDoor(int signal) {
 		this.signal = signal;
 	}
 
@@ -22,6 +29,7 @@ public class Door extends AbstractGameObject {
 	
 	@Override
 	public void onContact(SimpleGame state, int playerId) {
+		state.setSignalState(signal, false);
 	}
 
 	@Override

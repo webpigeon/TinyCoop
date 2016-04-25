@@ -17,8 +17,8 @@ import Controllers.MCTS;
 import Controllers.enhanced.PredictorMCTS;
 import Controllers.enhanced.RandomPredictor;
 import gamesrc.Filters;
-import gamesrc.GameLevel;
-import gamesrc.LevelParser;
+import gamesrc.level.GameLevel;
+import gamesrc.level.LevelParser;
 import utils.StatSummary;
 
 public class DebugTheThing {

@@ -18,10 +18,10 @@ import org.apache.commons.cli.ParseException;
 
 import Controllers.Controller;
 import gamesrc.Filters;
-import gamesrc.GameLevel;
-import gamesrc.LevelParser;
 import gamesrc.experiment.GameResult;
 import gamesrc.experiment.GameRunner;
+import gamesrc.level.GameLevel;
+import gamesrc.level.LevelParser;
 
 public class GameCli {
 	

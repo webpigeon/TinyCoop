@@ -4,8 +4,8 @@ import javax.swing.*;
 
 import api.Flare;
 import api.ObservableGameState;
-import gamesrc.AbstractGameObject;
 import gamesrc.SimpleGame;
+import gamesrc.level.AbstractGameObject;
 
 import java.awt.*;
 

@@ -30,9 +30,9 @@ import Controllers.enhanced.RandomPredictor;
 import Controllers.ga.GAController;
 import api.Action;
 import gamesrc.Filters;
-import gamesrc.GameLevel;
-import gamesrc.LevelParser;
 import gamesrc.SimpleGame;
+import gamesrc.level.GameLevel;
+import gamesrc.level.LevelParser;
 import utils.GenerateCSV;
 import utils.StatSummary;
 

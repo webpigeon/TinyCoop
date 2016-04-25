@@ -1,8 +1,9 @@
-package gamesrc;
+package gamesrc.level;
 
 import FastGame.ObjectTypes;
+import gamesrc.SimpleGame;
 
-public class Goal extends AbstractGameObject {
+class Goal extends AbstractGameObject {
 	private int goalId;
 	
 	public Goal(int goalId) {

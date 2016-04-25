@@ -1,8 +1,9 @@
-package gamesrc;
+package gamesrc.level;
 
 import FastGame.ObjectTypes;
+import gamesrc.SimpleGame;
 
-public class Button extends AbstractGameObject {
+class Button extends AbstractGameObject {
 	private final Integer signal;
 	
 	public Button(int signal) {
