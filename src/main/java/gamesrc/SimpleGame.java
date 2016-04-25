@@ -93,11 +93,16 @@ public class SimpleGame implements ObservableGameState {
 	}
 	
 	protected void doAction(int pid, Action action) {
-		if (ActionType.NOOP.equals(action.getType())) {
+		assert action != null : "passing null actions is not permitted";
+		ActionType type = action.getType();
+		
+		//If it was a NOOP or null, don't do anything
+		if (type == null || type.equals(ActionType.NOOP)) {
 			return;
 		}
 		
-		if (ActionType.MOVEMENT.equals(action.getType())) {
+		//deal with movement actions
+		if (type.equals(ActionType.MOVEMENT)) {
 			Point newPos = new Point(positions[pid]);
 			newPos.x = newPos.x + action.getX();
 			newPos.y = newPos.y + action.getY();
@@ -106,12 +111,16 @@ public class SimpleGame implements ObservableGameState {
 				level.onStep(this, pid, positions[pid], newPos);
 				positions[pid] = newPos;
 			}
+			return;
 		}
 		
-		if (ActionType.FLARE.equals(action.getType())) {
+		//now, flare actions
+		if (type.equals(ActionType.FLARE)) {
 			flares[pid] = new Flare(pid==0?1:0, action.getX(), action.getY(), action.isRelative());
+			return;
 		}
 		
+		assert false : "got unknown action type "+type+", not sure what to do";
 	}
 
 	@Override

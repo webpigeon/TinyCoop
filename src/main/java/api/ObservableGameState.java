@@ -14,5 +14,4 @@ public interface ObservableGameState extends GameState {
 	
 	public Flare getFlare(int agent);
 	public boolean isWalkable(int pid, int x, int y);
-
 }
