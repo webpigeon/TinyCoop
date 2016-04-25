@@ -9,7 +9,7 @@ public class NoopAction implements Action {
 
 	@Override
 	public String getFriendlyName() {
-		return "noop";
+		return "NOOP";
 	}
 
 	@Override
