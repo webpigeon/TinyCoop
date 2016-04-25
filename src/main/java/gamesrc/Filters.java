@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import FastGame.TalkAction;
 import actions.Action;
 import actions.ActionType;
 import actions.absolute.AbsoluteFlare;

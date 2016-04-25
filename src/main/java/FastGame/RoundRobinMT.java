@@ -1,6 +1,5 @@
 package FastGame;
 
-import Controllers.AStar;
 import Controllers.Controller;
 import Controllers.MCTS;
 import Controllers.RandomController;
@@ -149,7 +148,8 @@ public class RoundRobinMT {
             return p2.getSimpleName();
         }
 
-        public String toString() {
+        @Override
+		public String toString() {
             return String.format("%s and %s on %s (%d ticks, %f score)", p1.getSimpleName(), p2.getSimpleName(), map, timeTaken, score);
         }
     }

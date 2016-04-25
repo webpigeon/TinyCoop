@@ -7,7 +7,6 @@ import gamesrc.Filters;
 import gamesrc.GameLevel;
 import gamesrc.LevelParser;
 import gamesrc.SimpleGame;
-import utils.StatSummary;
 
 public class Benchmark {
 

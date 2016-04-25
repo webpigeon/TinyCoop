@@ -24,22 +24,27 @@ public class TalkAction extends FastAction {
 		this.relative = relative;
 	}
 	
+	@Override
 	public boolean isBeep() {
 		return isBeep;
 	}
 	
+	@Override
 	public boolean isRelative() {
 		return relative;
 	}
 	
-    public boolean isMovement() {
+    @Override
+	public boolean isMovement() {
     	return false;
     }
 
+	@Override
 	public boolean isTalk() {
 		return true;
 	}
 	
+	@Override
 	public String toString() {
 		return String.format("%s - (%d|%d)", super.toString(), getX(), getY());
 	}

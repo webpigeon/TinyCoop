@@ -10,10 +10,6 @@ import java.awt.*;
 
 import static FastGame.GroundTypes.GROUND;
 import static FastGame.GroundTypes.WALL;
-import static FastGame.ObjectTypes.AGENT;
-import static FastGame.ObjectTypes.OBJECT_COLOURS;
-import static FastGame.ObjectTypes.TEXT_COLOURS;
-import static FastGame.ObjectTypes.DOOR;
 
 /**
  * Created by pwillic on 25/06/2015.

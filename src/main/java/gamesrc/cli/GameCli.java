@@ -1,9 +1,6 @@
 package gamesrc.cli;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -16,25 +13,15 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import Controllers.Controller;
-import Controllers.MCTS;
-import Controllers.PassiveRefindController;
-import Controllers.RandomController;
-import Controllers.SortOfRandomController;
-import Controllers.enhanced.NestedControllerPredictor;
-import Controllers.enhanced.PredictorMCTS;
-import Controllers.enhanced.RandomPredictor;
-import Controllers.ga.GAController;
 import gamesrc.Filters;
 import gamesrc.GameLevel;
 import gamesrc.LevelParser;
 import gamesrc.experiment.GameResult;
 import gamesrc.experiment.GameRunner;
-import utils.GenerateCSV;
 
 public class GameCli {
 	

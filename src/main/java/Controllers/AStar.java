@@ -166,7 +166,8 @@ public class AStar extends Controller {
             this.depth = 0;
         }
 
-        public boolean equals(Object o) {
+        @Override
+		public boolean equals(Object o) {
             ActionNode other = (ActionNode)o;
             return p1action.equals(other.p1action) && p2action.equals(other.p2action) && gameEquals(game, other.game);
         }
@@ -176,7 +177,8 @@ public class AStar extends Controller {
             return Objects.hash(p1action, p2action, game);
         }
 		// TODO Auto-generated method stub
-        public String toString() {
+        @Override
+		public String toString() {
             return p1action+"+"+p2action+"@"+game.getScore();
         }
     }

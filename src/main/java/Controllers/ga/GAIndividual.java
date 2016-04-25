@@ -1,6 +1,5 @@
 package Controllers.ga;
 
-import FastGame.CoopGame;
 import actions.Action;
 import gamesrc.GameState;
 
@@ -107,7 +106,8 @@ public class GAIndividual
         return gai;
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
         String st = new String();
         for(int i = 0; i < m_genome.length; ++i)

@@ -1,7 +1,6 @@
 package Controllers.ga;
 
 import Controllers.Controller;
-import FastGame.CoopGame;
 import actions.Action;
 import gamesrc.GameState;
 

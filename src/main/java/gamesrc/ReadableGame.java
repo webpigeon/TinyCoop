@@ -5,20 +5,13 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import Controllers.Controller;
-import Controllers.MCTS;
-import Controllers.NoOp;
 import Controllers.PassiveController;
-import Controllers.RandomController;
 import Controllers.SortOfRandomController;
-import Controllers.WASDController;
-import Controllers.VariGA.VariGA;
 import actions.Action;
 import gamesrc.viewer.Viewer;
 

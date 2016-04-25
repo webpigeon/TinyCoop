@@ -1,8 +1,7 @@
 package Controllers.astar;
 
 
-        import FastGame.CoopGame;
-import actions.Action;
+        import actions.Action;
 import gamesrc.GameState;
 
 import java.awt.Point;

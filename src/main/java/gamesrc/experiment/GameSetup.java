@@ -6,6 +6,7 @@ public class GameSetup {
 	public String levelID;
 	public String actionSet;
 	
+	@Override
 	public String toString() {
 		return String.format("%s and %s on %s (%s)", p1, p2, levelID, actionSet);
 	}

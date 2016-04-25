@@ -16,6 +16,7 @@ public class Button extends GameObject {
 		}
 	}
 	
+	@Override
 	public void onContactEnd(SimpleGame state, int pid) {
 		state.setSignalState(signal, false);
 	}

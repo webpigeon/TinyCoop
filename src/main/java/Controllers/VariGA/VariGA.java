@@ -2,7 +2,6 @@ package Controllers.VariGA;
 
 import Controllers.Controller;
 import actions.Action;
-import FastGame.CoopGame;
 import gamesrc.GameState;
 
 import java.util.Random;
@@ -41,7 +40,8 @@ public class VariGA extends Controller {
         this.params = params;
     }
 
-    public VariGA getClone(){
+    @Override
+	public VariGA getClone(){
         VariGA other = new VariGA(this.first, this.iterations);
         other.params = this.params;
         other.actionChance = this.actionChance;

@@ -1,15 +1,9 @@
 package backtrack;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
-import FastGame.FastAction;
-import backtrack.AbstractSearch.ActionPair;
 import gamesrc.GameState;
 
 public class DepthLimitedDFS extends AbstractSearch {
@@ -22,6 +16,7 @@ public class DepthLimitedDFS extends AbstractSearch {
 		this.discovered = new HashSet<>();
 	}
 	
+	@Override
 	public boolean discover(Node node) {
 		if (discovered.contains(node.state)) {
 			return false;

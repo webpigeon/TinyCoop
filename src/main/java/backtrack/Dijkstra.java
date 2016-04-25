@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-import FastGame.FastAction;
 import actions.Action;
 import gamesrc.GameState;
 
@@ -21,6 +20,7 @@ public class Dijkstra implements Search {
 		this.cameFrom = new HashMap<>();
 	}
 
+	@Override
 	public List<Action> search(GameState start, GameState end) {
 		queue.add(build(start, null));
 		distance.put(start, 0);

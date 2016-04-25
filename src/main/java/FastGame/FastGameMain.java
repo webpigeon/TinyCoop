@@ -1,11 +1,6 @@
 package FastGame;
 
 import Controllers.*;
-import Controllers.VariGA.VariGA;
-import Controllers.astar.AStarBetter;
-import Controllers.ga.GAController;
-import gamesrc.GameState;
-
 import javax.swing.*;
 
 /**

@@ -22,7 +22,8 @@ public abstract class Controller {
         return this.getClass().getSimpleName();
     }
     
-    public String toString() {
+    @Override
+	public String toString() {
     	return getSimpleName();
     }
 }

@@ -88,6 +88,7 @@ public abstract class AbstractSearch implements Search {
 		Action p1Action;
 		Action p2Action;
 		
+		@Override
 		public String toString() {
 			return String.format("%s [%s,%s]", state, p1Action, p2Action);
 		}

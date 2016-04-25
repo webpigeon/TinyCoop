@@ -40,6 +40,7 @@ public class TrapDoor extends GameObject {
 		return ObjectTypes.DOOR;
 	}
 	
+	@Override
 	public void paint(int x, int y, int gridSize, ObservableGameState game, Graphics g) {
 		g.setColor(OBJECT_COLOURS[getType()]);
     	if (game.isSignalHigh(getSignal())) {

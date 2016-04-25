@@ -4,7 +4,6 @@ import Controllers.Controller;
 import Controllers.MCTS;
 import Controllers.RandomController;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**

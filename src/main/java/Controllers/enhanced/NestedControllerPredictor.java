@@ -1,10 +1,8 @@
 package Controllers.enhanced;
 
 import Controllers.Controller;
-import FastGame.FastAction;
 import actions.Action;
 import gamesrc.GameState;
-import gamesrc.ObservableGameState;
 
 public class NestedControllerPredictor implements Predictor {
 	private Controller controller;
@@ -31,6 +29,7 @@ public class NestedControllerPredictor implements Predictor {
 		return controller.get(state.getClone());
 	}
 	
+	@Override
 	public String toString() {
 		return controller.toString();
 	}

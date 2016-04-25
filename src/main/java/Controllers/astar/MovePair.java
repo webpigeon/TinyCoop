@@ -1,8 +1,6 @@
 package Controllers.astar;
 
-import FastGame.FastAction;
 import actions.Action;
-import FastGame.CoopGame;
 
 /**
  * Created by jwalto on 02/07/2015.
@@ -16,7 +14,8 @@ public class MovePair {
         this.p2Move = p2;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return String.format("(%s,%s)", p1Move, p2Move);
     }
 

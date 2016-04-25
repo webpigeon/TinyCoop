@@ -1,8 +1,5 @@
 package Controllers.astar;
 
-import Controllers.ga.GA;
-import FastGame.FastAction;
-import FastGame.CoopGame;
 import gamesrc.GameState;
 
 /**
@@ -50,7 +47,8 @@ public class GameNode implements Comparable<GameNode> {
         return result;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return actions.toString()+" "+game.getScore();
     }
 }

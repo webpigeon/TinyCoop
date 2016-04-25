@@ -2,7 +2,6 @@ package backtrack;
 
 import java.util.List;
 
-import FastGame.FastAction;
 import actions.Action;
 import gamesrc.GameState;
 

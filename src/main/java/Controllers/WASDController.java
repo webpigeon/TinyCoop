@@ -1,11 +1,9 @@
 package Controllers;
 
 
-import FastGame.CoopGame;
 import FastGame.TalkAction;
 import actions.Action;
 import gamesrc.GameState;
-import gamesrc.ObservableGameState;
 import gamesrc.viewer.Viewer;
 
 import java.awt.Point;

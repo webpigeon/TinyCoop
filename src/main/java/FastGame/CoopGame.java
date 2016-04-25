@@ -61,7 +61,8 @@ public class CoopGame implements GameState {
         return (type * 1000) + id;
     }
 
-    public CoopGame getClone() {
+    @Override
+	public CoopGame getClone() {
         CoopGame other = new CoopGame(this.width, this.height);
         System.arraycopy(this.data, 0, other.data, 0, this.data.length);
         other.goalSet = new boolean[this.goalSet.length];
@@ -136,7 +137,8 @@ public class CoopGame implements GameState {
     }
 
     // Forward model update loop
-    public void update(Action first, Action second) {
+    @Override
+	public void update(Action first, Action second) {
         runCollisionDetection();
         runUpdateLoop(first, second);
     }
@@ -247,7 +249,8 @@ public class CoopGame implements GameState {
         }
     }
 
-    public boolean hasWon() {
+    @Override
+	public boolean hasWon() {
         if (goalSet == null) return true;
         for (boolean goal : goalSet) {
             if (!goal) return false;
@@ -259,11 +262,13 @@ public class CoopGame implements GameState {
         return doorOpen[doorID];
     }
 
-    public int getWidth() {
+    @Override
+	public int getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    @Override
+	public int getHeight() {
         return height;
     }
 
@@ -326,7 +331,8 @@ public class CoopGame implements GameState {
         }
     }
 
-    public double getScore() {
+    @Override
+	public double getScore() {
         return score;
     }
 

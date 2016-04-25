@@ -26,6 +26,7 @@ public class Flare {
 		return p;
 	}
 	
+	@Override
 	public String toString() {
 		return String.format("FLARE(%d, %d, %d):%s", pid, x, y, relative?"RELATIVE":"ABSOLUTE");
 	}

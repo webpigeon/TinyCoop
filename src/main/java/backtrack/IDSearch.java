@@ -2,7 +2,6 @@ package backtrack;
 
 import java.util.List;
 
-import FastGame.FastAction;
 import actions.Action;
 import gamesrc.GameState;
 
@@ -14,6 +13,7 @@ public class IDSearch implements Search {
 		this.maxDepth = maxDepth;
 	}
 
+	@Override
 	public List<Action> search(GameState start, GameState end) {
 		
 		for (int i=0; i<maxDepth; i++) {

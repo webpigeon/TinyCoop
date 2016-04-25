@@ -1,6 +1,5 @@
 package Controllers;
 
-import FastGame.CoopGame;
 import actions.Action;
 import gamesrc.GameState;
 

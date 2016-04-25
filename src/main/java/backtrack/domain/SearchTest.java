@@ -3,17 +3,13 @@ package backtrack.domain;
 import java.io.IOException;
 import java.util.List;
 
-import FastGame.FastAction;
 import actions.Action;
-import backtrack.State;
 import gamesrc.Filters;
 import gamesrc.GameLevel;
 import gamesrc.GameState;
 import gamesrc.LevelParser;
 import gamesrc.SimpleGame;
 import backtrack.BredthFirstSearch;
-import backtrack.Dijkstra;
-import backtrack.IDSearch;
 import backtrack.Search;
 
 public class SearchTest {

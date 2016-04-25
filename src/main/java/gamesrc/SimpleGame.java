@@ -3,12 +3,8 @@ package gamesrc;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
 import actions.Action;
 import actions.ActionType;
 
@@ -240,6 +236,7 @@ public class SimpleGame implements ObservableGameState {
 		return true;
 	}
 	
+	@Override
 	public String toString() {
 		return String.format("%s %f", Arrays.toString(positions), score);
 	}

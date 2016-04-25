@@ -43,6 +43,7 @@ public class GameResult {
 		}
 	}
 	
+	@Override
 	public String toString() {
 		return String.format("(%s): %f %d ", setup.toString(), score, ticks);
 	}

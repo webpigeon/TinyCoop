@@ -2,8 +2,6 @@ package backtrack.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-
 import backtrack.State;
 
 public class GridState implements State {
@@ -30,6 +28,7 @@ public class GridState implements State {
 		return x+y;
 	}
 	
+	@Override
 	public Collection<State> expand() {
 		
 		Collection<State> children = new ArrayList<State>();
@@ -48,10 +47,12 @@ public class GridState implements State {
 		return children;
 	}
 	
+	@Override
 	public String toString() {
 		return String.format("(%d,%d)",x,y);
 	}
 
+	@Override
 	public Integer getCost() {
 		return 1;
 	}

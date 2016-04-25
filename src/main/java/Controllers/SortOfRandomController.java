@@ -3,8 +3,6 @@ package Controllers;
 import java.util.List;
 import java.util.Random;
 
-import FastGame.CoopGame;
-import FastGame.TalkAction;
 import actions.Action;
 import gamesrc.Filters;
 import gamesrc.GameState;

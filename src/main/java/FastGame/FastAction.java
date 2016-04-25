@@ -1,13 +1,8 @@
 package FastGame;
 
-import java.awt.Point;
 import java.util.Objects;
-import java.util.Random;
-
 import actions.Action;
 import actions.ActionType;
-import gamesrc.GameState;
-import gamesrc.SimpleGame;
 
 /**
  * Created by pwillic on 23/06/2015.
@@ -30,15 +25,18 @@ public class FastAction implements Action {
         this.y = y;
     }
     
-    public int getX() {
+    @Override
+	public int getX() {
         return x;
     }
 
-    public int getY() {
+    @Override
+	public int getY() {
         return y;
     }
     
-    public boolean isMovement() {
+    @Override
+	public boolean isMovement() {
     	return true;
     }
     
@@ -65,11 +63,13 @@ public class FastAction implements Action {
     	return actionID;
     }
 
+	@Override
 	public boolean isTalk() {
 		return false;
 	}
 	
 	//are these relative to a game object?
+	@Override
 	public boolean isRelative() {
 		return true;
 	}
