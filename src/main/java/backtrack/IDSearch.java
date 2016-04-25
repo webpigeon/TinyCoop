@@ -2,7 +2,8 @@ package backtrack;
 
 import java.util.List;
 
-import FastGame.Action;
+import FastGame.FastAction;
+import actions.Action;
 import gamesrc.GameState;
 
 public class IDSearch implements Search {

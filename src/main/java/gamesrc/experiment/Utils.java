@@ -6,14 +6,15 @@ import Controllers.enhanced.NestedControllerPredictor;
 import Controllers.enhanced.PredictorMCTS;
 
 public class Utils {
+	private static final Integer ROLLOUT_LENGTH = 450;
 	
 	public static Controller buildMCTS(boolean first) {
-		return new MCTS(first, 500, 10, 45);
+		return new MCTS(first, 500, 10, ROLLOUT_LENGTH);
 	}
 	
 	public static Controller buildPredictor(Controller nested) {
 		NestedControllerPredictor p = new NestedControllerPredictor(nested);
-		return new PredictorMCTS(500, 10, 45, p);
+		return new PredictorMCTS(500, 10, ROLLOUT_LENGTH, p);
 	}
 	
 	public static String getHostname() {

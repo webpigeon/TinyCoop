@@ -1,6 +1,6 @@
 package gamesrc;
 
-import FastGame.Action;
+import actions.Action;
 
 public interface GameState {
 	public static final Integer PLAYER_0 = 0;

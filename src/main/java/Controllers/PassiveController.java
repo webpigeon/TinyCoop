@@ -5,7 +5,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import Controllers.astar.PathFinder;
-import FastGame.Action;
+import actions.Action;
+import gamesrc.Flare;
 import gamesrc.GameState;
 import gamesrc.ObservableGameState;
 
@@ -31,8 +32,10 @@ public class PassiveController extends Controller {
     public Action get(GameState game) {
     	ObservableGameState gameState = (ObservableGameState)game;
     	
-    	Point flarePos = gameState.getFlare(agentID==0?1:0);
-    	if (flarePos != null) {
+    	Flare flare = gameState.getFlare(agentID==0?1:0);
+    	if (flare != null) {
+    		Point flarePos = flare.toAbs(gameState.getPos(flare.pid));
+    		
     		nextMoves = PathFinder.getPath(gameState, gameState.getPos(agentID), flarePos, agentID);
     		if (!nextMoves.isEmpty()) {
     			//System.out.println("I got an instruction and found a path: "+nextMoves);

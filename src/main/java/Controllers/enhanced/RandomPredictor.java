@@ -2,7 +2,7 @@ package Controllers.enhanced;
 
 import java.util.Random;
 
-import FastGame.Action;
+import actions.Action;
 import gamesrc.GameState;
 
 public class RandomPredictor implements Predictor {

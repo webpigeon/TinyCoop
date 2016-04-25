@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import FastGame.Action;
+import FastGame.FastAction;
+import actions.Action;
 import gamesrc.ObservableGameState;
 
 /**

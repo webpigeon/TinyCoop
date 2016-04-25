@@ -1,6 +1,6 @@
 package FastGame;
 
-public class MoveAction extends Action {
+public class MoveAction extends FastAction {
 
 	protected MoveAction(String actionID, int x, int y) {
 		super(actionID, x, y);

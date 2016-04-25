@@ -2,8 +2,7 @@ package Controllers;
 
 import java.util.Random;
 
-import FastGame.Action;
-import FastGame.CoopGame;
+import actions.Action;
 import gamesrc.GameState;
 
 /**

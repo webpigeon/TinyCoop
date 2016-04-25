@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import FastGame.Action;
-import FastGame.TalkAction;
+import actions.Action;
+import actions.ActionType;
 
 /**
  * TinyCoop implementation designed for planners.
@@ -21,8 +21,7 @@ import FastGame.TalkAction;
  */
 public class SimpleGame implements ObservableGameState {
 	private GameLevel level;
-	private boolean[] beeps;
-	private Point[] flares;
+	private Flare[] flares;
 	private Point[] positions;
 	private boolean[] visitList;
 	private Map<Integer,Integer> signals;
@@ -32,8 +31,7 @@ public class SimpleGame implements ObservableGameState {
 	
 	public SimpleGame(GameLevel level) {
 		this.level = level;
-		this.beeps = new boolean[level.getPlayerCount()];
-		this.flares = new Point[level.getPlayerCount()];
+		this.flares = new Flare[level.getPlayerCount()];
 		this.positions = new Point[level.getPlayerCount()];
 		this.visitList = new boolean[level.getGoalCount() * level.getPlayerCount()];
 		this.signals = new HashMap<Integer,Integer>();
@@ -47,7 +45,6 @@ public class SimpleGame implements ObservableGameState {
 	
 	public SimpleGame(SimpleGame game) {
 		this.level = game.level;
-		this.beeps = Arrays.copyOf(game.beeps, game.beeps.length);
 		this.flares = Arrays.copyOf(game.flares, game.flares.length);
 		this.positions = Arrays.copyOf(game.positions, game.positions.length);
 		this.visitList = Arrays.copyOf(game.visitList, game.visitList.length);
@@ -86,8 +83,7 @@ public class SimpleGame implements ObservableGameState {
 	public void update(Action p1, Action p2) {
 		//reset the com actions
 		int playerCount = level.getPlayerCount();
-		beeps = new boolean[playerCount];
-		flares = new Point[playerCount];
+		flares = new Flare[playerCount];
 		
 		//perform new actions
 		doAction(0, p1);
@@ -95,32 +91,25 @@ public class SimpleGame implements ObservableGameState {
 	}
 	
 	protected void doAction(int pid, Action action) {
-		if (action.isNoop()) {
+		if (ActionType.NOOP.equals(action.getType())) {
 			return;
 		}
-
-		Point newPos = new Point(positions[pid]);
-		newPos.x = newPos.x + action.getX();
-		newPos.y = newPos.y + action.getY();
 		
-		if (action.isMovement() && level.isWalkable(pid, newPos, this)) {
-			level.onStep(this, pid, positions[pid], newPos);
-			positions[pid] = newPos;
-		}
-		
-		if (action.isTalk()) {
-			if (action.isBeep()) {
-				beeps[pid] = true;
-			} else {
-				Point flarePoint = new Point(action.getX(), action.getY());
-				if (action.isRelative()) {
-					int otherPlayer = pid==1?0:1;
-					flarePoint.x += positions[otherPlayer].x;
-					flarePoint.y += positions[otherPlayer].y;
-				}
-				flares[pid] = flarePoint;
+		if (ActionType.MOVEMENT.equals(action.getType())) {
+			Point newPos = new Point(positions[pid]);
+			newPos.x = newPos.x + action.getX();
+			newPos.y = newPos.y + action.getY();
+			
+			if (level.isWalkable(pid, newPos, this)) {
+				level.onStep(this, pid, positions[pid], newPos);
+				positions[pid] = newPos;
 			}
 		}
+		
+		if (ActionType.FLARE.equals(action.getType())) {
+			flares[pid] = new Flare(pid==0?1:0, action.getX(), action.getY(), action.isRelative());
+		}
+		
 	}
 
 	@Override
@@ -202,12 +191,7 @@ public class SimpleGame implements ObservableGameState {
 	}
 
 	@Override
-	public boolean getBeep(int agent) {
-		return beeps[agent];
-	}
-
-	@Override
-	public Point getFlare(int agent) {
+	public Flare getFlare(int agent) {
 		return flares[agent];
 	}
 
@@ -220,7 +204,6 @@ public class SimpleGame implements ObservableGameState {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + Arrays.hashCode(beeps);
 		result = prime * result + Arrays.hashCode(flares);
 		result = prime * result + ((level == null) ? 0 : level.hashCode());
 		result = prime * result + Arrays.hashCode(positions);
@@ -238,8 +221,6 @@ public class SimpleGame implements ObservableGameState {
 		if (getClass() != obj.getClass())
 			return false;
 		SimpleGame other = (SimpleGame) obj;
-		if (!Arrays.equals(beeps, other.beeps))
-			return false;
 		if (!Arrays.equals(flares, other.flares))
 			return false;
 		if (level == null) {

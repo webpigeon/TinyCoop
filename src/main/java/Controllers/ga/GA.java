@@ -1,6 +1,7 @@
 package Controllers.ga;
 
-import FastGame.Action;
+import FastGame.FastAction;
+import actions.Action;
 import FastGame.CoopGame;
 import gamesrc.GameState;
 
@@ -24,12 +25,12 @@ public class GA
 
     public GAIndividual[] m_individuals;
 
-    public GA(Action[] legalActions)
+    public GA(Action[] actions)
     {
         m_rnd = new Random();
 
         m_actionList = new ArrayList<MacroAction>();
-        for (Action action : legalActions) {
+        for (Action action : actions) {
             m_actionList.add(new MacroAction(action, GAConstants.MACRO_ACTION_LENGTH));
         }
 

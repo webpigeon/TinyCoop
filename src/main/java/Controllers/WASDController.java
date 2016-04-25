@@ -1,8 +1,9 @@
 package Controllers;
 
-import FastGame.Action;
+
 import FastGame.CoopGame;
 import FastGame.TalkAction;
+import actions.Action;
 import gamesrc.GameState;
 import gamesrc.ObservableGameState;
 import gamesrc.viewer.Viewer;
@@ -34,10 +35,6 @@ public class WASDController extends Controller implements KeyListener, MouseList
 		
 		if (flarePos != null) {
 			for (Action action : actions) {
-				if (action.isTalk()) {
-					return Action.NOOP;
-				}
-				
 				Point flarePos2 = new Point(flarePos);
 				flarePos = null;
 				return new TalkAction(flarePos2.x, flarePos2.y, false);	
@@ -58,19 +55,16 @@ public class WASDController extends Controller implements KeyListener, MouseList
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyChar()) {
             case 'a':
-                action = Action.LEFT;
+                action = Action.MOVE_LEFT;
                 break;
             case 's':
-                action = Action.DOWN;
+                action = Action.MOVE_DOWN;
                 break;
             case 'd':
-                action = Action.RIGHT;
+                action = Action.MOVE_RIGHT;
                 break;
             case 'w':
-                action = Action.UP;
-                break;
-            case 'x':
-                action = Action.BEEP;
+                action = Action.MOVE_UP;
                 break;
         }
 //        System.out.println("Action: " + actions[actionID]);

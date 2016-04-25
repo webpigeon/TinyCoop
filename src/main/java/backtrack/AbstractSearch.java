@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import FastGame.Action;
+import FastGame.FastAction;
+import actions.Action;
 import gamesrc.GameState;
 
 public abstract class AbstractSearch implements Search {
@@ -34,8 +35,8 @@ public abstract class AbstractSearch implements Search {
 	}
 
 	
-	public Action getOtherAgentsMove() {
-		return Action.NOOP;
+	public FastAction getOtherAgentsMove() {
+		return FastAction.NOOP;
 	}
 	
 	public void expand(Node node) {

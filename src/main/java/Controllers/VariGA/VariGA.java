@@ -1,7 +1,7 @@
 package Controllers.VariGA;
 
 import Controllers.Controller;
-import FastGame.Action;
+import actions.Action;
 import FastGame.CoopGame;
 import gamesrc.GameState;
 

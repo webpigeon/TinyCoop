@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import FastGame.Action;
+import actions.Action;
+
 
 public class GameResult {
 
@@ -26,8 +27,8 @@ public class GameResult {
 		this.trace = new ArrayList<GameTick>();
 	}
 	
-	public void recordMoves(int tickCount, Action p1, Action p2) {
-		moves.add(new MovePair(tickCount, p1, p2));
+	public void recordMoves(int tickCount, Action p1Move, Action p2Move) {
+		moves.add(new MovePair(tickCount, p1Move, p2Move));
 	}
 	
 	static class MovePair {

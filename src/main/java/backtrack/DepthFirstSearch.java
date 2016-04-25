@@ -8,7 +8,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
-import FastGame.Action;
+import FastGame.FastAction;
 import backtrack.AbstractSearch.ActionPair;
 import gamesrc.GameState;
 

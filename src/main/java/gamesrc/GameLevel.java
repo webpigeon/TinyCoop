@@ -5,7 +5,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import FastGame.Action;
+import actions.Action;
+
 
 public class GameLevel {
 	private final String name;

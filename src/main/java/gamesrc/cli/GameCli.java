@@ -76,7 +76,7 @@ public class GameCli {
 		
 		String[] secondAgentList = cmd.getOptionValues("p2");
 		if (secondAgentList == null) {
-			secondAgentList = new String[]{"mcts(500;10;45)", "random", "pathfinder", "baisRandom(0.75)", "baisRandom(0.5)", "baisRandom(0.25)"};
+			secondAgentList = new String[]{"mcts(500;10;45)", "random", "baisRandom(0.75)", "baisRandom(0.5)", "baisRandom(0.25)"};
 		}
 		
 

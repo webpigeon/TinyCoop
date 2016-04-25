@@ -1,6 +1,6 @@
 package utils;
 
-import FastGame.Action;
+import FastGame.FastAction;
 
 public class MarkovChain {
 
@@ -8,7 +8,7 @@ public class MarkovChain {
 		
 	}
 	
-	public void observe(Action action, Action ... given){}
-	public void predict(Action ... given){}
+	public void observe(FastAction action, FastAction ... given){}
+	public void predict(FastAction ... given){}
 	
 }

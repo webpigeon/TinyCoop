@@ -1,6 +1,6 @@
 package Controllers.astar;
 
-import FastGame.Action;
+import FastGame.FastAction;
 import FastGame.CoopGame;
 
 /**
@@ -14,8 +14,8 @@ public class GameTest {
         CoopGame c1 = game.getClone();
         CoopGame c2 = game.getClone();
 
-        MovePair pair1 = new MovePair(Action.UP, Action.NOOP);
-        MovePair pair2 = new MovePair(Action.DOWN, Action.NOOP);
+        MovePair pair1 = new MovePair(FastAction.UP, FastAction.NOOP);
+        MovePair pair2 = new MovePair(FastAction.DOWN, FastAction.NOOP);
         System.out.println(pair1.equals(pair2));
 
         GameNode node1 = new GameNode(c1, pair1);

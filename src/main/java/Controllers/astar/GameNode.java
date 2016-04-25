@@ -1,7 +1,7 @@
 package Controllers.astar;
 
 import Controllers.ga.GA;
-import FastGame.Action;
+import FastGame.FastAction;
 import FastGame.CoopGame;
 import gamesrc.GameState;
 

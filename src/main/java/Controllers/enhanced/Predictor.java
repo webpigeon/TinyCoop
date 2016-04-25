@@ -1,6 +1,6 @@
 package Controllers.enhanced;
 
-import FastGame.Action;
+import actions.Action;
 import gamesrc.GameState;
 
 public interface Predictor {

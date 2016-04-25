@@ -1,7 +1,8 @@
 package Controllers.enhanced;
 
 import Controllers.Controller;
-import FastGame.Action;
+import FastGame.FastAction;
+import actions.Action;
 import gamesrc.GameState;
 import gamesrc.ObservableGameState;
 

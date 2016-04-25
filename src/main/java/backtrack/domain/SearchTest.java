@@ -3,7 +3,8 @@ package backtrack.domain;
 import java.io.IOException;
 import java.util.List;
 
-import FastGame.Action;
+import FastGame.FastAction;
+import actions.Action;
 import backtrack.State;
 import gamesrc.Filters;
 import gamesrc.GameLevel;

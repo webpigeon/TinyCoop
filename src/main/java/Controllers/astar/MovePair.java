@@ -1,6 +1,7 @@
 package Controllers.astar;
 
-import FastGame.Action;
+import FastGame.FastAction;
+import actions.Action;
 import FastGame.CoopGame;
 
 /**

@@ -3,11 +3,11 @@ package FastGame;
 /**
  * A (very) basic form of communication.
  */
-public class TalkAction extends Action {
-    public static final Action FLARE_UP = new TalkAction(0, -1, true);
-    public static final Action FLARE_DOWN = new TalkAction(0, 1, true);
-    public static final Action FLARE_LEFT = new TalkAction(-1, 0, true);
-    public static final Action FLARE_RIGHT = new TalkAction(1, 0, true);
+public class TalkAction extends FastAction {
+    public static final FastAction FLARE_UP = new TalkAction(0, -1, true);
+    public static final FastAction FLARE_DOWN = new TalkAction(0, 1, true);
+    public static final FastAction FLARE_LEFT = new TalkAction(-1, 0, true);
+    public static final FastAction FLARE_RIGHT = new TalkAction(1, 0, true);
 
 	private boolean isBeep;
 	private boolean relative;

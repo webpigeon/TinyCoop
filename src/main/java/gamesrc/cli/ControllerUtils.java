@@ -57,7 +57,7 @@ public class ControllerUtils {
 			}
 		}
 		
-		throw new IllegalArgumentException("no such agent!");
+		throw new IllegalArgumentException("no such agent! "+name);
 	}
 
 	

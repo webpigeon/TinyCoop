@@ -1,6 +1,7 @@
 package Controllers.enhanced;
 
-import FastGame.Action;
+import FastGame.FastAction;
+import actions.Action;
 import FastGame.CoopGame;
 import gamesrc.GameState;
 
@@ -170,7 +171,7 @@ private class MCTSNode {
     }
 
     protected Action getBestAction() {
-        if (children == null) return Action.NOOP;
+        if (children == null) return FastAction.NOOP;
         int selected = -1;
         double bestValue = -Double.MAX_VALUE;
         for (int child = 0; child < children.length; child++) {
@@ -183,7 +184,7 @@ private class MCTSNode {
                 selected = child;
             }
         }
-        if (selected == -1) return Action.NOOP;
+        if (selected == -1) return FastAction.NOOP;
         return children[selected].getMoveToThisState();
     }
 

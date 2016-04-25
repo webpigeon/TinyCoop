@@ -2,7 +2,8 @@ package Controllers.astar;
 
 import Controllers.AStar;
 import Controllers.Controller;
-import FastGame.Action;
+import FastGame.FastAction;
+import actions.Action;
 import FastGame.CoopGame;
 import gamesrc.GameState;
 
@@ -19,7 +20,7 @@ public class AStarBetter extends Controller {
     public AStarBetter(boolean isFirst) {
         this.find = new PathFind(new GameScore());
         this.isFirst = isFirst;
-        this.lastMove = new MovePair(Action.NOOP, Action.NOOP);
+        this.lastMove = new MovePair(FastAction.NOOP, FastAction.NOOP);
     }
 
     @Override
@@ -37,13 +38,13 @@ public class AStarBetter extends Controller {
 
         if (pairs.isEmpty()) {
             System.out.println("Unable to find path, perform random");
-            return Action.NOOP;
+            return FastAction.NOOP;
             //return Action.getRandom();
         }
 
         if (pairs.size() == 1) {
             System.out.println();
-            return Action.NOOP;
+            return FastAction.NOOP;
         }
 
         System.out.println(pairs);

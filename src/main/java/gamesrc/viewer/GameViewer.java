@@ -18,7 +18,7 @@ import Controllers.WASDController;
 import Controllers.enhanced.NestedControllerPredictor;
 import Controllers.enhanced.PredictorMCTS;
 import Controllers.enhanced.RandomPredictor;
-import FastGame.Action;
+import actions.Action;
 import gamesrc.Filters;
 import gamesrc.GameLevel;
 import gamesrc.LevelParser;
@@ -26,6 +26,7 @@ import gamesrc.SimpleGame;
 import gamesrc.experiment.GameResult;
 import gamesrc.experiment.GameRunner;
 import gamesrc.experiment.GameSetup;
+import gamesrc.experiment.Utils;
 import utils.StatSummary;
 
 public class GameViewer implements Callable<GameResult> {
@@ -47,13 +48,13 @@ public class GameViewer implements Callable<GameResult> {
 		
 		for (String map : maps) {
 			GameLevel level = LevelParser.buildParser(map);
-			level.setLegalMoves("simple", Filters.getBasicActions());
+			level.setLegalMoves("simple", Filters.getAllRelativeActions());
 			
-			Controller p1 = new WASDController();
+			//Controller p1 = new WASDController();
+			//Controller p2 = new PassiveRefindController();
+			
+			Controller p1 = Utils.buildPredictor(new PassiveRefindController());
 			Controller p2 = new PassiveRefindController();
-			
-			//Controller p1 = new RandomController();
-			//Controller p2 = new RandomController();
 			
 			
 			GameViewer viewer = new GameViewer(level, p1, p2);

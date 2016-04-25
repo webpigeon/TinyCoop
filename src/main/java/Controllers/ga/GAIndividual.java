@@ -1,7 +1,7 @@
 package Controllers.ga;
 
-import FastGame.Action;
 import FastGame.CoopGame;
+import actions.Action;
 import gamesrc.GameState;
 
 import java.util.Random;

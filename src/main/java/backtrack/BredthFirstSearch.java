@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-import FastGame.Action;
+import FastGame.FastAction;
 import gamesrc.GameState;
 
 public class BredthFirstSearch extends AbstractSearch {

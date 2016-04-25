@@ -3,16 +3,17 @@ package Controllers;
 import java.awt.Point;
 import java.util.*;
 
-import FastGame.Action;
+import FastGame.FastAction;
 import FastGame.CoopGame;
 import FastGame.ObjectTypes;
+import actions.Action;
 
 /**
  * An implementation of A* for path finding
  */
 public class AStar extends Controller {
 
-    public static Queue<FastGame.Action> getPath(CoopGame game, ActionNode start, boolean isFirst) {
+    public static Queue<actions.Action> getPath(CoopGame game, ActionNode start, boolean isFirst) {
         int maxExpands = 25;
 
         List<Point> goals = getGoals(game);
@@ -57,7 +58,7 @@ public class AStar extends Controller {
         }
 
         // we didn't find a path
-        return new LinkedList<FastGame.Action>();
+        return new LinkedList<actions.Action>();
     }
 
     public static List<Point> getGoals(CoopGame cg) {
@@ -76,8 +77,8 @@ public class AStar extends Controller {
         return goals;
     }
 
-    public static LinkedList<FastGame.Action> buildPath(ActionNode current, Map<ActionNode,ActionNode> cameFrom, boolean first) {
-        LinkedList<FastGame.Action> path = new LinkedList<>();
+    public static LinkedList<actions.Action> buildPath(ActionNode current, Map<ActionNode,ActionNode> cameFrom, boolean first) {
+        LinkedList<actions.Action> path = new LinkedList<>();
         if (first) {
             path.addFirst(current.p1action);
         } else {
@@ -100,7 +101,7 @@ public class AStar extends Controller {
         List<ActionNode> nextActions = new ArrayList<>();
         for (Action action : current.game.getLegalActions(isFirst?0:1)) {
             //Action other = Action.getRandom();
-            Action other = Action.NOOP;
+        	Action other = Action.NOOP;
             CoopGame clone = current.game.getClone();
 
             // so that's what the isFirst is for ;P
@@ -138,7 +139,7 @@ public class AStar extends Controller {
     public Action get(CoopGame game) {
         //System.out.println("started");
 
-        ActionNode start = new ActionNode(Action.NOOP, Action.NOOP, game, 0);
+        ActionNode start = new ActionNode(FastAction.NOOP, FastAction.NOOP, game, 0);
         Queue<Action> actionPath = AStar.getPath(game, start, isFirst);
 
         if (actionPath.isEmpty()) {
@@ -153,14 +154,14 @@ public class AStar extends Controller {
     }
 
     static class ActionNode {
-        FastGame.Action p1action;
-        FastGame.Action p2action;
+    	Action p1action;
+        Action p2action;
         CoopGame game;
         int depth = 0;
 
-        ActionNode(FastGame.Action p1, FastGame.Action p2, CoopGame game, int depth) {
-            this.p1action = p1;
-            this.p2action = p2;
+        ActionNode(Action action, Action other, CoopGame game, int depth) {
+            this.p1action = action;
+            this.p2action = other;
             this.game = game;
             this.depth = 0;
         }

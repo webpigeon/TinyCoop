@@ -28,7 +28,7 @@ import Controllers.enhanced.NestedControllerPredictor;
 import Controllers.enhanced.PredictorMCTS;
 import Controllers.enhanced.RandomPredictor;
 import Controllers.ga.GAController;
-import FastGame.Action;
+import actions.Action;
 import gamesrc.Filters;
 import gamesrc.GameLevel;
 import gamesrc.LevelParser;
@@ -254,8 +254,6 @@ public class GameRunner implements Callable<GameResult> {
 				"p2Move",
 				"p2Pos",
 				"score",
-				"p1Beep",
-				"p2Beep",
 				"p1Flare",
 				"p2Flare",
 				"singal0",
@@ -304,8 +302,6 @@ public class GameRunner implements Callable<GameResult> {
 					p2Move,
 					game.getPos(1),
 					game.getScore(),
-					game.getBeep(0),
-					game.getBeep(1),
 					game.getFlare(0),
 					game.getFlare(1),
 					game.getSignalState(0),

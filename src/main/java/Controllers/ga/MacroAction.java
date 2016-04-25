@@ -1,6 +1,6 @@
 package Controllers.ga;
 
-import FastGame.Action;
+import actions.Action;
 
 /**
  * PTSP-Competition

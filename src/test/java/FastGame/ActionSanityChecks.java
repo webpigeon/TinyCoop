@@ -26,12 +26,12 @@ public class ActionSanityChecks {
 	
 	private final int x;
 	private final int y;
-	private final Action action;
+	private final FastAction action;
 	
 	public ActionSanityChecks(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.action = new Action("TEST", x, y);
+		this.action = new FastAction("TEST", x, y);
 	}
 	
 	@Test
@@ -47,7 +47,7 @@ public class ActionSanityChecks {
 	
 	@Test
 	public void testEqualsSameVals() {
-		Action cloneAction = new Action("TEST", x, y);
+		FastAction cloneAction = new FastAction("TEST", x, y);
 		
 		assertEquals(cloneAction, action);
 	}

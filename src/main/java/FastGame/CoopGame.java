@@ -1,13 +1,16 @@
 package FastGame;
 
-import java.awt.*;
+import java.awt.Point;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import actions.Action;
+import gamesrc.Filters;
 import gamesrc.GameState;
 
 import static FastGame.GroundTypes.WALKABLE;
@@ -138,7 +141,7 @@ public class CoopGame implements GameState {
         runUpdateLoop(first, second);
     }
 
-    public void update(Action... actions) {
+    public void update(FastAction... actions) {
         runCollisionDetection();
         runUpdateLoop(actions);
     }
@@ -146,7 +149,7 @@ public class CoopGame implements GameState {
     private void runUpdateLoop(Action... actions) {
         for (int agentID = 0; agentID < actions.length; agentID++) {
             Action action = actions[agentID];
-            if (action.equals(Action.NOOP)) continue;
+            if (action.equals(FastAction.NOOP)) continue;
             int x = getAgentX(agentID);
             int y = getAgentY(agentID);
 
@@ -171,9 +174,9 @@ public class CoopGame implements GameState {
         }
     }
 
-    private void runUpdateLoop(Action first, Action second) {
+    private void runUpdateLoop(FastAction first, FastAction second) {
 
-        if (first.equals(Action.NOOP) && second.equals(Action.NOOP)) return;
+        if (first.equals(FastAction.NOOP) && second.equals(FastAction.NOOP)) return;
 //        System.out.println("First: " + first + " Second: " + second);
         resetEncountered();
         for (int agentID = 0; agentID <= maxIDs[AGENT]; agentID++) {
@@ -329,7 +332,8 @@ public class CoopGame implements GameState {
 
 	@Override
 	public Action[] getLegalActions(int playerID) {
-		return new Action[]{Action.NOOP, Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT};
+		List<Action> legalActions = Filters.getBasicActions();
+		return legalActions.toArray(new FastAction[legalActions.size()]);
 	}
 
 	@Override

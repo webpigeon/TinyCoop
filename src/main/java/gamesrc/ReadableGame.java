@@ -19,7 +19,7 @@ import Controllers.RandomController;
 import Controllers.SortOfRandomController;
 import Controllers.WASDController;
 import Controllers.VariGA.VariGA;
-import FastGame.Action;
+import actions.Action;
 import gamesrc.viewer.Viewer;
 
 public class ReadableGame {
