@@ -19,6 +19,8 @@ public class PredictorMCTS extends Controller {
     private int iterationLimit = 0;
     private Predictor predictor;
     private int agentID;
+    
+    public String tag = "";
 
     public PredictorMCTS(int iterationLimit, int maxUCTDepth, int maxRolloutDepth, Predictor predictor) {
         this.iterationLimit = iterationLimit;
@@ -70,7 +72,7 @@ public class PredictorMCTS extends Controller {
 
     @Override
     public String getSimpleName() {
-        return "PredictorMCTS: (" + iterationLimit + ";" + maxUCTDepth + ";" + maxRolloutDepth + ";"+predictor+")";
+        return "PredictorMCTS#"+tag+": (" + iterationLimit + ";" + maxUCTDepth + ";" + maxRolloutDepth + ";"+predictor+")";
     }
 
 

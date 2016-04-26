@@ -55,7 +55,7 @@ public class GameViewer implements Callable<GameResult> {
 				//Controller p1 = new WASDController();
 				//Controller p2 = new PassiveRefindController();
 				
-				Controller p1 = Utils.buildPredictor(new FollowTheFlare());
+				Controller p1 = Utils.buildPredictor(new FollowTheFlare(), "pmcts");
 				Controller p2 = new RandomController();
 				
 				

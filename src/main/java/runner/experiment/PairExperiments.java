@@ -95,7 +95,7 @@ public class PairExperiments {
 					
 					// PMCTS(MCTS) & MCTS
 					{
-						Controller p1 = Utils.buildPredictor(Utils.buildMCTS(false));
+						Controller p1 = Utils.buildPredictor(Utils.buildMCTS(false),"pmcts");
 						Controller p2 = Utils.buildMCTS(false);
 						tasks.add(new GameRunner(level, p1, p2, TICK_LIMIT));
 					}
@@ -109,7 +109,7 @@ public class PairExperiments {
 					
 					// PMCTS(SortOfRandom) & SortOfRandom
 					{
-						Controller p1 = Utils.buildPredictor(new SortOfRandomController());
+						Controller p1 = Utils.buildPredictor(new SortOfRandomController(), "pmcts");
 						Controller p2 = new SortOfRandomController();
 						tasks.add(new GameRunner(level, p1, p2, TICK_LIMIT));
 					}
@@ -124,7 +124,7 @@ public class PairExperiments {
 					
 					// PMCTS(PassiveRefind) & PassiveRefind
 					{
-						Controller p1 = Utils.buildPredictor(new PassiveRefindController());
+						Controller p1 = Utils.buildPredictor(new PassiveRefindController(),"pmcts");
 						Controller p2 = new PassiveRefindController();
 						tasks.add(new GameRunner(level, p1, p2, TICK_LIMIT));
 					}

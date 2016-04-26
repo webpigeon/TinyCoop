@@ -60,7 +60,7 @@ public class CigParams {
 					{
 					Controller p2 = controllers.parseDescription(GameState.PLAYER_1, player2);
 					Controller p2Predictor = controllers.parseDescription(GameState.PLAYER_1, player2);
-					GameSetup setup = buildSetup(Utils.buildPredictor(p2Predictor),p2,levelRel);
+					GameSetup setup = buildSetup(Utils.buildPredictor(p2Predictor,"MIRROR"),p2,levelRel);
 					tasks.add(new GameEngine(setup, MAX_TICKS, new TraceGameRecord(setup)));
 					}
 					
@@ -92,7 +92,7 @@ public class CigParams {
 					{
 					Controller p2 = controllers.parseDescription(GameState.PLAYER_1, player2);
 					Controller p2Predictor = controllers.parseDescription(GameState.PLAYER_1, player2);
-					GameSetup setup = buildSetup(p2, Utils.buildPredictor(p2Predictor),levelRel);
+					GameSetup setup = buildSetup(p2, Utils.buildPredictor(p2Predictor,"MIRROR"),levelRel);
 					tasks.add(new GameEngine(setup, MAX_TICKS, new TraceGameRecord(setup)));
 					}
 					

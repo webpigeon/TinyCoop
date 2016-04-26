@@ -13,9 +13,11 @@ public class Utils {
 		return new MCTS(first, 500, 10, ROLLOUT_LENGTH);
 	}
 	
-	public static Controller buildPredictor(Controller nested) {
+	public static PredictorMCTS buildPredictor(Controller nested, String tag) {
 		NestedControllerPredictor p = new NestedControllerPredictor(nested);
-		return new PredictorMCTS(500, 10, ROLLOUT_LENGTH, p);
+		PredictorMCTS host = new PredictorMCTS(500, 10, ROLLOUT_LENGTH, p);
+		host.tag = "#"+tag+"#";
+		return host;
 	}
 	
 	public static String getHostname() {
@@ -34,14 +36,14 @@ public class Utils {
 
 	public static Controller buildMCTSPredictor() {
 		//predicting a MCTSPredictor(Random)
-		Controller predicted = buildPredictor(new RandomController());
-		return buildPredictor(predicted);
+		Controller predicted = buildPredictor(new RandomController(),"inner");
+		return buildPredictor(predicted, "2MCTS");
 	}
 	
 	public static Controller buildRandomPredictor() {
 		//predicting a random controller
 		Controller predicted = new RandomController();
-		return buildPredictor(predicted);
+		return buildPredictor(predicted, "RND");
 	}
 
 }

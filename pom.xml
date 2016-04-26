@@ -46,7 +46,7 @@
     <configuration>
         <archive>
             <manifest>
-                <mainClass>gamesrc.experiment.GameRunner</mainClass>
+                <mainClass>runner.clear.CigParams</mainClass>
             </manifest>
         </archive>
     </configuration>
