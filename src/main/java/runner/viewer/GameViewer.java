@@ -55,10 +55,8 @@ public class GameViewer implements Callable<GameResult> {
 				//Controller p1 = new WASDController();
 				//Controller p2 = new PassiveRefindController();
 				
-				Controller p1 = new UCBGreedyRollout();
-				//Controller p1 = Utils.buildPredictor(new FollowTheFlare());
-				//Controller p2 = new RandomController();
-				Controller p2 = new GreedyRollout();
+				Controller p1 = Utils.buildPredictor(new FollowTheFlare());
+				Controller p2 = new RandomController();
 				
 				
 				GameViewer viewer = new GameViewer(level, p1, p2);
