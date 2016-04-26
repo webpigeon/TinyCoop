@@ -16,6 +16,7 @@ import gamesrc.level.LevelParser;
 import runner.cli.ControllerUtils;
 
 public class GameTester {
+	private static final Integer MAX_THREADS = 4;
 	private static final Integer MAX_TICKS = 2000;
 	private static final Integer NUM_RUNS = 1;
 
