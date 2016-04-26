@@ -69,6 +69,7 @@ public class MemoryGameRecord implements GameRecord {
 		this.result = result;
 		this.score = score;
 		this.tick = tick;
+		System.out.println("game complete: "+result);
 	}
 	
 	/* (non-Javadoc)
