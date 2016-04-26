@@ -2,6 +2,7 @@ package runner.experiment;
 
 import Controllers.Controller;
 import Controllers.MCTS;
+import Controllers.RandomController;
 import Controllers.enhanced.NestedControllerPredictor;
 import Controllers.enhanced.PredictorMCTS;
 
@@ -29,6 +30,18 @@ public class Utils {
 		}
 		
 		return "UNKNOWN_HOST";
+	}
+
+	public static Controller buildMCTSPredictor() {
+		//predicting a MCTSPredictor(Random)
+		Controller predicted = buildPredictor(new RandomController());
+		return buildPredictor(predicted);
+	}
+	
+	public static Controller buildRandomPredictor() {
+		//predicting a random controller
+		Controller predicted = new RandomController();
+		return buildPredictor(predicted);
 	}
 
 }
