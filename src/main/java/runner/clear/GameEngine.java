@@ -39,7 +39,7 @@ public class GameEngine implements Callable<GameRecord> {
 			Action p2Action = getLegalAction(runner, GameState.PLAYER_1, p2Real);
 			
 			runner.update(p1Action, p2Action);
-			record.recordState(ticks, runner.getClone());
+			record.recordState(ticks, runner, p1Action, p2Action);
 			record.recordAction(ticks, GameState.PLAYER_0, p1Action);
 			record.recordAction(ticks, GameState.PLAYER_1, p2Action);
 			

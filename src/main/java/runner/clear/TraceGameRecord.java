@@ -1,5 +1,6 @@
 package runner.clear;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,10 +10,11 @@ import java.util.UUID;
 import api.Action;
 import api.GameState;
 import api.ObservableGameState;
+import runner.experiment.GameTimer;
+import utils.GenerateCSV;
 
-public class MemoryGameRecord implements GameRecord {
+public class TraceGameRecord implements GameRecord {
 	private final Map<Integer, List<MoveTimer>> moves;
-	private final Map<Integer, GameState> states;
 	
 	private final UUID id;
 	private final String player1;
@@ -24,20 +26,22 @@ public class MemoryGameRecord implements GameRecord {
 	private double score;
 	private int tick;
 	
-	public MemoryGameRecord(GameSetup setup) {
+	private GenerateCSV csv;
+	
+	public TraceGameRecord(GameSetup setup) throws FileNotFoundException {
 		this(setup.getPlayer0Name(), setup.getPlayer1Name(), setup.getLevelName(), setup.getActionSetName());
 	}
 	
-	public MemoryGameRecord(String player1, String player2, String level, String actionSet) {
+	public TraceGameRecord(String player1, String player2, String level, String actionSet) throws FileNotFoundException {
 		this.id = UUID.randomUUID();
 		
 		this.player1 = player1;
 		this.player2 = player2;
 		this.level = level;
 		this.actionSet = actionSet;
+		this.csv = new GenerateCSV("moves-"+id.toString()+".csv");
 		
 		this.moves = new HashMap<>();
-		this.states = new HashMap<>();
 	}
 	
 	/* (non-Javadoc)
@@ -57,10 +61,35 @@ public class MemoryGameRecord implements GameRecord {
 	 * @see runner.clear.GameRecord#recordState(int, api.GameState)
 	 */
 	@Override
-	public void recordState(int tick, ObservableGameState state, Action p0, Action p1) {
-		states.put(tick, state);
-		recordAction(tick, 0, p0);
-		recordAction(tick, 1, p1);
+	public void recordState(int tick, ObservableGameState state, Action act0, Action act1) {
+		
+		csv.writeLine("STATE",
+				id,
+				player1,
+				player2,
+				level,
+				actionSet,
+				tick,
+				act0.getFriendlyName(),
+				act1.getFriendlyName(),
+				state.getPos(0),
+				state.getPos(1),
+				state.getScore(),
+				state.getFlare(0),
+				state.getFlare(1),
+				state.getSignalState(0),
+				state.getSignalState(1),
+				state.getSignalState(2),
+				state.getSignalState(3),
+				state.getSignalState(4),
+				state.getSignalState(5),
+				state.hasVisited(0, 0),
+				state.hasVisited(1, 0),
+				GameTimer.getUserTime(),
+				System.nanoTime()
+				);
+		
+		
 	}
 	
 	/* (non-Javadoc)
@@ -103,50 +132,42 @@ public class MemoryGameRecord implements GameRecord {
 
 	@Override
 	public String getID() {
-		// TODO Auto-generated method stub
-		return null;
+		return id.toString();
 	}
 
 	@Override
 	public String getPlayer1() {
-		// TODO Auto-generated method stub
-		return null;
+		return player1;
 	}
 
 	@Override
 	public String getPlayer2() {
-		// TODO Auto-generated method stub
-		return null;
+		return player2;
 	}
 
 	@Override
 	public String getLevel() {
-		// TODO Auto-generated method stub
-		return null;
+		return level;
 	}
 
 	@Override
 	public String getActionSet() {
-		// TODO Auto-generated method stub
-		return null;
+		return actionSet;
 	}
 
 	@Override
 	public String getResult() {
-		// TODO Auto-generated method stub
-		return null;
+		return result.toString();
 	}
 
 	@Override
 	public double getScore() {
-		// TODO Auto-generated method stub
-		return 0;
+		return score;
 	}
 
 	@Override
 	public int getTicks() {
-		// TODO Auto-generated method stub
-		return 0;
+		return tick;
 	}
 	
 }

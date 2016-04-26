@@ -14,6 +14,7 @@ import gamesrc.Filters;
 import gamesrc.level.GameLevel;
 import gamesrc.level.LevelParser;
 import runner.cli.ControllerUtils;
+import utils.GenerateCSV;
 
 public class GameTester {
 	private static final Integer MAX_THREADS = 4;
@@ -52,12 +53,15 @@ public class GameTester {
 								levelRel
 								);
 
-						tasks.add(new GameEngine(setup, MAX_TICKS, new MemoryGameRecord(setup)));
+						tasks.add(new GameEngine(setup, MAX_TICKS, new TraceGameRecord(setup)));
 					}
 				}
 			}
 
 		}
+		
+		GenerateCSV csv = new GenerateCSV(String.format("results-%d.csv", System.nanoTime()));
+		
 		
 		try {
 			ExecutorService service = Executors.newFixedThreadPool(MAX_THREADS);
@@ -66,6 +70,7 @@ public class GameTester {
 			for (Future<GameRecord> recordFuture : recordFutures) {
 				try {
 					GameRecord record = recordFuture.get();
+					csv.writeLine(record.getID(), record.getPlayer1(), record.getPlayer2(), record.getLevel(), record.getActionSet(), record.getResult(), record.getScore(), record.getTicks());
 					System.out.println(record+" "+record.getResultString());
 				} catch (ExecutionException ex) {
 					ex.printStackTrace();
