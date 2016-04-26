@@ -1,5 +1,6 @@
 package runner.viewer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -30,32 +31,43 @@ public class GameViewer implements Callable<GameResult> {
 		//viewer.call();
 
 		String[] maps = new String[] {
-				"data/norm_maps/maze.txt",
-				"data/norm_maps/airlock.txt",
-				"data/norm_maps/butterfly.txt",
+				//"data/norm_maps/airlock.txt",
+				//"data/norm_maps/butterfly.txt",
 				"data/norm_maps/single_door.txt",
-				"data/norm_maps/empty.txt"
+				//"data/norm_maps/empty.txt",
+				//"data/norm_maps/mirror_lock.txt",
+				//"data/norm_maps/maze.txt"
 		};
 		
-		Map<String, GameResult> results = new HashMap<String, GameResult>();
+		Map<String, List<GameResult>> resultMap = new HashMap<String, List<GameResult>>();
 		
-		for (String map : maps) {
-			GameLevel level = LevelParser.buildParser(map);
-			level.setLegalMoves("simple", Filters.getAllRelativeActions());
-			
-			//Controller p1 = new WASDController();
-			//Controller p2 = new PassiveRefindController();
-			
-			Controller p1 = new RandomController();
-			Controller p2 = new FollowTheFlare();
-			
-			
-			GameViewer viewer = new GameViewer(level, p1, p2);
-			GameResult r = viewer.call();
-			results.put(map, r);
+		for (int i=0; i<10; i++) {
+			for (String map : maps) {
+				List<GameResult> results = resultMap.get(map);
+				if (results == null) {
+					results = new ArrayList<>();
+					resultMap.put(map, results);
+				}
+				
+				GameLevel level = LevelParser.buildParser(map);
+				level.setLegalMoves("simple", Filters.getAllRelativeActions());
+				
+				//Controller p1 = new WASDController();
+				//Controller p2 = new PassiveRefindController();
+				
+				Controller p1 = new UCBGreedyRollout();
+				//Controller p1 = Utils.buildPredictor(new FollowTheFlare());
+				//Controller p2 = new RandomController();
+				Controller p2 = new GreedyRollout();
+				
+				
+				GameViewer viewer = new GameViewer(level, p1, p2);
+				GameResult r = viewer.call();
+				results.add(r);
+			}
 		}
 		
-		System.out.println(results);
+		System.out.println(resultMap);
 
 	}
 

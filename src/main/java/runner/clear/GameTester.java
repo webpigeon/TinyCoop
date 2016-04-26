@@ -59,7 +59,7 @@ public class GameTester {
 		}
 		
 		try {
-			ExecutorService service = Executors.newFixedThreadPool(2);
+			ExecutorService service = Executors.newFixedThreadPool(MAX_THREADS);
 			List<Future<GameRecord>> recordFutures = service.invokeAll(tasks);
 			
 			for (Future<GameRecord> recordFuture : recordFutures) {
