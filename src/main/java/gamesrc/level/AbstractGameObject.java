@@ -22,7 +22,7 @@ abstract class AbstractGameObject implements GameObject {
 	/* (non-Javadoc)
 	 * @see gamesrc.GameObjectI#onContact(gamesrc.SimpleGame, int)
 	 */
-	public abstract void onContact(SimpleGame state, int playerId);
+	public void onContact(SimpleGame state, int playerId){}
 
 	/* (non-Javadoc)
 	 * @see gamesrc.GameObjectI#onContactEnd(gamesrc.SimpleGame, int)

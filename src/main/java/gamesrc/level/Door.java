@@ -20,10 +20,6 @@ class Door extends AbstractGameObject {
 	public boolean isWalkable(ObservableGameState state, int playerId) {
 		return state.isSignalHigh(signal);
 	}
-	
-	@Override
-	public void onContact(SimpleGame state, int playerId) {
-	}
 
 	@Override
 	public int getSignal() {
@@ -35,16 +31,4 @@ class Door extends AbstractGameObject {
 		return ObjectTypes.DOOR;
 	}
 	
-	@Override
-	public void paint(int x, int y, int gridSize, ObservableGameState game, Graphics g) {
-		g.setColor(OBJECT_COLOURS[getType()]);
-    	if (game.isSignalHigh(getSignal())) {
-            g.drawRect(x * gridSize, y * gridSize, gridSize, gridSize);
-    	} else{
-            g.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
-    	}
-    	
-    	g.setColor(TEXT_COLOURS[getType()]);
-        g.drawString("" + getSignal(), x * gridSize + gridSize / 2, (y * gridSize) + gridSize / 2);
-	}
 }
