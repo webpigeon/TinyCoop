@@ -210,9 +210,14 @@ private class MCTSNode {
     public double rollout(GameState state) {
         int rolloutDepth = this.currentDepth;    
         while (!state.hasWon() && rolloutDepth < mcts.getMaxRolloutDepth()) {
-            state.update(getRandomAction(0, state), getRandomAction(0, state));
+        	if (isFirst()) {
+                state.update(getRandomAction(0, state), getOppAction(1, state));
+        	} else {
+                state.update(getOppAction(0, state), getRandomAction(1, state));
+        	}
             rolloutDepth++;
         }
+        //System.out.println(rolloutDepth +" "+ state.getScore());
         return state.getScore();
     }
 
@@ -260,6 +265,10 @@ private class MCTSNode {
         return totalValue / (numberOfVisits + EPSILON) +
                 Math.sqrt(2 * Math.log(parent.numberOfVisits + 1) / (numberOfVisits + EPSILON)) +
                 mcts.random.nextDouble() * EPSILON;
+    }
+    
+    public String toString(){
+    	return String.format("[%s] -> %f", moveToThisState, totalValue);
     }
 }
 }
