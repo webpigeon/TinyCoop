@@ -118,7 +118,12 @@ public class CigParams {
 		
 		
 		try {
-			ExecutorService service = Executors.newFixedThreadPool(MAX_THREADS);
+			int threads = MAX_THREADS;
+			if (args.length == 1) {
+				threads = Integer.parseInt(args[0]);
+			}
+			
+			ExecutorService service = Executors.newFixedThreadPool(threads);
 			List<Future<GameRecord>> recordFutures = service.invokeAll(tasks);
 			
 			for (Future<GameRecord> recordFuture : recordFutures) {
