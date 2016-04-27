@@ -1,11 +1,15 @@
 package Controllers.graph;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import api.Action;
+import api.GameObject;
 import api.GameState;
 import api.ObservableGameState;
 import gamesrc.Filters;
@@ -17,11 +21,13 @@ public class GraphCounter {
 
 	public static void main(String[] args) throws IOException {
 		
+		PrintStream ps = new PrintStream("levelStats.txt");
+		
 		String[] levels = new String[]{
 			//normalised maps
-			//"data/norm_maps/airlock.txt",
+			"data/norm_maps/airlock.txt",
 			"data/norm_maps/butterfly.txt",
-			/*"data/norm_maps/empty.txt",
+			"data/norm_maps/empty.txt",
 			"data/norm_maps/maze.txt",
 			"data/norm_maps/mirror_lock.txt",
 			"data/norm_maps/single_door.txt",
@@ -33,15 +39,15 @@ public class GraphCounter {
 			"data/maps/extended_side.txt",
 			"data/maps/pathfinding.txt",
 			"data/maps/side_by_side.txt",
-			"data/maps/symmetric_single_door.txt"*/
+			"data/maps/symmetric_single_door.txt"
 		};
 		
-
+		
 		for (String level : levels) {
 			long startTime = System.currentTimeMillis();
 			
 			GameLevel levelRel = LevelParser.buildParser(level);
-			levelRel.setLegalMoves("relative", Filters.getBasicActions());
+			levelRel.setLegalMoves("basic", Filters.getBasicActions());
 			ObservableGameState start = new SimpleGame(levelRel);
 			
 			StateGraph graph = new StateGraph();
@@ -54,9 +60,6 @@ public class GraphCounter {
 			while (!expanders.isEmpty()) {
 				ObservableGameState parent = expanders.poll();
 				StateAbstraction parentAbs = makeAbstraction(parent);
-	
-				int newStates = 0;
-				int revisits = 0;
 				
 				for (Action p1Action : parent.getLegalActions(0)) {
 					for (Action p2Action : parent.getLegalActions(1)) {
@@ -73,24 +76,61 @@ public class GraphCounter {
 								goalStates++;
 							}
 							graph.addVertex(stateAbs);
-							newStates++;
-						} else {
-							revisits++;
 						}
 						
 						graph.addTransision(parentAbs, stateAbs, p1Action, p2Action);
 					}
 				}
-				System.out.println(parent + " new states: "+newStates+", revisits: "+revisits+" total left to expand: "+expanders.size());
+				//System.out.println(parent + " new states: "+newStates+", revisits: "+revisits+" total left to expand: "+expanders.size());
 			}
 			long endTime = System.currentTimeMillis();
 			long delta = endTime - startTime;
 			
-			System.out.println(":: level: "+level+" (graph took "+delta+"ms to complete) ");
-			System.out.println(":: there are "+goalStates+" goal states");
-			System.out.println(":: total states: "+graph.getVertexCount());
-			System.out.println(":: total arcs: "+graph.getArcCount()+" ("+graph.getArcNoopCount()+" noops)");
+			ps.println("Level "+level+" actionSet: "+levelRel.getActionSetName());
+			ps.println(":: level: "+level+" (graph took "+delta+"ms to complete) ");
+			ps.println(":: floors: "+getFloor(start, 0)+", walls: "+getFloor(start, 1));
+			ps.println(":: goals: "+start.getGoalsCount());
+			ps.println(":: objects: "+getObjectType(start));
+			ps.println(":: there are "+goalStates+" goal states");
+			ps.println(":: total states: "+graph.getVertexCount());
+			ps.println(":: total arcs: "+graph.getArcCount()+" ("+graph.getArcNoopCount()+" noops)");
+			ps.println();
 		}
+		
+		ps.close();
+	}
+	
+	private static int getFloor(ObservableGameState state, int type) {
+		int floors = 0;
+		for (int x=0; x<state.getWidth(); x++){
+			for (int y=0; y<state.getHeight(); y++) {
+				if (state.getFloor(x, y) == type) {
+					floors++;
+				}
+			}
+		}
+		return floors;
+	}
+	
+	private static Map<String, Integer> getObjectType(ObservableGameState state) {
+		Map<String, Integer> histogram = new HashMap<String, Integer>();
+		
+		for (int x=0; x<state.getWidth(); x++){
+			for (int y=0; y<state.getHeight(); y++) {
+				GameObject o = state.getObject(x, y);
+				if (o == null) {
+					continue;
+				}
+				String key = o.getType()+"("+o.getSignal()+")";
+				Integer count = histogram.get(key);
+				if (count == null) {
+					count = 0;
+				}
+				count++;
+				histogram.put(key, count);
+			}
+		}
+		return histogram;
 	}
 	
 	public static StateAbstraction makeAbstraction(ObservableGameState state) {
