@@ -22,11 +22,12 @@ import gamesrc.level.GameLevel;
  * one if you want speed.
  */
 public class SimpleGame implements ObservableGameState {
+	private static final Integer NUM_SIGNALS = 5;
 	private GameLevel level;
 	private Flare[] flares;
 	private Point[] positions;
 	private boolean[] visitList;
-	private Map<Integer,Integer> signals;
+	private int[] signals;
 	
 	private boolean hasWon;
 	private double score;
@@ -36,7 +37,7 @@ public class SimpleGame implements ObservableGameState {
 		this.flares = new Flare[level.getPlayerCount()];
 		this.positions = new Point[level.getPlayerCount()];
 		this.visitList = new boolean[level.getGoalCount() * level.getPlayerCount()];
-		this.signals = new HashMap<Integer,Integer>();
+		this.signals = new int[NUM_SIGNALS];
 		this.hasWon = false;
 		this.score = 0;
 		
@@ -50,7 +51,7 @@ public class SimpleGame implements ObservableGameState {
 		this.flares = Arrays.copyOf(game.flares, game.flares.length);
 		this.positions = Arrays.copyOf(game.positions, game.positions.length);
 		this.visitList = Arrays.copyOf(game.visitList, game.visitList.length);
-		this.signals = new HashMap<Integer,Integer>(game.signals);
+		this.signals = Arrays.copyOf(game.signals, game.signals.length);
 		this.hasWon = game.hasWon;
 		this.score = game.score;
 	}
@@ -129,14 +130,8 @@ public class SimpleGame implements ObservableGameState {
 	}
 
 	public void setSignalState(int signal, boolean state) {
-		Integer i = signals.get(signal);
-		i = i == null ? 0 : i;
-		
-		if (state) {
-			signals.put(signal, i+1);
-		} else {
-			signals.put(signal, i-1);
-		}
+		assert signal > signals.length;	
+		signals[signal] += state?+1:-1; 
 	}
 
 	@Override
@@ -147,8 +142,7 @@ public class SimpleGame implements ObservableGameState {
 
 	@Override
 	public int getSignalState(int signal) {
-		Integer i = signals.get(signal);
-		return i == null ? 0 : i;
+		return signals[signal];
 	}
 	
 	public void setVisited(int agent, int goalID) {
@@ -218,7 +212,7 @@ public class SimpleGame implements ObservableGameState {
 		result = prime * result + Arrays.hashCode(flares);
 		result = prime * result + ((level == null) ? 0 : level.hashCode());
 		result = prime * result + Arrays.hashCode(positions);
-		result = prime * result + ((signals == null) ? 0 : signals.hashCode());
+		result = prime * result + Arrays.hashCode(signals);
 		result = prime * result + Arrays.hashCode(visitList);
 		return result;
 	}
@@ -237,17 +231,21 @@ public class SimpleGame implements ObservableGameState {
 		if (level == null) {
 			if (other.level != null)
 				return false;
-		} else if (!level.equals(other.level))
+		} else if (!level.equals(other.level)) {
+			//System.out.println("levels were different");
 			return false;
-		if (!Arrays.equals(positions, other.positions))
+		}
+		if (!Arrays.equals(positions, other.positions)) {
+			//System.out.println("positions were different");
 			return false;
-		if (signals == null) {
-			if (other.signals != null)
-				return false;
-		} else if (!signals.equals(other.signals))
+		}
+		if (!Arrays.equals(signals, other.signals)) {
 			return false;
-		if (!Arrays.equals(visitList, other.visitList))
+		}
+		if (!Arrays.equals(visitList, other.visitList)) {
+			//System.out.println("visit list was different");
 			return false;
+		}
 		return true;
 	}
 	
