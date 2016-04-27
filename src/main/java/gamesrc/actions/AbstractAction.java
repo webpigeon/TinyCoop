@@ -74,8 +74,9 @@ public abstract class AbstractAction implements Action {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof AbstractAction))
+		if (!(obj instanceof AbstractAction)) {
 			return false;
+		}
 		AbstractAction other = (AbstractAction) obj;
 		if (name == null) {
 			if (other.name != null)
