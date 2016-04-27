@@ -122,6 +122,16 @@ public class SimpleGameTest {
 	}
 	
 	@Test
+	public void testSignalReset() {
+		int signal = 0;
+		
+		GameState other = instance.getClone();
+		instance.setSignalState(signal, true);
+		instance.setSignalState(signal, false);
+		assertEquals(other, instance);
+	}
+	
+	@Test
 	public void testSignalDecreaseAfterIncrease() {
 		int signal = 0;
 		instance.setSignalState(signal, true);
