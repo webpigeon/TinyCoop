@@ -2,6 +2,7 @@ package gamesrc;
 
 import java.awt.Point;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.List;
 
 import api.Action;
@@ -24,9 +25,10 @@ public class SimpleGame implements ObservableGameState {
 	private final GameLevel level;
 	private final int[] signals;
 	private final Point[] positions;
-	private final boolean[] visitList;
+	private final BitSet visitList;
 	private Flare[] flares;
 	
+	private int goals;
 	private boolean hasWon;
 	private double score;
 	
@@ -34,7 +36,8 @@ public class SimpleGame implements ObservableGameState {
 		this.level = level;
 		this.flares = new Flare[level.getPlayerCount()];
 		this.positions = new Point[level.getPlayerCount()];
-		this.visitList = new boolean[level.getGoalCount() * level.getPlayerCount()];
+		this.visitList = new BitSet(level.getGoalCount() * level.getPlayerCount());
+		this.goals = level.getGoalCount() * level.getPlayerCount();
 		this.signals = new int[NUM_SIGNALS];
 		this.hasWon = false;
 		this.score = 0;
@@ -48,8 +51,10 @@ public class SimpleGame implements ObservableGameState {
 		this.level = game.level;
 		this.flares = Arrays.copyOf(game.flares, game.flares.length);
 		this.positions = Arrays.copyOf(game.positions, game.positions.length);
-		this.visitList = Arrays.copyOf(game.visitList, game.visitList.length);
+		this.visitList = (BitSet)game.visitList.clone();
 		this.signals = Arrays.copyOf(game.signals, game.signals.length);
+		
+		this.goals = game.goals;
 		this.hasWon = game.hasWon;
 		this.score = game.score;
 	}
@@ -70,14 +75,9 @@ public class SimpleGame implements ObservableGameState {
 	}
 	
 	private void calcuateHasWon() {
-		int visits = 0;
-		for (boolean b : visitList) {
-			if (b) {
-				visits++;
-			}
-		}
-		score = visits/(double)visitList.length;
-		hasWon = (visits == visitList.length);
+		int visits = visitList.cardinality();
+		score = visits/(double)goals;
+		hasWon = (visits == goals);
 	}
 
 	@Override
@@ -144,13 +144,13 @@ public class SimpleGame implements ObservableGameState {
 	}
 	
 	public void setVisited(int agent, int goalID) {
-		visitList[agent * level.getGoalCount() + goalID] = true;
+		visitList.set(agent * level.getGoalCount() + goalID);
 		calcuateHasWon();
 	}
 
 	@Override
 	public boolean hasVisited(int agent, int goalID) {
-		return visitList[agent * level.getGoalCount() + goalID];
+		return visitList.get(agent * level.getGoalCount() + goalID);
 	}
 
 	@Override
@@ -211,7 +211,7 @@ public class SimpleGame implements ObservableGameState {
 		result = prime * result + ((level == null) ? 0 : level.hashCode());
 		result = prime * result + Arrays.hashCode(positions);
 		result = prime * result + Arrays.hashCode(signals);
-		result = prime * result + Arrays.hashCode(visitList);
+		result = prime * result + visitList.hashCode();
 		return result;
 	}
 
@@ -241,7 +241,7 @@ public class SimpleGame implements ObservableGameState {
 			//System.out.println("visit list was different")
 			return false;
 		}
-		if (!Arrays.equals(visitList, other.visitList)) {
+		if (!visitList.equals(other.visitList)) {
 			//System.out.println("visit list was different");
 			return false;
 		}
