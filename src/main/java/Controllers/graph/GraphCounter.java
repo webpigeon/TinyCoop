@@ -19,9 +19,9 @@ public class GraphCounter {
 		
 		String[] levels = new String[]{
 			//normalised maps
-			"data/norm_maps/airlock.txt",
+			//"data/norm_maps/airlock.txt",
 			"data/norm_maps/butterfly.txt",
-			"data/norm_maps/empty.txt",
+			/*"data/norm_maps/empty.txt",
 			"data/norm_maps/maze.txt",
 			"data/norm_maps/mirror_lock.txt",
 			"data/norm_maps/single_door.txt",
@@ -33,7 +33,7 @@ public class GraphCounter {
 			"data/maps/extended_side.txt",
 			"data/maps/pathfinding.txt",
 			"data/maps/side_by_side.txt",
-			"data/maps/symmetric_single_door.txt"
+			"data/maps/symmetric_single_door.txt"*/
 		};
 		
 
@@ -55,6 +55,8 @@ public class GraphCounter {
 				ObservableGameState parent = expanders.poll();
 				StateAbstraction parentAbs = makeAbstraction(parent);
 	
+				int newStates = 0;
+				int revisits = 0;
 				
 				for (Action p1Action : parent.getLegalActions(0)) {
 					for (Action p2Action : parent.getLegalActions(1)) {
@@ -65,17 +67,21 @@ public class GraphCounter {
 						
 						if (!graph.contains(stateAbs)) {
 							if (!state.hasWon()) {
-								//don't add the state to the expansion list if we won already.
 								expanders.push(state);
 							} else {
+								//don't add the state to the expansion list if we won already.
 								goalStates++;
 							}
 							graph.addVertex(stateAbs);
+							newStates++;
+						} else {
+							revisits++;
 						}
 						
 						graph.addTransision(parentAbs, stateAbs, p1Action, p2Action);
 					}
 				}
+				System.out.println(parent + " new states: "+newStates+", revisits: "+revisits+" total left to expand: "+expanders.size());
 			}
 			long endTime = System.currentTimeMillis();
 			long delta = endTime - startTime;

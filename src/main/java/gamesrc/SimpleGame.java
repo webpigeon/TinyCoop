@@ -2,9 +2,7 @@ package gamesrc;
 
 import java.awt.Point;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import api.Action;
 import api.ActionType;
@@ -23,11 +21,11 @@ import gamesrc.level.GameLevel;
  */
 public class SimpleGame implements ObservableGameState {
 	private static final Integer NUM_SIGNALS = 5;
-	private GameLevel level;
+	private final GameLevel level;
+	private final int[] signals;
+	private final Point[] positions;
+	private final boolean[] visitList;
 	private Flare[] flares;
-	private Point[] positions;
-	private boolean[] visitList;
-	private int[] signals;
 	
 	private boolean hasWon;
 	private double score;
@@ -240,6 +238,7 @@ public class SimpleGame implements ObservableGameState {
 			return false;
 		}
 		if (!Arrays.equals(signals, other.signals)) {
+			//System.out.println("visit list was different")
 			return false;
 		}
 		if (!Arrays.equals(visitList, other.visitList)) {

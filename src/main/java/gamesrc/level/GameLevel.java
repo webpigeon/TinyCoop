@@ -168,6 +168,10 @@ public class GameLevel {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
+		
+		if (this != obj) 
+			throw new RuntimeException("flyweight cloned: tripped debug exception!");
+		
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())

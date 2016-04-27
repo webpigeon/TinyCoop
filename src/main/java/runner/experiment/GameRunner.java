@@ -124,7 +124,7 @@ public class GameRunner implements Callable<GameResult> {
 					tasks.add(new GameRunner(level, new PredictorMCTS(500, 10, 45, predictorP1), new PredictorMCTS(500, 10, 45, predictorP2), TICK_LIMIT));
 					
 					// MCTS co-op tests
-					if (!simpleLevels.equals(level)) {
+					if (!simpleLevels.contains(level)) {
 						NestedControllerPredictor predictor = new NestedControllerPredictor(new PassiveRefindController());
 						tasks.add(new GameRunner(level, new MCTS(true, 500, 10, 45), new PassiveRefindController(), TICK_LIMIT));
 						tasks.add(new GameRunner(level, new PredictorMCTS(500, 10, 45, predictor), new PassiveRefindController(), TICK_LIMIT));

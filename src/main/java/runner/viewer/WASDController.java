@@ -33,11 +33,9 @@ public class WASDController extends Controller implements KeyListener, MouseList
 		Action[] actions = game.getLegalActions(agentID);
 		
 		if (flarePos != null) {
-			for (Action action : actions) {
-				Point flarePos2 = new Point(flarePos);
-				flarePos = null;
-				return new AbsoluteFlare(flarePos2.x, flarePos2.y);	
-			}
+			Point flarePos2 = new Point(flarePos);
+			flarePos = null;
+			return new AbsoluteFlare(flarePos2.x, flarePos2.y);	
 		}
 		
 		Action nextAction = action;
