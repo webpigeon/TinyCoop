@@ -32,7 +32,7 @@ public class DebugTheThing {
 
 		GameLevel relative = LevelParser.buildParser(debugLevel);
 		relative.setLegalMoves("relative", Filters.getAllRelativeActions());
-		
+
 		// setup the games
 		List<GameRunner> tasks = new ArrayList<GameRunner>(7 * NUMBER_RUNS);
 
@@ -41,11 +41,11 @@ public class DebugTheThing {
 			tasks.add(new GameRunner(simple, new MCTS(true, 500, 10, 45), new MCTS(false, 500, 10, 45), TICK_LIMIT));
 			tasks.add(new GameRunner(relative, new MCTS(true, 500, 10, 45), new MCTS(false, 500, 10, 45), TICK_LIMIT));
 
-			tasks.add(new GameRunner(simple, new PredictorMCTS(500, 10, 45, new RandomPredictor()), new PredictorMCTS(500, 10, 45, new RandomPredictor()),
-					TICK_LIMIT));
+			tasks.add(new GameRunner(simple, new PredictorMCTS(500, 10, 45, new RandomPredictor()),
+					new PredictorMCTS(500, 10, 45, new RandomPredictor()), TICK_LIMIT));
 
-			tasks.add(new GameRunner(relative, new PredictorMCTS(500, 10, 45, new RandomPredictor()), new PredictorMCTS(500, 10, 45, new RandomPredictor()),
-					TICK_LIMIT));
+			tasks.add(new GameRunner(relative, new PredictorMCTS(500, 10, 45, new RandomPredictor()),
+					new PredictorMCTS(500, 10, 45, new RandomPredictor()), TICK_LIMIT));
 
 		}
 

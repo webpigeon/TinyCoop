@@ -9,63 +9,12 @@ public abstract class AbstractAction implements Action {
 	private final ActionType type;
 	private int x;
 	private int y;
-	
+
 	public AbstractAction(String name, int x, int y, ActionType type) {
 		this.name = name;
 		this.type = type;
 		this.x = x;
 		this.y = y;
-	}
-	
-	@Override
-	public String getFriendlyName() {
-		return name;
-	}
-	
-	@Override
-	public String toString() {
-		return String.format("%s(%d,%d)", getFriendlyName(), getX(), getY());
-	}
-
-	@Override
-	public int getX() {
-		return x;
-	}
-
-	@Override
-	public int getY() {
-		return y;
-	}
-
-	@Override
-	public ActionType getType() {
-		return type;
-	}
-
-	@Override
-	public boolean isTalk() {
-		return type.isComms();
-	}
-
-	@Override
-	public boolean isMovement() {
-		return type.isMovement();
-	}
-
-	@Override
-	public boolean isNOOP() {
-		return type.isNoop();
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
-		result = prime * result + x;
-		result = prime * result + y;
-		return result;
 	}
 
 	@Override
@@ -91,5 +40,56 @@ public abstract class AbstractAction implements Action {
 			return false;
 		return true;
 	}
-	
+
+	@Override
+	public String getFriendlyName() {
+		return name;
+	}
+
+	@Override
+	public ActionType getType() {
+		return type;
+	}
+
+	@Override
+	public int getX() {
+		return x;
+	}
+
+	@Override
+	public int getY() {
+		return y;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + x;
+		result = prime * result + y;
+		return result;
+	}
+
+	@Override
+	public boolean isMovement() {
+		return type.isMovement();
+	}
+
+	@Override
+	public boolean isNOOP() {
+		return type.isNoop();
+	}
+
+	@Override
+	public boolean isTalk() {
+		return type.isComms();
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s(%d,%d)", getFriendlyName(), getX(), getY());
+	}
+
 }

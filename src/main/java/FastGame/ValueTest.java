@@ -5,11 +5,11 @@ package FastGame;
  */
 public class ValueTest {
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        int test = 5001;
+		int test = 5001;
 
-        System.out.println(CoopGame.getIDFromValue(test));
-        System.out.println(CoopGame.getItemTypeFromValue(test));
-    }
+		System.out.println(CoopGame.getIDFromValue(test));
+		System.out.println(CoopGame.getItemTypeFromValue(test));
+	}
 }

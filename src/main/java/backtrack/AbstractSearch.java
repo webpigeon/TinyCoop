@@ -10,52 +10,24 @@ import api.Action;
 import api.GameState;
 
 public abstract class AbstractSearch implements Search {
+	class ActionPair {
+		GameState state;
+		Action p1Action;
+		Action p2Action;
+
+		@Override
+		public String toString() {
+			return String.format("%s [%s,%s]", state, p1Action, p2Action);
+		}
+	}
+
 	protected Map<GameState, ActionPair> cameFrom;
-	
-	public AbstractSearch(){
+
+	public AbstractSearch() {
 		this.cameFrom = new HashMap<>();
 	}
-	
-	@Override
-	public List<Action> search(GameState start, GameState end) {
-		addNode(start, null, null);
-		
-		while (!isFinished()) {
-			Node node = getNext();
-			if (discover(node)) {
-				if (node.state.getScore() == 0.5) {
-					return generatePath(node.state);
-				}
-				expand(node);
-			}
-			
-		}
 
-		return null;
-	}
-
-	
-	public FastAction getOtherAgentsMove() {
-		return FastAction.NOOP;
-	}
-	
-	public void expand(Node node) {
-		GameState parent = node.state;
-		
-		for (Action p1Action : parent.getLegalActions(0)) {
-			/*for (Action p2Action : parent.getLegalActions(1) ) {*/
-				GameState child = parent.getClone();
-				child.update(p1Action, getOtherAgentsMove());
-				addNode(child, p1Action, getOtherAgentsMove(), parent, node);
-			/*}*/
-		}
-	}
-	
-	public boolean discover(Node node) {
-		return true;
-	}
-	
-	public void addNode(GameState state, Action p1action, Action p2action, GameState parent, Node parentNode){
+	public void addNode(GameState state, Action p1action, Action p2action, GameState parent, Node parentNode) {
 		if (p1action != null && p2action != null && parent != null) {
 			ActionPair cameFrom = new ActionPair();
 			cameFrom.state = parent;
@@ -66,13 +38,25 @@ public abstract class AbstractSearch implements Search {
 			addNode(state, null, parentNode);
 		}
 	}
-	
+
 	public abstract Node addNode(GameState state, ActionPair cameFrom, Node parent);
-	
-	public abstract Node getNext();
-	
-	public abstract boolean isFinished();
-	
+
+	public boolean discover(Node node) {
+		return true;
+	}
+
+	public void expand(Node node) {
+		GameState parent = node.state;
+
+		for (Action p1Action : parent.getLegalActions(0)) {
+			/* for (Action p2Action : parent.getLegalActions(1) ) { */
+			GameState child = parent.getClone();
+			child.update(p1Action, getOtherAgentsMove());
+			addNode(child, p1Action, getOtherAgentsMove(), parent, node);
+			/* } */
+		}
+	}
+
 	public List<Action> generatePath(GameState end) {
 		List<Action> actionList = new ArrayList<Action>();
 		ActionPair previous = cameFrom.get(end);
@@ -82,15 +66,30 @@ public abstract class AbstractSearch implements Search {
 		}
 		return actionList;
 	}
-	
-	class ActionPair {
-		GameState state;
-		Action p1Action;
-		Action p2Action;
-		
-		@Override
-		public String toString() {
-			return String.format("%s [%s,%s]", state, p1Action, p2Action);
+
+	public abstract Node getNext();
+
+	public FastAction getOtherAgentsMove() {
+		return FastAction.NOOP;
+	}
+
+	public abstract boolean isFinished();
+
+	@Override
+	public List<Action> search(GameState start, GameState end) {
+		addNode(start, null, null);
+
+		while (!isFinished()) {
+			Node node = getNext();
+			if (discover(node)) {
+				if (node.state.getScore() == 0.5) {
+					return generatePath(node.state);
+				}
+				expand(node);
+			}
+
 		}
+
+		return null;
 	}
 }

@@ -10,16 +10,12 @@ import java.util.concurrent.Callable;
 import javax.swing.JFrame;
 
 import Controllers.Controller;
-import Controllers.FollowTheFlare;
-import Controllers.PassiveRefindController;
-import Controllers.RandomController;
 import Controllers.dummy.Qlearning;
 import Controllers.enhanced.Predictor;
 import Controllers.enhanced.RandomPredictor;
 import api.Action;
 import gamesrc.Filters;
 import gamesrc.SimpleGame;
-
 import gamesrc.level.GameLevel;
 import gamesrc.level.LevelParser;
 import runner.experiment.GameResult;
@@ -27,50 +23,50 @@ import runner.experiment.GameSetup;
 import runner.experiment.Utils;
 
 public class GameViewer implements Callable<GameResult> {
-	private static final Integer SLEEP_TIME = 60/1;
-	
+	private static final Integer SLEEP_TIME = 60 / 1;
+
 	public static void main(String[] args) throws Exception {
-		//GameViewer viewer = new GameViewer(level, p1, p2);
-		//viewer.call();
+		// GameViewer viewer = new GameViewer(level, p1, p2);
+		// viewer.call();
 
 		String[] maps = new String[] {
-				//"data/norm_maps/airlock.txt",
-				//"data/norm_maps/butterfly.txt",
-				//"data/norm_maps/single_door.txt",
+				// "data/norm_maps/airlock.txt",
+				// "data/norm_maps/butterfly.txt",
+				// "data/norm_maps/single_door.txt",
 				"data/norm_maps/empty.txt",
-				//"data/norm_maps/mirror_lock.txt",
-				//"data/norm_maps/maze.txt"
+				// "data/norm_maps/mirror_lock.txt",
+				// "data/norm_maps/maze.txt"
 		};
-		
+
 		Map<String, List<GameResult>> resultMap = new HashMap<String, List<GameResult>>();
-		
-		for (int i=0; i<10; i++) {
+
+		for (int i = 0; i < 10; i++) {
 			for (String map : maps) {
 				List<GameResult> results = resultMap.get(map);
 				if (results == null) {
 					results = new ArrayList<>();
 					resultMap.put(map, results);
 				}
-				
+
 				GameLevel level = LevelParser.buildParser(map);
 				level.setLegalMoves("simple", Filters.getAllRelativeActions());
-				
-				//Controller p1 = new WASDController();
-				//Controller p2 = new PassiveRefindController();
-				
-				//Controller p1 = Utils.buildPredictor(new FollowTheFlare(), "pmcts");
-				
+
+				// Controller p1 = new WASDController();
+				// Controller p2 = new PassiveRefindController();
+
+				// Controller p1 = Utils.buildPredictor(new FollowTheFlare(),
+				// "pmcts");
+
 				Predictor p = new RandomPredictor();
 				Controller p1 = new Qlearning(p);
 				Controller p2 = Utils.buildMCTS(false);
-				
-				
+
 				GameViewer viewer = new GameViewer(level, p1, p2);
 				GameResult r = viewer.call();
 				results.add(r);
 			}
 		}
-		
+
 		System.out.println(resultMap);
 
 	}
@@ -87,32 +83,32 @@ public class GameViewer implements Callable<GameResult> {
 
 	@Override
 	public GameResult call() throws Exception {
-				
+
 		// setup result entry already
 		GameSetup setup = new GameSetup();
 		setup.levelID = level.getLevelName();
 		setup.actionSet = level.getActionSetName();
 		setup.p1 = p1.getSimpleName();
 		setup.p2 = p2.getSimpleName();
-		
+
 		GameResult result = new GameResult(setup);
 
 		SimpleGame game = new SimpleGame(level);
 		p1.startGame(0);
 		p2.startGame(1);
-		
+
 		JFrame frame = new JFrame("TinyCoOp - Observable Edition");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Viewer viewer = new Viewer(game);
 		frame.add(viewer);
-		
+
 		if (p1 instanceof WASDController) {
-			viewer.addMouseListener((WASDController)p1);
-			viewer.addKeyListener((WASDController)p1);
+			viewer.addMouseListener((WASDController) p1);
+			viewer.addKeyListener((WASDController) p1);
 			viewer.setFocusable(true);
 			viewer.requestFocus();
 		}
-		
+
 		frame.pack();
 		frame.setVisible(true);
 
@@ -135,9 +131,9 @@ public class GameViewer implements Callable<GameResult> {
 			result.recordMoves(tickCount, p1Move, p2Move);
 			viewer.repaint();
 			Thread.sleep(SLEEP_TIME);
-			
+
 			System.out.printf("%d: %s && %s\n", tickCount, p1Move, p2Move);
-			
+
 			tickCount++;
 		}
 

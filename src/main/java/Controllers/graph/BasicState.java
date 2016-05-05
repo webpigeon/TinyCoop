@@ -11,23 +11,11 @@ public class BasicState implements StateAbstraction {
 	private Point p1;
 	private Point p2;
 	private double score;
-	
+
 	public BasicState(ObservableGameState state) {
 		this.p1 = state.getPos(0);
 		this.p2 = state.getPos(1);
 		this.score = state.getScore();
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((p1 == null) ? 0 : p1.hashCode());
-		result = prime * result + ((p2 == null) ? 0 : p2.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(score);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		return result;
 	}
 
 	@Override
@@ -53,7 +41,17 @@ public class BasicState implements StateAbstraction {
 			return false;
 		return true;
 	}
-	
-	
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((p1 == null) ? 0 : p1.hashCode());
+		result = prime * result + ((p2 == null) ? 0 : p2.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(score);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
 }

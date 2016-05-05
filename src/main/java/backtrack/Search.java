@@ -8,5 +8,5 @@ import api.GameState;
 public interface Search {
 
 	public List<Action> search(GameState start, GameState end);
-	
+
 }

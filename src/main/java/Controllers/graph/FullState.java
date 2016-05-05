@@ -4,17 +4,9 @@ import api.GameState;
 
 public class FullState implements StateAbstraction {
 	private final GameState state;
-	
-	public FullState(GameState state){
-		this.state = state;
-	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((state == null) ? 0 : state.hashCode());
-		return result;
+	public FullState(GameState state) {
+		this.state = state;
 	}
 
 	@Override
@@ -33,5 +25,13 @@ public class FullState implements StateAbstraction {
 			return false;
 		return true;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((state == null) ? 0 : state.hashCode());
+		return result;
+	}
+
 }

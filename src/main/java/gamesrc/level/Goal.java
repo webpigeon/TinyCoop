@@ -5,16 +5,11 @@ import gamesrc.SimpleGame;
 
 class Goal extends AbstractGameObject {
 	private int goalId;
-	
+
 	public Goal(int goalId) {
 		this.goalId = goalId;
 	}
 
-	@Override
-	public void onContact(SimpleGame state, int playerId) {
-		state.setVisited(playerId, goalId);
-	}
-	
 	@Override
 	public int getSignal() {
 		return goalId;
@@ -23,5 +18,10 @@ class Goal extends AbstractGameObject {
 	@Override
 	public int getType() {
 		return ObjectTypes.GOAL;
+	}
+
+	@Override
+	public void onContact(SimpleGame state, int playerId) {
+		state.setVisited(playerId, goalId);
 	}
 }

@@ -11,25 +11,15 @@ import gamesrc.SimpleGame;
 
 /**
  * Trap door object.
- * 
- * Once someone walks though the trap door object, the door will subtract 1 from the signal
- * state (disabling it).
+ *
+ * Once someone walks though the trap door object, the door will subtract 1 from
+ * the signal state (disabling it).
  */
 class TrapDoor extends AbstractGameObject {
 	private final Integer signal;
-	
+
 	public TrapDoor(int signal) {
 		this.signal = signal;
-	}
-
-	@Override
-	public boolean isWalkable(ObservableGameState state, int playerId) {
-		return state.isSignalHigh(signal);
-	}
-	
-	@Override
-	public void onContact(SimpleGame state, int playerId) {
-		state.setSignalState(signal, false);
 	}
 
 	@Override
@@ -41,17 +31,27 @@ class TrapDoor extends AbstractGameObject {
 	public int getType() {
 		return ObjectTypes.DOOR;
 	}
-	
+
+	@Override
+	public boolean isWalkable(ObservableGameState state, int playerId) {
+		return state.isSignalHigh(signal);
+	}
+
+	@Override
+	public void onContact(SimpleGame state, int playerId) {
+		state.setSignalState(signal, false);
+	}
+
 	@Override
 	public void paint(int x, int y, int gridSize, ObservableGameState game, Graphics g) {
 		g.setColor(OBJECT_COLOURS[getType()]);
-    	if (game.isSignalHigh(getSignal())) {
-            g.drawRect(x * gridSize, y * gridSize, gridSize, gridSize);
-    	} else{
-            g.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
-    	}
-    	
-    	g.setColor(TEXT_COLOURS[getType()]);
-        g.drawString("" + getSignal(), x * gridSize + gridSize / 2, (y * gridSize) + gridSize / 2);
+		if (game.isSignalHigh(getSignal())) {
+			g.drawRect(x * gridSize, y * gridSize, gridSize, gridSize);
+		} else {
+			g.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
+		}
+
+		g.setColor(TEXT_COLOURS[getType()]);
+		g.drawString("" + getSignal(), x * gridSize + gridSize / 2, (y * gridSize) + gridSize / 2);
 	}
 }

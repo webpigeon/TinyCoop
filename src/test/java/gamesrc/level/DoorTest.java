@@ -1,7 +1,8 @@
 package gamesrc.level;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.junit.After;
 import org.junit.Before;
@@ -25,53 +26,53 @@ public class DoorTest {
 	}
 
 	@Test
-	public void testIsWalkablePlayerZero() {
-		ObservableGameState state = mock(ObservableGameState.class);
-		when(state.isSignalHigh(DOOR_SIGNAL)).thenReturn(true);
-		
-		boolean expected = true;
-		boolean result = door.isWalkable(state, GameState.PLAYER_0);
-		assertEquals(expected, result);
-	}
-	
-	@Test
-	public void testIsWalkablePlayerOne() {
-		ObservableGameState state = mock(ObservableGameState.class);
-		when(state.isSignalHigh(DOOR_SIGNAL)).thenReturn(true);
-		
-		boolean expected = true;
-		boolean result = door.isWalkable(state, GameState.PLAYER_1);
-		assertEquals(expected, result);
-	}
-	
-	@Test
-	public void testIsNotWalkablePlayerZero() {
-		ObservableGameState state = mock(ObservableGameState.class);
-		when(state.isSignalHigh(DOOR_SIGNAL)).thenReturn(false);
-		
-		boolean expected = false;
-		boolean result = door.isWalkable(state, GameState.PLAYER_0);
-		assertEquals(expected, result);
-	}
-	
-	@Test
-	public void testIsNotWalkablePlayerOne() {
-		ObservableGameState state = mock(ObservableGameState.class);
-		when(state.isSignalHigh(DOOR_SIGNAL)).thenReturn(false);
-		
-		boolean expected = false;
-		boolean result = door.isWalkable(state, GameState.PLAYER_1);
-		assertEquals(expected, result);
-	}
-
-	@Test
 	public void testGetSignal() {
-		assertEquals((int)DOOR_SIGNAL, door.getSignal());
+		assertEquals((int) DOOR_SIGNAL, door.getSignal());
 	}
 
 	@Test
 	public void testGetType() {
 		assertEquals(ObjectTypes.DOOR, door.getType());
+	}
+
+	@Test
+	public void testIsNotWalkablePlayerOne() {
+		ObservableGameState state = mock(ObservableGameState.class);
+		when(state.isSignalHigh(DOOR_SIGNAL)).thenReturn(false);
+
+		boolean expected = false;
+		boolean result = door.isWalkable(state, GameState.PLAYER_1);
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testIsNotWalkablePlayerZero() {
+		ObservableGameState state = mock(ObservableGameState.class);
+		when(state.isSignalHigh(DOOR_SIGNAL)).thenReturn(false);
+
+		boolean expected = false;
+		boolean result = door.isWalkable(state, GameState.PLAYER_0);
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testIsWalkablePlayerOne() {
+		ObservableGameState state = mock(ObservableGameState.class);
+		when(state.isSignalHigh(DOOR_SIGNAL)).thenReturn(true);
+
+		boolean expected = true;
+		boolean result = door.isWalkable(state, GameState.PLAYER_1);
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testIsWalkablePlayerZero() {
+		ObservableGameState state = mock(ObservableGameState.class);
+		when(state.isSignalHigh(DOOR_SIGNAL)).thenReturn(true);
+
+		boolean expected = true;
+		boolean result = door.isWalkable(state, GameState.PLAYER_0);
+		assertEquals(expected, result);
 	}
 
 }

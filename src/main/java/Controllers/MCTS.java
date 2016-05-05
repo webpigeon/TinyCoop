@@ -10,258 +10,263 @@ import api.GameState;
  */
 public class MCTS extends Controller {
 
-    private Random random = new Random();
-    private int maxUCTDepth = 5;
-    private int maxRolloutDepth = 30;
-    private int iterationLimit = 0;
+	private class MCTSNode {
 
-    private boolean first;
+		private static final double EPSILON = 1e-6;
 
-    public MCTS(boolean first, int iterationLimit, int maxUCTDepth, int maxRolloutDepth) {
-        this.first = first;
-        this.iterationLimit = iterationLimit;
-        this.maxUCTDepth = maxUCTDepth;
-        this.maxRolloutDepth = maxRolloutDepth;
-    }
+		private double explorationConstant;
+		private Action moveToThisState;
 
-    public MCTS(boolean first, int iterationLimit){
-        this.first = first;
-        this.iterationLimit = iterationLimit;
-    }
+		private double totalValue;
+		private int numberOfVisits;
+		private int currentDepth;
+		private int childrenExpandedSoFar = 0;
 
-    @Override
-    public Action get(GameState game) {
-        MCTSNode root = new MCTSNode(2.0, this, game.getActionLength());
-        MCTSNode travel;
-        GameState workingGame;
-        int iterations = 0;
-        while (iterations < iterationLimit) {
-            workingGame = game.getClone();
-            travel = root.select(workingGame);
-            double result = travel.rollout(workingGame);
-            travel.updateValues(result);
-            iterations++;
-        }
-                
-        //System.out.println(root.getChildrenExpandedSoFar() + "Nodes: " + root.getNodesInTree());
-//        System.out.println("Iterations : " + iterations);
-//        System.out.println(root.getBestAction());
-        return root.getBestAction();
-    }
+		private MCTSNode parent;
+		private MCTSNode[] children;
+		private int childLength;
+		private int nodesInTree = 0;
 
-    public int getMaxUCTDepth() {
-        return maxUCTDepth;
-    }
+		private MCTS mcts;
 
-    public int getMaxRolloutDepth() {
-        return maxRolloutDepth;
-    }
+		// Root
+		public MCTSNode(double explorationConstant, MCTS mcts, int actionLength) {
+			this.explorationConstant = explorationConstant;
+			this.currentDepth = 0;
+			this.mcts = mcts;
+			this.childLength = actionLength;
+		}
 
-    public boolean isFirst() {
-        return first;
-    }
+		// Child
+		public MCTSNode(MCTSNode parent, Action moveToThisState, int actionLength) {
+			this.parent = parent;
+			this.explorationConstant = parent.explorationConstant;
+			this.moveToThisState = moveToThisState;
+			this.currentDepth = parent.currentDepth + 1;
+			this.mcts = parent.mcts;
+			this.childLength = actionLength;
+		}
 
-    @Override
-    public String getSimpleName() {
-        return "MCTS: (" + iterationLimit + ";" + maxUCTDepth + ";" + maxRolloutDepth + ")";
-    }
+		public double calculateChild() {
+			return totalValue / (numberOfVisits + EPSILON)
+					+ Math.sqrt(2 * Math.log(parent.numberOfVisits + 1) / (numberOfVisits + EPSILON))
+					+ mcts.random.nextDouble() * EPSILON;
+		}
 
+		private MCTSNode expand(GameState state) {
+			int bestAction = 0;
+			double bestValue = -Double.MAX_VALUE;
+			if (children == null)
+				children = new MCTSNode[childLength];
+			Random random = mcts.random;
+			for (int i = 0; i < children.length; i++) {
+				double x = random.nextDouble();
+				if (x > bestValue && children[i] == null) {
+					bestAction = i;
+					bestValue = x;
+				} else if (x == bestValue && children[i] == null && random.nextBoolean()) {
+					bestAction = i;
+				}
+			}
 
-private class MCTSNode {
+			Action[] allActions = state.getLegalActions(0);
+			children[bestAction] = new MCTSNode(this, allActions[bestAction], state.getActionLength());
+			childrenExpandedSoFar++;
+			return children[bestAction];
+		}
 
-    private static final double EPSILON = 1e-6;
+		protected Action getBestAction() {
+			if (children == null)
+				return Action.NOOP;
+			int selected = -1;
+			double bestValue = -Double.MAX_VALUE;
+			for (int child = 0; child < children.length; child++) {
+				if (children[child] == null)
+					continue;
+				double childValue = children[child].getTotalValue();
+				if (childValue > bestValue) {
+					bestValue = childValue;
+					selected = child;
+				} else if (childValue == bestValue && random.nextBoolean()) {
+					selected = child;
+				}
+			}
+			if (selected == -1)
+				return Action.NOOP;
+			return children[selected].getMoveToThisState();
+		}
 
-    private double explorationConstant;
-    private Action moveToThisState;
+		public int getChildLength() {
+			return childLength;
+		}
 
-    private double totalValue;
-    private int numberOfVisits;
-    private int currentDepth;
-    private int childrenExpandedSoFar = 0;
+		public MCTSNode[] getChildren() {
+			return children;
+		}
 
-    private MCTSNode parent;
-    private MCTSNode[] children;
-    private int childLength;
-    private int nodesInTree = 0;
+		public int getChildrenExpandedSoFar() {
+			return childrenExpandedSoFar;
+		}
 
-    private MCTS mcts;
+		public int getCurrentDepth() {
+			return currentDepth;
+		}
 
-    // Root
-    public MCTSNode(double explorationConstant, MCTS mcts, int actionLength) {
-        this.explorationConstant = explorationConstant;
-        this.currentDepth = 0;
-        this.mcts = mcts;
-        this.childLength = actionLength;
-    }
+		public double getExplorationConstant() {
+			return explorationConstant;
+		}
 
-    // Child
-    public MCTSNode(MCTSNode parent, Action moveToThisState, int actionLength) {
-        this.parent = parent;
-        this.explorationConstant = parent.explorationConstant;
-        this.moveToThisState = moveToThisState;
-        this.currentDepth = parent.currentDepth + 1;
-        this.mcts = parent.mcts;
-        this.childLength = actionLength;
-    }
+		public Action getMoveToThisState() {
+			return moveToThisState;
+		}
 
-    protected MCTSNode select(GameState state) {
-        MCTSNode current = this;
-        while (current.currentDepth < mcts.getMaxUCTDepth() && !state.hasWon()) {
-            if (current.isFullyExpanded()) {
-                current = current.selectBestChild();
-                if (mcts.isFirst()) {
-                    state.update(current.getMoveToThisState(), getOppAction(1, state));
-                } else {
-                    state.update(getOppAction(0, state), current.getMoveToThisState());
-                }
-            } else {
-                /// Expand
-                MCTSNode expandedChild = current.expand(state);
-                nodesInTree++;
-                if (mcts.isFirst()) {
-                    state.update(expandedChild.getMoveToThisState(), getOppAction(1, state));
-                } else {
-                    state.update(getOppAction(0, state), expandedChild.getMoveToThisState());
-                }
-                return expandedChild;
-            }
-        }
-        return current;
-    }
-    
-    protected Action getRandomAction(int playerID, GameState state) {
-    	Action[] legalActions = state.getLegalActions(playerID);
-    	int id = random.nextInt(legalActions.length);
-    	return legalActions[id];
-    }
-    
-    protected Action getOppAction(int playerID, GameState state) {
-    	Action[] legalActions = state.getLegalActions(playerID);
-    	int id = random.nextInt(legalActions.length);
-    	return legalActions[id];
-    }
+		public int getNodesInTree() {
+			return nodesInTree;
+		}
 
-    protected MCTSNode selectBestChild() {
-        int selected = 0;
-        double bestValue = children[0].calculateChild();
-        for (int child = 1; child < children.length; child++) {
-            double childValue = children[child].calculateChild();
-            if (childValue > bestValue) {
-                selected = child;
-                bestValue = childValue;
-            }
-        }
-        return children[selected];
-    }
+		public int getNumberOfVisits() {
+			return numberOfVisits;
+		}
 
-    protected Action getBestAction() {
-        if (children == null) return Action.NOOP;
-        int selected = -1;
-        double bestValue = -Double.MAX_VALUE;
-        for (int child = 0; child < children.length; child++) {
-            if (children[child] == null) continue;
-            double childValue = children[child].getTotalValue();
-            if (childValue > bestValue) {
-                bestValue = childValue;
-                selected = child;
-            } else if (childValue == bestValue && random.nextBoolean()) {
-                selected = child;
-            }
-        }
-        if (selected == -1) return Action.NOOP;
-        return children[selected].getMoveToThisState();
-    }
+		protected Action getOppAction(int playerID, GameState state) {
+			Action[] legalActions = state.getLegalActions(playerID);
+			int id = random.nextInt(legalActions.length);
+			return legalActions[id];
+		}
 
-    public void updateValues(double value) {
-        // All nodes are ours so lets go for it
-        MCTSNode current = this;
-        while (current.parent != null) {
-            current.totalValue += value;
-            current.numberOfVisits++;
-            current = current.parent;
-        }
-        current.totalValue += value;
-        current.numberOfVisits++;
-    }
+		public MCTSNode getParent() {
+			return parent;
+		}
 
-    private MCTSNode expand(GameState state) {
-        int bestAction = 0;
-        double bestValue = -Double.MAX_VALUE;
-        if (children == null) children = new MCTSNode[childLength];
-        Random random = mcts.random;
-        for (int i = 0; i < children.length; i++) {
-            double x = random.nextDouble();
-            if (x > bestValue && children[i] == null) {
-                bestAction = i;
-                bestValue = x;
-            } else if (x == bestValue && children[i] == null && random.nextBoolean()) {
-            	bestAction = i;
-            }
-        }
- 
-        Action[] allActions = state.getLegalActions(0);
-        children[bestAction] = new MCTSNode(this, allActions[bestAction], state.getActionLength());
-        childrenExpandedSoFar++;
-        return children[bestAction];
-    }
+		protected Action getRandomAction(int playerID, GameState state) {
+			Action[] legalActions = state.getLegalActions(playerID);
+			int id = random.nextInt(legalActions.length);
+			return legalActions[id];
+		}
 
-    public double rollout(GameState state) {
-        int rolloutDepth = this.currentDepth;
-        while (!state.hasWon() && rolloutDepth < mcts.getMaxRolloutDepth()) {
-            state.update(getRandomAction(0, state), getRandomAction(0, state));
-            rolloutDepth++;
-        }
-        return state.getScore();
-    }
+		public double getTotalValue() {
+			return totalValue;
+		}
 
-    private boolean isFullyExpanded() {
-        return childrenExpandedSoFar == childLength;
-    }
+		private boolean isFullyExpanded() {
+			return childrenExpandedSoFar == childLength;
+		}
 
-    public double getExplorationConstant() {
-        return explorationConstant;
-    }
+		public double rollout(GameState state) {
+			int rolloutDepth = this.currentDepth;
+			while (!state.hasWon() && rolloutDepth < mcts.getMaxRolloutDepth()) {
+				state.update(getRandomAction(0, state), getRandomAction(0, state));
+				rolloutDepth++;
+			}
+			return state.getScore();
+		}
 
-    public Action getMoveToThisState() {
-        return moveToThisState;
-    }
+		protected MCTSNode select(GameState state) {
+			MCTSNode current = this;
+			while (current.currentDepth < mcts.getMaxUCTDepth() && !state.hasWon()) {
+				if (current.isFullyExpanded()) {
+					current = current.selectBestChild();
+					if (mcts.isFirst()) {
+						state.update(current.getMoveToThisState(), getOppAction(1, state));
+					} else {
+						state.update(getOppAction(0, state), current.getMoveToThisState());
+					}
+				} else {
+					/// Expand
+					MCTSNode expandedChild = current.expand(state);
+					nodesInTree++;
+					if (mcts.isFirst()) {
+						state.update(expandedChild.getMoveToThisState(), getOppAction(1, state));
+					} else {
+						state.update(getOppAction(0, state), expandedChild.getMoveToThisState());
+					}
+					return expandedChild;
+				}
+			}
+			return current;
+		}
 
-    public double getTotalValue() {
-        return totalValue;
-    }
+		protected MCTSNode selectBestChild() {
+			int selected = 0;
+			double bestValue = children[0].calculateChild();
+			for (int child = 1; child < children.length; child++) {
+				double childValue = children[child].calculateChild();
+				if (childValue > bestValue) {
+					selected = child;
+					bestValue = childValue;
+				}
+			}
+			return children[selected];
+		}
 
-    public int getNumberOfVisits() {
-        return numberOfVisits;
-    }
+		public void updateValues(double value) {
+			// All nodes are ours so lets go for it
+			MCTSNode current = this;
+			while (current.parent != null) {
+				current.totalValue += value;
+				current.numberOfVisits++;
+				current = current.parent;
+			}
+			current.totalValue += value;
+			current.numberOfVisits++;
+		}
+	}
 
-    public int getCurrentDepth() {
-        return currentDepth;
-    }
+	private Random random = new Random();
+	private int maxUCTDepth = 5;
+	private int maxRolloutDepth = 30;
 
-    public int getChildrenExpandedSoFar() {
-        return childrenExpandedSoFar;
-    }
+	private int iterationLimit = 0;
 
-    public MCTSNode getParent() {
-        return parent;
-    }
+	private boolean first;
 
-    public MCTSNode[] getChildren() {
-        return children;
-    }
+	public MCTS(boolean first, int iterationLimit) {
+		this.first = first;
+		this.iterationLimit = iterationLimit;
+	}
 
-    public int getChildLength() {
-        return childLength;
-    }
-    
-    public int getNodesInTree(){
-    	return nodesInTree;
-    }
+	public MCTS(boolean first, int iterationLimit, int maxUCTDepth, int maxRolloutDepth) {
+		this.first = first;
+		this.iterationLimit = iterationLimit;
+		this.maxUCTDepth = maxUCTDepth;
+		this.maxRolloutDepth = maxRolloutDepth;
+	}
 
-    public double calculateChild() {
-        return totalValue / (numberOfVisits + EPSILON) +
-                Math.sqrt(2 * Math.log(parent.numberOfVisits + 1) / (numberOfVisits + EPSILON)) +
-                mcts.random.nextDouble() * EPSILON;
-    }
-}
+	@Override
+	public Action get(GameState game) {
+		MCTSNode root = new MCTSNode(2.0, this, game.getActionLength());
+		MCTSNode travel;
+		GameState workingGame;
+		int iterations = 0;
+		while (iterations < iterationLimit) {
+			workingGame = game.getClone();
+			travel = root.select(workingGame);
+			double result = travel.rollout(workingGame);
+			travel.updateValues(result);
+			iterations++;
+		}
+
+		// System.out.println(root.getChildrenExpandedSoFar() + "Nodes: " +
+		// root.getNodesInTree());
+		// System.out.println("Iterations : " + iterations);
+		// System.out.println(root.getBestAction());
+		return root.getBestAction();
+	}
+
+	public int getMaxRolloutDepth() {
+		return maxRolloutDepth;
+	}
+
+	public int getMaxUCTDepth() {
+		return maxUCTDepth;
+	}
+
+	@Override
+	public String getSimpleName() {
+		return "MCTS: (" + iterationLimit + ";" + maxUCTDepth + ";" + maxRolloutDepth + ")";
+	}
+
+	public boolean isFirst() {
+		return first;
+	}
 }

@@ -1,7 +1,9 @@
 package gamesrc;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.stub;
 
 import java.util.Arrays;
 
@@ -21,57 +23,17 @@ public class SimpleGameTest {
 	@Before
 	public void setUp() throws Exception {
 		Action actionMock = mock(Action.class);
-		
+
 		mockLevel = mock(GameLevel.class);
 		stub(mockLevel.getPlayerCount()).toReturn(2);
 		stub(mockLevel.getGoalCount()).toReturn(1);
 		stub(mockLevel.getLegalMoves()).toReturn(Arrays.asList(actionMock));
-		
+
 		this.instance = new SimpleGame(mockLevel);
 	}
 
 	@After
 	public void tearDown() throws Exception {
-	}
-
-	@Test
-	public void testInitialScoreIsZero() {
-		double expected = 0;
-		double result = instance.getScore();
-		
-		assertEquals(expected, result, EPSILON);
-	}
-	
-	@Test
-	public void testInitialScoreAfterVisitIsOne() {
-		double expected = 1;
-		
-		instance.setVisited(GameState.PLAYER_0, 0);
-		instance.setVisited(GameState.PLAYER_1, 0);
-		
-		double result = instance.getScore();
-		
-		assertEquals(expected, result, EPSILON);
-	}
-
-	@Test
-	public void testInitialHasWon() {
-		boolean expected = false;
-		boolean result = instance.hasWon();
-		
-		assertEquals(expected, result);
-	}
-
-	@Test
-	public void testGoalContract() {
-		int agent = 0;
-		int goal = 0;
-		
-		instance.setVisited(agent, goal);
-		
-		boolean expected = true;
-		boolean result = instance.hasVisited(agent, goal);
-		assertEquals(expected, result);
 	}
 
 	@Test
@@ -85,62 +47,102 @@ public class SimpleGameTest {
 	public void testGetLegalActionsIsImmutable() {
 		Action[] a1 = instance.getLegalActions(0);
 		Action[] a2 = instance.getLegalActions(0);
-		
+
 		a1[0] = null;
 		assertNotEquals(a1[0], a2[0]);
 	}
-	
+
 	@Test
-	public void testSignalInitiallyZero() {
-		int signal = 0;
-		int expected = 0;
-		int result = instance.getSignalState(signal);
-		
+	public void testGoalContract() {
+		int agent = 0;
+		int goal = 0;
+
+		instance.setVisited(agent, goal);
+
+		boolean expected = true;
+		boolean result = instance.hasVisited(agent, goal);
 		assertEquals(expected, result);
 	}
-	
+
 	@Test
-	public void testSignalIncrease() {
-		int signal = 0;
-		instance.setSignalState(signal, true);
-		
-		int expected = 1;
-		int result = instance.getSignalState(signal);
+	public void testInitialHasWon() {
+		boolean expected = false;
+		boolean result = instance.hasWon();
+
 		assertEquals(expected, result);
-		assertEquals(true, instance.isSignalHigh(signal));
 	}
-	
+
+	@Test
+	public void testInitialScoreAfterVisitIsOne() {
+		double expected = 1;
+
+		instance.setVisited(GameState.PLAYER_0, 0);
+		instance.setVisited(GameState.PLAYER_1, 0);
+
+		double result = instance.getScore();
+
+		assertEquals(expected, result, EPSILON);
+	}
+
+	@Test
+	public void testInitialScoreIsZero() {
+		double expected = 0;
+		double result = instance.getScore();
+
+		assertEquals(expected, result, EPSILON);
+	}
+
 	@Test
 	public void testSignalDecrease() {
 		int signal = 0;
 		instance.setSignalState(signal, false);
-		
+
 		int expected = -1;
 		int result = instance.getSignalState(signal);
 		assertEquals(expected, result);
 		assertEquals(false, instance.isSignalHigh(signal));
 	}
-	
-	@Test
-	public void testSignalReset() {
-		int signal = 0;
-		
-		GameState other = instance.getClone();
-		instance.setSignalState(signal, true);
-		instance.setSignalState(signal, false);
-		assertEquals(other, instance);
-	}
-	
+
 	@Test
 	public void testSignalDecreaseAfterIncrease() {
 		int signal = 0;
 		instance.setSignalState(signal, true);
 		instance.setSignalState(signal, false);
-		
+
 		int expected = 0;
 		int result = instance.getSignalState(signal);
 		assertEquals(expected, result);
 		assertEquals(false, instance.isSignalHigh(signal));
+	}
+
+	@Test
+	public void testSignalIncrease() {
+		int signal = 0;
+		instance.setSignalState(signal, true);
+
+		int expected = 1;
+		int result = instance.getSignalState(signal);
+		assertEquals(expected, result);
+		assertEquals(true, instance.isSignalHigh(signal));
+	}
+
+	@Test
+	public void testSignalInitiallyZero() {
+		int signal = 0;
+		int expected = 0;
+		int result = instance.getSignalState(signal);
+
+		assertEquals(expected, result);
+	}
+
+	@Test
+	public void testSignalReset() {
+		int signal = 0;
+
+		GameState other = instance.getClone();
+		instance.setSignalState(signal, true);
+		instance.setSignalState(signal, false);
+		assertEquals(other, instance);
 	}
 
 }

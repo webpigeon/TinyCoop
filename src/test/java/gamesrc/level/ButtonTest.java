@@ -1,17 +1,15 @@
 package gamesrc.level;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import FastGame.ObjectTypes;
-
 public class ButtonTest {
 	private static final int TEST_SIGNAL = 2;
 	private Button button;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		this.button = new Button(TEST_SIGNAL);

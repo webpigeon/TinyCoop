@@ -1,6 +1,6 @@
 package FastGame;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,17 +15,16 @@ public class ActionTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-	
+
 	@Test
 	public void testNoOpEquals() {
 		int x = 0;
 		int y = 0;
-		
+
 		FastAction action = new FastAction("TEST", x, y);
-		
+
 		assertEquals(x, action.getX());
 		assertEquals(y, action.getY());
 	}
 
-	
 }

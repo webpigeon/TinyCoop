@@ -7,35 +7,12 @@ public class Flare {
 	public final Integer x;
 	public final Integer y;
 	public final Boolean relative;
-	
+
 	public Flare(int pid, int x, int y, boolean relative) {
 		this.pid = pid;
 		this.x = x;
 		this.y = y;
 		this.relative = relative;
-	}
-	
-	public Point toAbs(Point base) {
-		Point p = new Point(x, y);
-		
-		if (relative) {
-			p.x += base.x;
-			p.y += base.y;
-		}
-		
-		return p;
-	}
-	
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((pid == null) ? 0 : pid.hashCode());
-		result = prime * result + ((relative == null) ? 0 : relative.hashCode());
-		result = prime * result + ((x == null) ? 0 : x.hashCode());
-		result = prime * result + ((y == null) ? 0 : y.hashCode());
-		return result;
 	}
 
 	@Override
@@ -71,7 +48,29 @@ public class Flare {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((pid == null) ? 0 : pid.hashCode());
+		result = prime * result + ((relative == null) ? 0 : relative.hashCode());
+		result = prime * result + ((x == null) ? 0 : x.hashCode());
+		result = prime * result + ((y == null) ? 0 : y.hashCode());
+		return result;
+	}
+
+	public Point toAbs(Point base) {
+		Point p = new Point(x, y);
+
+		if (relative) {
+			p.x += base.x;
+			p.y += base.y;
+		}
+
+		return p;
+	}
+
+	@Override
 	public String toString() {
-		return String.format("FLARE(%d, %d, %d):%s", pid, x, y, relative?"RELATIVE":"ABSOLUTE");
+		return String.format("FLARE(%d, %d, %d):%s", pid, x, y, relative ? "RELATIVE" : "ABSOLUTE");
 	}
 }

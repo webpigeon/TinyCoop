@@ -6,11 +6,11 @@ public class MoveAction extends FastAction {
 		super(actionID, x, y);
 	}
 
-    @Override
+	@Override
 	public boolean isMovement() {
-    	return true;
-    }
-    
+		return true;
+	}
+
 	@Override
 	public boolean isTalk() {
 		return false;

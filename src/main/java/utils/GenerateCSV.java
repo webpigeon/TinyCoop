@@ -8,33 +8,33 @@ import java.io.PrintStream;
  * Created by jwalto on 15/06/2015.
  */
 public class GenerateCSV {
-    private static final String DELIMITER = ",";
-    private PrintStream fout;
+	private static final String DELIMITER = ",";
+	private PrintStream fout;
 
-    public GenerateCSV(String filename) throws FileNotFoundException {
-        this.fout = new PrintStream(new FileOutputStream(filename, true));
-    }
+	public GenerateCSV(String filename) throws FileNotFoundException {
+		this.fout = new PrintStream(new FileOutputStream(filename, true));
+	}
 
-    public void writeLine(Object ... values) {
-        StringBuilder buff = new StringBuilder();
+	public void close() {
+		fout.close();
+	}
 
-        for (int i=0; i<values.length; i++) {
-        	if (values[i] != null) {
-        		String rawValue = values[i].toString();
-        		buff.append(rawValue.replaceAll(",", ";"));
-        	} else {
-        		buff.append("NULL");
-        	}
-            if (i != values.length-1) {
-                buff.append(DELIMITER);
-            }
-        }
+	public void writeLine(Object... values) {
+		StringBuilder buff = new StringBuilder();
 
-        fout.println(buff.toString());
-    }
+		for (int i = 0; i < values.length; i++) {
+			if (values[i] != null) {
+				String rawValue = values[i].toString();
+				buff.append(rawValue.replaceAll(",", ";"));
+			} else {
+				buff.append("NULL");
+			}
+			if (i != values.length - 1) {
+				buff.append(DELIMITER);
+			}
+		}
 
-    public void close() {
-        fout.close();
-    }
+		fout.println(buff.toString());
+	}
 
 }

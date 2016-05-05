@@ -7,5 +7,5 @@ public interface State {
 	public Collection<State> expand();
 
 	public Integer getCost();
-	
+
 }

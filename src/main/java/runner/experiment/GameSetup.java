@@ -5,23 +5,7 @@ public class GameSetup {
 	public String p2;
 	public String levelID;
 	public String actionSet;
-	
-	@Override
-	public String toString() {
-		return String.format("%s and %s on %s (%s)", p1, p2, levelID, actionSet);
-	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((actionSet == null) ? 0 : actionSet.hashCode());
-		result = prime * result + ((levelID == null) ? 0 : levelID.hashCode());
-		result = prime * result + ((p1 == null) ? 0 : p1.hashCode());
-		result = prime * result + ((p2 == null) ? 0 : p2.hashCode());
-		return result;
-	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -53,6 +37,21 @@ public class GameSetup {
 			return false;
 		return true;
 	}
-	
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((actionSet == null) ? 0 : actionSet.hashCode());
+		result = prime * result + ((levelID == null) ? 0 : levelID.hashCode());
+		result = prime * result + ((p1 == null) ? 0 : p1.hashCode());
+		result = prime * result + ((p2 == null) ? 0 : p2.hashCode());
+		return result;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s and %s on %s (%s)", p1, p2, levelID, actionSet);
+	}
+
 }

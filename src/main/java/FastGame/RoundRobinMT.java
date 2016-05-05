@@ -1,5 +1,14 @@
 package FastGame;
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import Controllers.Controller;
 import Controllers.MCTS;
 import Controllers.RandomController;
@@ -7,150 +16,130 @@ import Controllers.VariGA.VariGA;
 import Controllers.ga.GAController;
 import utils.GenerateCSV;
 
-import java.io.FileNotFoundException;
-import java.util.*;
-import java.util.concurrent.*;
-
 /**
  * Created by jwalto on 01/07/2015.
  */
 public class RoundRobinMT {
-    private final static Integer REPEATS = 1;
-    private final static Integer MAX_TICKS = 2000;
+	static class Matchup implements Callable<RoundRobinMT.Result> {
+		static int count = 0;
+		Controller p1;
+		Controller p2;
+		String map;
+		int trialID;
 
-    public static void main(String[] args) throws FileNotFoundException, InterruptedException, ExecutionException {
+		Matchup(Controller p1, Controller p2, String map, int trialID) {
+			this.p1 = p1.getClone();
+			this.p2 = p2.getClone();
+			this.map = map;
+			this.trialID = trialID;
+			count++;
+		}
 
-        ExecutorService service = Executors.newFixedThreadPool(4);
+		@Override
+		public Result call() throws Exception {
+			long realTime = System.currentTimeMillis();
+			try {
+				CoopGame game = new CoopGame(map);
 
-        String[] maps = {
-                "data/maps/level1.txt",
-                "data/maps/level2.txt",
-                "data/maps/level3.txt",
-                "data/maps/level4.txt",
-                "data/maps/level5.txt",
-                "data/maps/level6.txt",
-                "data/maps/level1E.txt"
-        };
+				int ticksTaken = 0;
+				while (ticksTaken < MAX_TICKS && !game.hasWon()) {
+					game.update(p1.get(game.getClone()), p2.get(game.getClone()));
+					ticksTaken++;
+				}
 
-        Controller[] player1List = new Controller[]{
-                new MCTS(true, 500, 10, 45),
-                new MCTS(true, 75, 3, 15),
-                new MCTS(true, 200),
-                new VariGA(true, 500),
-                new GAController(true),
-                new RandomController()
-        };
+				Result r = new Result();
+				r.p1 = p1;
+				r.p2 = p2;
+				r.map = map;
+				r.trialID = trialID;
+				r.score = game.getScore();
+				r.timeTaken = ticksTaken;
+				r.realTimeTaken = System.currentTimeMillis() - realTime;
+				count--;
+				System.out.println("game complete " + r + " (" + count + " left) " + r.realTimeTaken);
+				return r;
+			} catch (Exception ex) {
+				System.err.println("Error: " + ex);
+				count--;
+				Result r = new Result();
+				r.p1 = p1;
+				r.p2 = p2;
+				r.map = map;
+				r.trialID = trialID;
+				r.score = -1;
+				r.timeTaken = -1;
+				r.realTimeTaken = System.currentTimeMillis() - realTime;
+				return r;
+			}
+		}
+	}
 
-        Controller[] player2List = new Controller[] {
-                new MCTS(false, 500, 10, 45),
-                new MCTS(false, 75, 3, 15),
-                new MCTS(false, 200),
-                new VariGA(false, 500),
-                new GAController(true),
-                new RandomController()
-        };
+	static class Result {
+		Controller p1;
+		Controller p2;
+		String map;
+		int trialID;
+		double score;
+		int timeTaken;
+		long realTimeTaken;
 
-        while(!Thread.interrupted()) {
-            System.out.println("generating matchups");
-            List<Matchup> tasks = new ArrayList<>();
-            for (Controller p1 : player1List) {
-                for (Controller p2 : player2List) {
-                    for (String map : maps) {
-                        for (int trial = 0; trial < REPEATS; trial++) {
-                            tasks.add(new Matchup(p1, p2, map, trial));
-                        }
-                    }
-                }
-            }
+		public String getP1() {
+			return p1.getSimpleName();
+		}
 
-            System.out.println("calculating results (" + tasks.size() + " tasks)");
-            List<Future<Result>> results = service.invokeAll(tasks);
+		public String getP2() {
+			return p2.getSimpleName();
+		}
 
-            System.out.println("Processing results");
-            GenerateCSV csv = new GenerateCSV(System.getenv("COMPUTERNAME") + "-results-mtp.csv");
-            for (Future<Result> resultf : results) {
-                Result result = resultf.get();
-                csv.writeLine(result.getP1(), result.getP2(), result.map, result.trialID, result.score, result.timeTaken);
-            }
-            csv.close();
-        }
-        service.shutdown();
-    }
-
-    static class Matchup implements Callable<RoundRobinMT.Result> {
-        static int count =0;
-        Controller p1;
-        Controller p2;
-        String map;
-        int trialID;
-
-        Matchup(Controller p1, Controller p2, String map, int trialID) {
-            this.p1 = p1.getClone();
-            this.p2 = p2.getClone();
-            this.map = map;
-            this.trialID = trialID;
-            count++;
-        }
-
-        @Override
-        public Result call() throws Exception {
-            long realTime = System.currentTimeMillis();
-            try {
-                CoopGame game = new CoopGame(map);
-
-                int ticksTaken = 0;
-                while (ticksTaken < MAX_TICKS && !game.hasWon()) {
-                    game.update(p1.get(game.getClone()), p2.get(game.getClone()));
-                    ticksTaken++;
-                }
-
-                Result r = new Result();
-                r.p1 = p1;
-                r.p2 = p2;
-                r.map = map;
-                r.trialID = trialID;
-                r.score = game.getScore();
-                r.timeTaken = ticksTaken;
-                r.realTimeTaken = System.currentTimeMillis() - realTime;
-                count--;
-                System.out.println("game complete "+r+" (" + count + " left) "+r.realTimeTaken);
-                return r;
-            } catch (Exception ex) {
-                System.err.println("Error: "+ex);
-                count--;
-                Result r = new Result();
-                r.p1 = p1;
-                r.p2 = p2;
-                r.map = map;
-                r.trialID = trialID;
-                r.score = -1;
-                r.timeTaken = -1;
-                r.realTimeTaken = System.currentTimeMillis() - realTime;
-                return r;
-            }
-        }
-    }
-
-    static class Result {
-        Controller p1;
-        Controller p2;
-        String map;
-        int trialID;
-        double score;
-        int timeTaken;
-        long realTimeTaken;
-
-        public String getP1() {
-            return p1.getSimpleName();
-        }
-
-        public String getP2() {
-            return p2.getSimpleName();
-        }
-
-        @Override
+		@Override
 		public String toString() {
-            return String.format("%s and %s on %s (%d ticks, %f score)", p1.getSimpleName(), p2.getSimpleName(), map, timeTaken, score);
-        }
-    }
+			return String.format("%s and %s on %s (%d ticks, %f score)", p1.getSimpleName(), p2.getSimpleName(), map,
+					timeTaken, score);
+		}
+	}
+
+	private final static Integer REPEATS = 1;
+
+	private final static Integer MAX_TICKS = 2000;
+
+	public static void main(String[] args) throws FileNotFoundException, InterruptedException, ExecutionException {
+
+		ExecutorService service = Executors.newFixedThreadPool(4);
+
+		String[] maps = { "data/maps/level1.txt", "data/maps/level2.txt", "data/maps/level3.txt",
+				"data/maps/level4.txt", "data/maps/level5.txt", "data/maps/level6.txt", "data/maps/level1E.txt" };
+
+		Controller[] player1List = new Controller[] { new MCTS(true, 500, 10, 45), new MCTS(true, 75, 3, 15),
+				new MCTS(true, 200), new VariGA(true, 500), new GAController(true), new RandomController() };
+
+		Controller[] player2List = new Controller[] { new MCTS(false, 500, 10, 45), new MCTS(false, 75, 3, 15),
+				new MCTS(false, 200), new VariGA(false, 500), new GAController(true), new RandomController() };
+
+		while (!Thread.interrupted()) {
+			System.out.println("generating matchups");
+			List<Matchup> tasks = new ArrayList<>();
+			for (Controller p1 : player1List) {
+				for (Controller p2 : player2List) {
+					for (String map : maps) {
+						for (int trial = 0; trial < REPEATS; trial++) {
+							tasks.add(new Matchup(p1, p2, map, trial));
+						}
+					}
+				}
+			}
+
+			System.out.println("calculating results (" + tasks.size() + " tasks)");
+			List<Future<Result>> results = service.invokeAll(tasks);
+
+			System.out.println("Processing results");
+			GenerateCSV csv = new GenerateCSV(System.getenv("COMPUTERNAME") + "-results-mtp.csv");
+			for (Future<Result> resultf : results) {
+				Result result = resultf.get();
+				csv.writeLine(result.getP1(), result.getP2(), result.map, result.trialID, result.score,
+						result.timeTaken);
+			}
+			csv.close();
+		}
+		service.shutdown();
+	}
 }

@@ -8,22 +8,24 @@ import api.GameState;
  */
 public abstract class Controller {
 
-    public Controller getClone() { return this; }
-    
-    public void startGame(int agentID) {
-    	
-    }
+	public Action get(GameState game) {
+		return Action.NOOP;
+	}
 
-    public Action get(GameState game) {
-        return Action.NOOP;
-    }
+	public Controller getClone() {
+		return this;
+	}
 
-    public String getSimpleName(){
-        return this.getClass().getSimpleName();
-    }
-    
-    @Override
+	public String getSimpleName() {
+		return this.getClass().getSimpleName();
+	}
+
+	public void startGame(int agentID) {
+
+	}
+
+	@Override
 	public String toString() {
-    	return getSimpleName();
-    }
+		return getSimpleName();
+	}
 }
