@@ -7,10 +7,12 @@ import Controllers.enhanced.NestedControllerPredictor;
 import Controllers.enhanced.PredictorMCTS;
 
 public class Utils {
-	private static final Integer ROLLOUT_LENGTH = 450;
+	private static final Integer NUM_ROLLOUTS = 400;
+	private static final Integer TREE_SIZE = 10;
+	private static final Integer ROLLOUT_LENGTH = 250;
 
 	public static Controller buildMCTS(boolean first) {
-		return new MCTS(first, 500, 10, ROLLOUT_LENGTH);
+		return new MCTS(first, NUM_ROLLOUTS, TREE_SIZE, ROLLOUT_LENGTH);
 	}
 
 	public static Controller buildMCTSPredictor() {
@@ -21,8 +23,8 @@ public class Utils {
 
 	public static PredictorMCTS buildPredictor(Controller nested, String tag) {
 		NestedControllerPredictor p = new NestedControllerPredictor(nested);
-		PredictorMCTS host = new PredictorMCTS(500, 10, ROLLOUT_LENGTH, p);
-		host.tag = "#" + tag + "#";
+		PredictorMCTS host = new PredictorMCTS(NUM_ROLLOUTS, TREE_SIZE, ROLLOUT_LENGTH, p);
+		host.tag = "#[" + tag + "]#";
 		return host;
 	}
 

@@ -35,9 +35,11 @@ public class CigParams {
 
 		String[] player2List = new String[] { "pathfinder", "random", "baisRandom", "mcts(500;10;45)" };
 
-		String[] levels = new String[] { "data/norm_maps/airlock.txt", "data/norm_maps/butterfly.txt",
-				"data/norm_maps/maze.txt", "data/norm_maps/mirror_lock.txt", "data/norm_maps/single_door.txt" };
+		/*String[] levels = new String[] { "data/norm_maps/airlock.txt", "data/norm_maps/butterfly.txt",
+				"data/norm_maps/maze.txt", "data/norm_maps/mirror_lock.txt", "data/norm_maps/single_door.txt" };*/
 
+		String[] levels = new String[] { "data/maps/airlock.txt", "data/maps/butterflies.txt", "data/maps/single_door.txt" };
+		
 		ControllerUtils controllers = new ControllerUtils();
 
 		List<GameEngine> tasks = new ArrayList<GameEngine>();
@@ -70,7 +72,7 @@ public class CigParams {
 						Controller p2 = controllers.parseDescription(GameState.PLAYER_1, player2);
 						GameSetup setup = buildSetup(Utils.buildMCTSPredictor(), p2, levelRel);
 						tasks.add(new GameEngine(setup, MAX_TICKS, new TraceGameRecord(setup)));
-					}
+					}/*
 
 					// setup (baisRandom)
 					{
@@ -108,12 +110,14 @@ public class CigParams {
 						Controller p2 = controllers.parseDescription(GameState.PLAYER_1, player2);
 						GameSetup setup = buildSetup(p2, new SortOfRandomController(), levelRel);
 						tasks.add(new GameEngine(setup, MAX_TICKS, new TraceGameRecord(setup)));
-					}
+					}*/
 				}
 			}
 
 		}
 
+		System.out.println(tasks.size());
+		
 		GenerateCSV csv = new GenerateCSV(String.format("results-%d.csv", System.nanoTime()));
 
 		try {

@@ -59,4 +59,5 @@ crashlytics-build.properties
 # Experiment files
 move-*
 results-*
+moves/
 levelStats.txt
