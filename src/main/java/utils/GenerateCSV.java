@@ -1,5 +1,6 @@
 package utils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
@@ -11,8 +12,12 @@ public class GenerateCSV {
 	private static final String DELIMITER = ",";
 	private PrintStream fout;
 
-	public GenerateCSV(String filename) throws FileNotFoundException {
-		this.fout = new PrintStream(new FileOutputStream(filename, true));
+	public GenerateCSV(File moveFile) throws FileNotFoundException {
+		this.fout = new PrintStream(new FileOutputStream(moveFile, true));
+	}
+	
+	public GenerateCSV(String moveFile) throws FileNotFoundException {
+		this.fout = new PrintStream(new FileOutputStream(moveFile, true));
 	}
 
 	public void close() {

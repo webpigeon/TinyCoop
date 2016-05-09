@@ -1,5 +1,6 @@
 package runner.clear;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +55,7 @@ public class TraceGameRecord implements GameRecord {
 		this.player2 = player2;
 		this.level = level;
 		this.actionSet = actionSet;
-		this.csv = new GenerateCSV("moves-" + id.toString() + ".csv");
+
 
 		this.moves = new HashMap<>();
 	}
@@ -122,7 +123,7 @@ public class TraceGameRecord implements GameRecord {
 			moves.put(pid, moveList);
 		}
 		moveList.add(new MoveTimer(tick, action));
-		System.out.println("move made: "+tick+" "+pid+" "+action);
+		//System.out.println("move made: "+tick+" "+pid+" "+action);
 	}
 
 	/*
@@ -137,7 +138,7 @@ public class TraceGameRecord implements GameRecord {
 		this.result = result;
 		this.score = score;
 		this.tick = tick;
-		System.out.println("game complete: " + result);
+		System.out.println("game complete: "+ tick + " " + result+" "+player1+" "+player2);
 	}
 
 	/*
@@ -147,7 +148,7 @@ public class TraceGameRecord implements GameRecord {
 	 */
 	@Override
 	public void recordState(int tick, ObservableGameState state, Action act0, Action act1) {
-		System.out.println(tick+" state recorded "+act0+" "+act1);
+		//System.out.println(tick+" state recorded "+act0+" "+act1);
 		
 		try {
 		csv.writeLine("STATE", id, player1, player2, level, actionSet, tick, act0.getFriendlyName(),
@@ -156,6 +157,7 @@ public class TraceGameRecord implements GameRecord {
 				state.getSignalState(3), state.getSignalState(4), state.hasVisited(0, 0),
 				state.hasVisited(1, 0), GameTimer.getUserTime(), System.nanoTime());
 		} catch (Exception ex) {
+			System.err.println(String.format("error: could not write to log: [%d] %s, %s", tick, act0, act1));
 			ex.printStackTrace();
 		}
 
@@ -164,6 +166,19 @@ public class TraceGameRecord implements GameRecord {
 	@Override
 	public String toString() {
 		return String.format("%s - %s & %s (%s,%s)", id, player1, player2, level, actionSet);
+	}
+
+	@Override
+	public void gameStarted() {
+		try {
+			File moveDir = new File("moves/");
+			moveDir.mkdirs();
+			
+			File moveFile = new File(moveDir, "moves-" + id.toString() + ".csv");
+			this.csv = new GenerateCSV(moveFile);
+		} catch (FileNotFoundException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 
 }

@@ -1,5 +1,5 @@
 package runner.clear;
 
 public enum Result {
-	WON, DIQUALIFIED, TIMEOUT
+	WON, DIQUALIFIED, TIMEOUT, CRASH
 }

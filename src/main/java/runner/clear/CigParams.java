@@ -132,6 +132,7 @@ public class CigParams {
 							record.getActionSet(), record.getResult(), record.getScore(), record.getTicks());
 					System.out.println(record + " " + record.getResultString());
 				} catch (ExecutionException ex) {
+					System.err.println("game crashed: writing to stats failed");
 					ex.printStackTrace();
 				}
 			}

@@ -161,4 +161,10 @@ public class MemoryGameRecord implements GameRecord {
 		return String.format("%s - %s & %s (%s,%s)", id, player1, player2, level, actionSet);
 	}
 
+	@Override
+	public void gameStarted() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

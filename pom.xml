@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.ac.essex.csee.pwillic</groupId>
 	<artifactId>tinycoop</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>Tiny CoOp</name>
 	<description>A simple CoOp game for testing AIs</description>
 

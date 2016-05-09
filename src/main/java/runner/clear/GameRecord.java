@@ -29,4 +29,6 @@ public interface GameRecord {
 
 	void recordState(int tick, ObservableGameState state, Action act0, Action act1);
 
+	void gameStarted();
+
 }

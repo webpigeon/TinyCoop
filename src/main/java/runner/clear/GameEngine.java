@@ -22,39 +22,48 @@ public class GameEngine implements Callable<GameRecord> {
 
 	@Override
 	public GameRecord call() {
-		// work on copies to avoid problems
-		SimpleGame runner = setup.buildGame();
-		Controller p1Real = setup.getPlayer0();
-		Controller p2Real = setup.getPlayer1();
-
-		// phase 0: initialisation
-		int ticks = 0;
-		p1Real.startGame(GameState.PLAYER_0);
-		p2Real.startGame(GameState.PLAYER_1);
-
-		// phase 1: running game
-		while (!Thread.interrupted() && ticks < maxTicks) {
-
-			Action p1Action = getLegalAction(runner, GameState.PLAYER_0, p1Real);
-			Action p2Action = getLegalAction(runner, GameState.PLAYER_1, p2Real);
-
-			runner.update(p1Action, p2Action);
-			record.recordState(ticks, runner, p1Action, p2Action);
-			record.recordAction(ticks, GameState.PLAYER_0, p1Action);
-			record.recordAction(ticks, GameState.PLAYER_1, p2Action);
-
-			// phase 2a: game is over (won)
-			if (runner.hasWon()) {
-				record.recordResult(ticks, runner.getScore(), Result.WON);
-				return record;
+		
+		try {
+			// work on copies to avoid problems
+			SimpleGame runner = setup.buildGame();
+			Controller p1Real = setup.getPlayer0();
+			Controller p2Real = setup.getPlayer1();
+	
+			// phase 0: initialisation
+			int ticks = 0;
+			p1Real.startGame(GameState.PLAYER_0);
+			p2Real.startGame(GameState.PLAYER_1);
+			record.gameStarted();
+			
+			// phase 1: running game
+			while (!Thread.interrupted() && ticks < maxTicks) {
+	
+				Action p1Action = getLegalAction(runner, GameState.PLAYER_0, p1Real);
+				Action p2Action = getLegalAction(runner, GameState.PLAYER_1, p2Real);
+	
+				runner.update(p1Action, p2Action);
+				record.recordState(ticks, runner, p1Action, p2Action);
+				record.recordAction(ticks, GameState.PLAYER_0, p1Action);
+				record.recordAction(ticks, GameState.PLAYER_1, p2Action);
+	
+				// phase 2a: game is over (won)
+				if (runner.hasWon()) {
+					record.recordResult(ticks, runner.getScore(), Result.WON);
+					return record;
+				}
+	
+				ticks++;
 			}
-
-			ticks++;
+	
+			// phase 2b: game is over (timeout)
+			record.recordResult(ticks, runner.getScore(), Result.TIMEOUT);
+			return record;
+		} catch (Exception ex) {
+			//if something goes wrong, report the crash and kill the thread
+			System.err.println("[ex] game runner: "+ex);
+			record.recordResult(-1, 0.0, Result.CRASH);
+			return record;
 		}
-
-		// phase 2b: game is over (timeout)
-		record.recordResult(ticks, runner.getScore(), Result.TIMEOUT);
-		return record;
 	}
 
 	private Action getAction(GameState state, int pid, Controller p) {
