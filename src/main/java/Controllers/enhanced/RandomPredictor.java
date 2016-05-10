@@ -1,5 +1,6 @@
 package Controllers.enhanced;
 
+import java.util.List;
 import java.util.Random;
 
 import api.Action;
@@ -18,9 +19,9 @@ public class RandomPredictor implements Predictor {
 	}
 
 	protected Action getRandomAction(int playerID, GameState state) {
-		Action[] legalActions = state.getLegalActions(playerID);
-		int id = random.nextInt(legalActions.length);
-		return legalActions[id];
+		List<Action> legalActions = state.getLegalActions(playerID);
+		int id = random.nextInt(legalActions.size());
+		return legalActions.get(id);
 	}
 
 	@Override

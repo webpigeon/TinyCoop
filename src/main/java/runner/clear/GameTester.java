@@ -8,8 +8,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import Controllers.Controller;
 import api.GameState;
+import api.controller.Controller;
 import gamesrc.Filters;
 import gamesrc.level.GameLevel;
 import gamesrc.level.LevelParser;
@@ -31,9 +31,9 @@ public class GameTester {
 
 	public static void main(String[] args) throws IOException {
 
-		String[] player1List = new String[] { "randommcts(500;10;450)", "2mcts(500;10;450)", "baisRandom" };
+		String[] player1List = new String[] { "hillClimber" };
 
-		String[] player2List = new String[] { "pathfinder", "random", "baisRandom", "mcts(500;10;450)" };
+		String[] player2List = new String[] { "random" };
 
 		String[] levels = new String[] { "data/norm_maps/airlock.txt", "data/norm_maps/butterfly.txt",
 				"data/norm_maps/maze.txt", "data/norm_maps/mirror_lock.txt", "data/norm_maps/single_door.txt" };

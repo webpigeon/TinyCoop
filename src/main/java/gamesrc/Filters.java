@@ -23,14 +23,14 @@ public class Filters {
 	/**
 	 * Filter all actions and leave only movement actions
 	 *
-	 * @param sourceActions
+	 * @param myActions
 	 * @return
 	 */
-	public static List<Action> filterMovement(Action[] sourceActions) {
-		return filterSet(sourceActions, ActionType.MOVEMENT);
+	public static List<Action> filterMovement(List<Action> myActions) {
+		return filterSet(myActions, ActionType.MOVEMENT);
 	}
 
-	public static List<Action> filterSet(Action[] src, ActionType... types) {
+	public static List<Action> filterSet(List<Action> src, ActionType... types) {
 		List<Action> filtered = new ArrayList<Action>();
 
 		for (Action action : src) {
@@ -48,7 +48,7 @@ public class Filters {
 	 * @param sourceActions
 	 * @return
 	 */
-	public static List<Action> filterTalk(Action[] sourceActions) {
+	public static List<Action> filterTalk(List<Action> sourceActions) {
 		return filterSet(sourceActions, ActionType.FLARE);
 	}
 

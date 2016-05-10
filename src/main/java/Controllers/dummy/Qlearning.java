@@ -113,14 +113,14 @@ public class Qlearning extends Controller {
 	public Action get(GameState game) {
 		doWalks(game);
 		Action a = selectAction(game);
-		System.out.println("best action so far: " + a);
+		//System.out.println("best action so far: " + a);
 		return a;
 	}
 
 	private double getMaxQ(GameState parent) {
 		double maxQValue = 0;
 
-		Action[] legalActions = parent.getLegalActions(1);
+		List<Action> legalActions = parent.getLegalActions(1);
 		GameState current = parent.getClone();
 		for (Action legalAction : legalActions) {
 			Transision t = new Transision(current, legalAction);
@@ -128,7 +128,6 @@ public class Qlearning extends Controller {
 			Double score = rewards.get(t);
 			if (score == null) {
 				score = INITIAL_SCORE;
-				System.out.println(rewards.size());
 			}
 
 			if (score > maxQValue) {
@@ -143,7 +142,7 @@ public class Qlearning extends Controller {
 		double maxQValue = -Double.MAX_VALUE;
 		List<Action> bestActions = new ArrayList<Action>();
 
-		Action[] legalActions = parent.getLegalActions(1);
+		List<Action> legalActions = parent.getLegalActions(1);
 		GameState current = parent.getClone();
 		for (Action legalAction : legalActions) {
 			Transision t = new Transision(current, legalAction);
@@ -152,8 +151,6 @@ public class Qlearning extends Controller {
 			if (score == null) {
 				score = INITIAL_SCORE;
 			}
-
-			System.err.println(score);
 
 			if (score > maxQValue) {
 				bestActions.clear();
@@ -165,7 +162,7 @@ public class Qlearning extends Controller {
 		}
 
 		if (bestActions.isEmpty()) {
-			System.err.println("strange, got no actions...");
+			//System.err.println("strange, got no actions...");
 			return Action.NOOP;
 		}
 

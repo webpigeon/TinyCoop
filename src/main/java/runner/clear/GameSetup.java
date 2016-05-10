@@ -1,6 +1,6 @@
 package runner.clear;
 
-import Controllers.Controller;
+import api.controller.Controller;
 import gamesrc.SimpleGame;
 import gamesrc.level.GameLevel;
 
@@ -22,19 +22,19 @@ public class GameSetup {
 	}
 
 	public Controller getPlayer0() {
-		return p1.getClone();
+		return p1;
 	}
 
 	public String getPlayer0Name() {
-		return p1.getSimpleName();
+		return p1.getFriendlyName();
 	}
 
 	public Controller getPlayer1() {
-		return p2.getClone();
+		return p2;
 	}
 
 	public String getPlayer1Name() {
-		return p2.getSimpleName();
+		return p2.getFriendlyName();
 	}
 
 	@Override

@@ -4,11 +4,13 @@ import Controllers.Controller;
 import Controllers.MCTS;
 import Controllers.RandomController;
 import Controllers.enhanced.NestedControllerPredictor;
+import Controllers.enhanced.Predictor;
 import Controllers.enhanced.PredictorMCTS;
+import Controllers.enhanced.RandomPredictor;
 
 public class Utils {
-	private static final Integer NUM_ROLLOUTS = 400;
-	private static final Integer TREE_SIZE = 10;
+	private static final Integer NUM_ROLLOUTS = 20000;
+	private static final Integer TREE_SIZE = 5;
 	private static final Integer ROLLOUT_LENGTH = 250;
 
 	public static Controller buildMCTS(boolean first) {
@@ -34,6 +36,10 @@ public class Utils {
 		return buildPredictor(predicted, "RND");
 	}
 
+	public static Predictor buildRandomPolicy() {
+		return new RandomPredictor();
+	}
+	
 	public static String getHostname() {
 		String hostname = System.getenv("HOSTNAME");
 		if (hostname != null) {

@@ -31,17 +31,17 @@ public class GreedyRollout extends Controller {
 	@Override
 	public Action get(GameState game) {
 
-		Action[] legalActions = game.getLegalActions(myID);
+		List<Action> legalActions = game.getLegalActions(myID);
 
-		visits = new int[legalActions.length];
-		scores = new double[legalActions.length];
+		visits = new int[legalActions.size()];
+		scores = new double[legalActions.size()];
 
 		for (int i = 0; i < NUM_ROLLOUTS; i++) {
 			GameState current = game.getClone();
 
 			// simulate 1 move ahead and perform rollouts
 			int actionID = selectAction(legalActions);
-			simulateMove(current, legalActions[actionID]);
+			simulateMove(current, legalActions.get(actionID));
 
 			visits[actionID]++;
 			scores[actionID] += rollout(current);
@@ -50,7 +50,7 @@ public class GreedyRollout extends Controller {
 
 		double bestScore = -Double.MAX_VALUE;
 		List<Integer> actions = new ArrayList<Integer>();
-		for (int i = 0; i < legalActions.length; i++) {
+		for (int i = 0; i < legalActions.size(); i++) {
 
 			double score = scores[i] / visits[i];
 			if (score > bestScore) {
@@ -68,7 +68,7 @@ public class GreedyRollout extends Controller {
 
 		System.out.println("best score: " + bestScore + " " + actions.size());
 		int randomSelect = random.nextInt(actions.size());
-		return legalActions[actions.get(randomSelect)];
+		return legalActions.get(actions.get(randomSelect));
 	}
 
 	public Action getPartnerMove(GameState state) {
@@ -76,9 +76,9 @@ public class GreedyRollout extends Controller {
 	}
 
 	public Action getRandomAction(int pid, GameState state) {
-		Action[] legalActions = state.getLegalActions(pid);
-		int id = random.nextInt(legalActions.length);
-		return legalActions[id];
+		List<Action> legalActions = state.getLegalActions(pid);
+		int id = random.nextInt(legalActions.size());
+		return legalActions.get(id);
 	}
 
 	public double rollout(GameState start) {
@@ -95,8 +95,8 @@ public class GreedyRollout extends Controller {
 		return current.getScore();
 	}
 
-	public int selectAction(Action[] legalActions) {
-		int actionID = random.nextInt(legalActions.length);
+	public int selectAction(List<Action> legalActions) {
+		int actionID = random.nextInt(legalActions.size());
 		return actionID;
 	}
 

@@ -1,20 +1,20 @@
 package Controllers.dummy;
 
-import java.util.Arrays;
+import java.util.List;
 
 import api.Action;
 
 public class UCBGreedyRollout extends GreedyRollout {
 
 	@Override
-	public int selectAction(Action[] legalActions) {
+	public int selectAction(List<Action> legalActions) {
 
-		int[] bestActions = new int[legalActions.length];
+		int[] bestActions = new int[legalActions.size()];
 		int used = 0;
 
 		double bestScore = -Double.MAX_VALUE;
 
-		for (int action = 0; action < legalActions.length; action++) {
+		for (int action = 0; action < legalActions.size(); action++) {
 			double avgReward = 0;
 			if (visits[action] != 0) {
 				avgReward = scores[action] / visits[action];
@@ -34,10 +34,10 @@ public class UCBGreedyRollout extends GreedyRollout {
 
 		// if we have no data, select randomly
 		if (used == 0) {
-			return random.nextInt(legalActions.length);
+			return random.nextInt(legalActions.size());
 		}
 
-		System.out.println(Arrays.toString(legalActions));
+		System.out.println(legalActions);
 		return bestActions[random.nextInt(used)];
 	}
 

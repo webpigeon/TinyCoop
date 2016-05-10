@@ -93,7 +93,7 @@ public class Viewer extends JComponent {
 	}
 
 	protected void paintDebugInfo(Graphics g) {
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 5; i++) {
 			g.setColor(Color.CYAN);
 			if (game.isSignalHigh(i)) {
 				g.fillRect(i * 10, 0, 10, 10);

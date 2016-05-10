@@ -113,8 +113,8 @@ public class GameViewer implements Callable<GameResult> {
 		frame.setVisible(true);
 
 		// make a list of legal moves for each player
-		List<Action> legalMoves1 = Arrays.asList(game.getLegalActions(0));
-		List<Action> legalMoves2 = Arrays.asList(game.getLegalActions(1));
+		List<Action> legalMoves1 = game.getLegalActions(0);
+		List<Action> legalMoves2 = game.getLegalActions(1);
 
 		int tickCount = 0;
 		while (!game.hasWon()) {

@@ -4,10 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import Controllers.Controller;
 import api.Action;
 import api.GameState;
+import api.controller.Controller;
+import api.controller.GameObservation;
 import gamesrc.SimpleGame;
+import gamesrc.controllers.SimpleGameObservation;
 
 public class GameEngine implements Callable<GameRecord> {
 	private final GameSetup setup;
@@ -31,15 +33,15 @@ public class GameEngine implements Callable<GameRecord> {
 	
 			// phase 0: initialisation
 			int ticks = 0;
-			p1Real.startGame(GameState.PLAYER_0);
-			p2Real.startGame(GameState.PLAYER_1);
+			p1Real.startGame(GameState.PLAYER_0, GameState.PLAYER_1);
+			p2Real.startGame(GameState.PLAYER_1, GameState.PLAYER_0);
 			record.gameStarted();
 			
 			// phase 1: running game
 			while (!Thread.interrupted() && ticks < maxTicks) {
 	
-				Action p1Action = getLegalAction(runner, GameState.PLAYER_0, p1Real);
-				Action p2Action = getLegalAction(runner, GameState.PLAYER_1, p2Real);
+				Action p1Action = getLegalAction(runner.getObservationFor(GameState.PLAYER_0), GameState.PLAYER_0, p1Real);
+				Action p2Action = getLegalAction(runner.getObservationFor(GameState.PLAYER_1), GameState.PLAYER_1, p2Real);
 	
 				runner.update(p1Action, p2Action);
 				record.recordState(ticks, runner, p1Action, p2Action);
@@ -66,13 +68,13 @@ public class GameEngine implements Callable<GameRecord> {
 		}
 	}
 
-	private Action getAction(GameState state, int pid, Controller p) {
-		return p.get(state.getClone());
+	private Action getAction(GameObservation state, int pid, Controller p) {
+		return p.getAction(state);
 	}
 
-	private Action getLegalAction(GameState state, int pid, Controller p) {
-		List<Action> legalActions = Arrays.asList(state.getLegalActions(pid));
-		Action action = p.get(state.getClone());
+	private Action getLegalAction(GameObservation state, int pid, Controller p) {
+		List<Action> legalActions = state.getLegalActions(pid);
+		Action action = p.getAction(state);
 
 		if (!legalActions.contains(action)) {
 			throw new IllegalArgumentException("controller cheated! " + action + " is not legal for " + pid);

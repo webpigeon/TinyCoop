@@ -1,5 +1,6 @@
 package Controllers;
 
+import java.util.List;
 import java.util.Random;
 
 import api.Action;
@@ -9,9 +10,9 @@ import api.GameState;
  * Created by pwillic on 23/06/2015.
  */
 public class MCTS extends Controller {
-
+	private static int deepest = 0;
+	
 	private class MCTSNode {
-
 		private static final double EPSILON = 1e-6;
 
 		private double explorationConstant;
@@ -45,6 +46,10 @@ public class MCTS extends Controller {
 			this.currentDepth = parent.currentDepth + 1;
 			this.mcts = parent.mcts;
 			this.childLength = actionLength;
+			
+			if (currentDepth > deepest) {
+				deepest = currentDepth;
+			}
 		}
 
 		public double calculateChild() {
@@ -69,8 +74,8 @@ public class MCTS extends Controller {
 				}
 			}
 
-			Action[] allActions = state.getLegalActions(0);
-			children[bestAction] = new MCTSNode(this, allActions[bestAction], state.getActionLength());
+			List<Action> allActions = state.getLegalActions(0);
+			children[bestAction] = new MCTSNode(this, allActions.get(bestAction), state.getActionLength());
 			childrenExpandedSoFar++;
 			return children[bestAction];
 		}
@@ -129,9 +134,9 @@ public class MCTS extends Controller {
 		}
 
 		protected Action getOppAction(int playerID, GameState state) {
-			Action[] legalActions = state.getLegalActions(playerID);
-			int id = random.nextInt(legalActions.length);
-			return legalActions[id];
+			List<Action> legalActions = state.getLegalActions(playerID);
+			int id = random.nextInt(legalActions.size());
+			return legalActions.get(id);
 		}
 
 		public MCTSNode getParent() {
@@ -139,9 +144,9 @@ public class MCTS extends Controller {
 		}
 
 		protected Action getRandomAction(int playerID, GameState state) {
-			Action[] legalActions = state.getLegalActions(playerID);
-			int id = random.nextInt(legalActions.length);
-			return legalActions[id];
+			List<Action> legalActions = state.getLegalActions(playerID);
+			int id = random.nextInt(legalActions.size());
+			return legalActions.get(id);
 		}
 
 		public double getTotalValue() {
@@ -237,6 +242,9 @@ public class MCTS extends Controller {
 		MCTSNode root = new MCTSNode(2.0, this, game.getActionLength());
 		MCTSNode travel;
 		GameState workingGame;
+		
+		long startTime = System.nanoTime();
+		
 		int iterations = 0;
 		while (iterations < iterationLimit) {
 			workingGame = game.getClone();
@@ -245,6 +253,10 @@ public class MCTS extends Controller {
 			travel.updateValues(result);
 			iterations++;
 		}
+		
+		long endTime = System.nanoTime();
+		
+		System.out.println("MCTS done: "+root.getNumberOfVisits()+" deepest node: "+deepest+" "+(endTime-startTime));
 
 		// System.out.println(root.getChildrenExpandedSoFar() + "Nodes: " +
 		// root.getNodesInTree());

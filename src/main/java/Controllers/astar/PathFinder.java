@@ -31,7 +31,7 @@ public class PathFinder {
 	public static List<Point> getAvailableMoves(int agentID, Point point, ObservableGameState world) {
 		List<Point> nextActions = new ArrayList<Point>();
 
-		Action[] possibleActions = world.getLegalActions(agentID);
+		List<Action> possibleActions = world.getLegalActions(agentID);
 
 		for (Action a : possibleActions) {
 			Point p = new Point(point);

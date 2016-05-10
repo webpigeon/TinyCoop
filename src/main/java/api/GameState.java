@@ -1,5 +1,7 @@
 package api;
 
+import java.util.List;
+
 public interface GameState {
 	public static final Integer PLAYER_0 = 0;
 	public static final Integer PLAYER_1 = 1;
@@ -10,7 +12,7 @@ public interface GameState {
 
 	public int getHeight();
 
-	public Action[] getLegalActions(int playerID);
+	public List<Action> getLegalActions(int playerID);
 
 	public double getScore();
 

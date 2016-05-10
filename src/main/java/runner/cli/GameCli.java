@@ -16,13 +16,14 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import Controllers.Controller;
 import api.GameState;
+import api.controller.Controller;
 import gamesrc.Filters;
 import gamesrc.level.GameLevel;
 import gamesrc.level.LevelParser;
 import runner.experiment.GameResult;
 import runner.experiment.GameRunner;
+import runner.tinycoop.GameManager;
 
 public class GameCli {
 
@@ -43,9 +44,8 @@ public class GameCli {
 		return options;
 	}
 
-	private static Collection<GameRunner> buildRuns(String[] levels, String[] p1, String[] p2, int ticks)
+	private static void buildRun(GameManager manager, String[] levels, String[] p1, String[] p2, int ticks)
 			throws IOException {
-		Collection<GameRunner> tasks = new ArrayList<>();
 
 		ControllerUtils utils = new ControllerUtils();
 
@@ -59,12 +59,11 @@ public class GameCli {
 				for (String secondAgent : p2) {
 					Controller c1 = utils.parseDescription(GameState.PLAYER_0, firstAgent);
 					Controller c2 = utils.parseDescription(GameState.PLAYER_1, secondAgent);
-					tasks.add(new GameRunner(level, c1, c2, ticks));
+					
+					manager.addGame(level, c1, c2);
 				}
 			}
 		}
-
-		return tasks;
 	}
 
 	public static void main(String[] args) throws ParseException, IOException {
@@ -104,22 +103,16 @@ public class GameCli {
 					"baisRandom(0.25)" };
 		}
 
-		Collection<GameRunner> tasks = new ArrayList<GameRunner>();
+		//create the game manager and start it
+		GameManager manager = new GameManager();
+		Thread managerThread = new Thread(manager);
+		managerThread.start();
+		
+		//add the runs and let the manager deal with them for us
 		for (int i = 0; i < numRuns; i++) {
-			tasks.addAll(buildRuns(levelFiles, firstAgentList, secondAgentList, tickLimit));
+			buildRun(manager, levelFiles, firstAgentList, secondAgentList, tickLimit);
 		}
 
-		// execute the games
-		ExecutorService service = Executors.newFixedThreadPool(4);
-		try {
-			List<Future<GameResult>> results = service.invokeAll(tasks);
-			for (Future<GameResult> r : results) {
-				System.out.println(r.get());
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		service.shutdown();
 	}
 
 }

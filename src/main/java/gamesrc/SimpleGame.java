@@ -3,6 +3,7 @@ package gamesrc;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.BitSet;
+import java.util.Collections;
 import java.util.List;
 
 import api.Action;
@@ -11,6 +12,8 @@ import api.Flare;
 import api.GameObject;
 import api.GameState;
 import api.ObservableGameState;
+import api.controller.GameObservation;
+import gamesrc.controllers.SimpleGameObservation;
 import gamesrc.level.GameLevel;
 
 /**
@@ -129,13 +132,17 @@ public class SimpleGame implements ObservableGameState {
 		return true;
 	}
 
+	public GameObservation getObservationFor(int agentID) {
+		return new SimpleGameObservation(getClone(), agentID);
+	}
+	
 	@Override
 	public int getActionLength() {
-		return getLegalActions(0).length;
+		return level.getLegalMoves().size();
 	}
 
 	@Override
-	public GameState getClone() {
+	public SimpleGame getClone() {
 		return new SimpleGame(this);
 	}
 
@@ -160,13 +167,9 @@ public class SimpleGame implements ObservableGameState {
 	}
 
 	@Override
-	public Action[] getLegalActions(int playerID) {
+	public List<Action> getLegalActions(int playerID) {
 		List<Action> legalActions = level.getLegalMoves();
-
-		Action[] actions = new Action[legalActions.size()];
-		legalActions.toArray(actions);
-
-		return actions;
+		return Collections.unmodifiableList(legalActions);
 	}
 
 	@Override

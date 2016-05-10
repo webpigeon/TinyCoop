@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
 
 import Controllers.Controller;
 import api.Action;
@@ -22,7 +23,7 @@ public class WASDController extends Controller implements KeyListener, MouseList
 
 	@Override
 	public Action get(GameState game) {
-		Action[] actions = game.getLegalActions(agentID);
+		List<Action> actions = game.getLegalActions(agentID);
 
 		if (flarePos != null) {
 			Point flarePos2 = new Point(flarePos);
