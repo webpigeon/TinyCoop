@@ -15,7 +15,7 @@ public class GenerateCSV {
 	public GenerateCSV(File moveFile) throws FileNotFoundException {
 		this.fout = new PrintStream(new FileOutputStream(moveFile, true));
 	}
-	
+
 	public GenerateCSV(String moveFile) throws FileNotFoundException {
 		this.fout = new PrintStream(new FileOutputStream(moveFile, true));
 	}

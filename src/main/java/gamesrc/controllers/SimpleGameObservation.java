@@ -16,12 +16,37 @@ import gamesrc.SimpleGame;
 public class SimpleGameObservation implements GameObservation {
 	private final SimpleGame state;
 	private final Integer playerID;
-	
+
 	public SimpleGameObservation(SimpleGame state, int playerID) {
 		this.state = state;
 		this.playerID = playerID;
 	}
-	
+
+	@Override
+	public void apply(Action ours, Action theirs) {
+		if (playerID == GameState.PLAYER_0) {
+			state.update(ours, theirs);
+		} else {
+			state.update(theirs, ours);
+		}
+	}
+
+	@Override
+	public int getActionLength() {
+		return state.getActionLength();
+	}
+
+	@Override
+	public GameState getClone() {
+		return state.getClone();
+	}
+
+	@Override
+	public GameObservation getCopy() {
+		SimpleGame newState = state.getClone();
+		return new SimpleGameObservation(newState, playerID);
+	}
+
 	@Override
 	public Flare getFlare(int agent) {
 		return state.getFlare(agent);
@@ -38,6 +63,16 @@ public class SimpleGameObservation implements GameObservation {
 	}
 
 	@Override
+	public int getHeight() {
+		return state.getHeight();
+	}
+
+	@Override
+	public List<Action> getLegalActions(int playerID) {
+		return state.getLegalActions(playerID);
+	}
+
+	@Override
 	public GameObject getObject(int x, int y) {
 		return state.getObject(x, y);
 	}
@@ -48,13 +83,28 @@ public class SimpleGameObservation implements GameObservation {
 	}
 
 	@Override
+	public double getScore() {
+		return state.getScore();
+	}
+
+	@Override
 	public int getSignalState(int signal) {
 		return state.getSignalState(signal);
 	}
 
 	@Override
+	public int getWidth() {
+		return state.getWidth();
+	}
+
+	@Override
 	public boolean hasVisited(int agent, int goalID) {
 		return state.hasVisited(agent, goalID);
+	}
+
+	@Override
+	public boolean hasWon() {
+		return state.hasWon();
 	}
 
 	@Override
@@ -68,71 +118,21 @@ public class SimpleGameObservation implements GameObservation {
 	}
 
 	@Override
-	public int getActionLength() {
-		return state.getActionLength();
-	}
-
-	@Override
-	public GameState getClone() {
-		return state.getClone();
-	}
-
-	@Override
-	public int getHeight() {
-		return state.getHeight();
-	}
-
-	@Override
-	public List<Action> getLegalActions(int playerID) {
-		return state.getLegalActions(playerID);
-	}
-
-	@Override
-	public double getScore() {
-		return state.getScore();
-	}
-
-	@Override
-	public int getWidth() {
-		return state.getWidth();
-	}
-
-	@Override
-	public boolean hasWon() {
-		return state.hasWon();
-	}
-
-	@Override
-	public void update(Action p1, Action p2) {
-		state.update(p1, p2);
-	}
-
-	@Override
 	public GameObservation simulate(Action ours, Action theirs) {
-		SimpleGame newState = (SimpleGame)state.getClone();
-		
+		SimpleGame newState = state.getClone();
+
 		if (playerID == GameState.PLAYER_0) {
 			newState.update(ours, theirs);
 		} else {
 			newState.update(theirs, ours);
 		}
-		
+
 		return new SimpleGameObservation(newState, playerID);
 	}
 
 	@Override
-	public GameObservation getCopy() {
-		SimpleGame newState = (SimpleGame)state.getClone();
-		return new SimpleGameObservation(newState, playerID);
-	}
-
-	@Override
-	public void apply(Action ours, Action theirs) {
-		if (playerID == GameState.PLAYER_0) {
-			state.update(ours, theirs);
-		} else {
-			state.update(theirs, ours);
-		}
+	public void update(Action p1, Action p2) {
+		state.update(p1, p2);
 	}
 
 }

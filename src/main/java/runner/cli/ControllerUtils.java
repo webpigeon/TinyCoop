@@ -18,7 +18,7 @@ public class ControllerUtils {
 		if ("mcts".equals(name)) {
 			return AgentFactory.buildStandardMCTS();
 		}
-		
+
 		if ("random".equals(name)) {
 			return AgentFactory.buildRandomAgent();
 		}

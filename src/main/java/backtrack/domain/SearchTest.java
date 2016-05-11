@@ -25,7 +25,7 @@ public class SearchTest {
 		SimpleGame game = new SimpleGame(level);
 
 		GameState start = game.getClone();
-		SimpleGame end = (SimpleGame) game.getClone();
+		SimpleGame end = game.getClone();
 		end.setVisited(0, 1);
 
 		List<Action> goalResult = search.search(start, end);

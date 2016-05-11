@@ -21,14 +21,14 @@ public class BaisRandomAgent extends AbstractController {
 	@Override
 	public Action getAction(GameObservation state) {
 		List<Action> myActions = state.getLegalActions(myID);
-		
+
 		List<Action> choices;
 		if (random.nextDouble() < commChance) {
 			choices = Filters.filterTalk(myActions);
 		} else {
 			choices = Filters.filterMovement(myActions);
 		}
-		
+
 		return choices.get(random.nextInt(choices.size()));
 	}
 

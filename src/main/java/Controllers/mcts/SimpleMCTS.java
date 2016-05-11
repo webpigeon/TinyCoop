@@ -4,21 +4,20 @@ import Controllers.Controller;
 
 public class SimpleMCTS extends Controller {
 
-	public MCTSNode select() {
-		return null;
+	public void backup() {
+
 	}
-	
+
 	public MCTSNode expand() {
 		return null;
 	}
-	
+
 	public double rollout() {
 		return 0.0;
 	}
-	
-	public void backup() {
-		
+
+	public MCTSNode select() {
+		return null;
 	}
-	
-	
+
 }

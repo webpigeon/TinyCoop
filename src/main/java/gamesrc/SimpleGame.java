@@ -10,7 +10,6 @@ import api.Action;
 import api.ActionType;
 import api.Flare;
 import api.GameObject;
-import api.GameState;
 import api.ObservableGameState;
 import api.controller.GameObservation;
 import gamesrc.controllers.SimpleGameObservation;
@@ -132,10 +131,6 @@ public class SimpleGame implements ObservableGameState {
 		return true;
 	}
 
-	public GameObservation getObservationFor(int agentID) {
-		return new SimpleGameObservation(getClone(), agentID);
-	}
-	
 	@Override
 	public int getActionLength() {
 		return level.getLegalMoves().size();
@@ -175,6 +170,10 @@ public class SimpleGame implements ObservableGameState {
 	@Override
 	public GameObject getObject(int x, int y) {
 		return level.getObject(x, y);
+	}
+
+	public GameObservation getObservationFor(int agentID) {
+		return new SimpleGameObservation(getClone(), agentID);
 	}
 
 	@Override

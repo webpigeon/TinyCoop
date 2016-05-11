@@ -14,7 +14,7 @@ public class RandomAgent extends AbstractController {
 		super("UniformRandom");
 		this.random = new Random();
 	}
-	
+
 	public RandomAgent(long seed) {
 		super("UniformAgent");
 		this.random = new Random(seed);

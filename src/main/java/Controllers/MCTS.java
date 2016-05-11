@@ -10,8 +10,6 @@ import api.GameState;
  * Created by pwillic on 23/06/2015.
  */
 public class MCTS extends Controller {
-	private static int deepest = 0;
-	
 	private class MCTSNode {
 		private static final double EPSILON = 1e-6;
 
@@ -46,7 +44,7 @@ public class MCTS extends Controller {
 			this.currentDepth = parent.currentDepth + 1;
 			this.mcts = parent.mcts;
 			this.childLength = actionLength;
-			
+
 			if (currentDepth > deepest) {
 				deepest = currentDepth;
 			}
@@ -217,6 +215,8 @@ public class MCTS extends Controller {
 		}
 	}
 
+	private static int deepest = 0;
+
 	private Random random = new Random();
 	private int maxUCTDepth = 5;
 	private int maxRolloutDepth = 30;
@@ -242,9 +242,9 @@ public class MCTS extends Controller {
 		MCTSNode root = new MCTSNode(2.0, this, game.getActionLength());
 		MCTSNode travel;
 		GameState workingGame;
-		
+
 		long startTime = System.nanoTime();
-		
+
 		int iterations = 0;
 		while (iterations < iterationLimit) {
 			workingGame = game.getClone();
@@ -253,10 +253,11 @@ public class MCTS extends Controller {
 			travel.updateValues(result);
 			iterations++;
 		}
-		
+
 		long endTime = System.nanoTime();
-		
-		System.out.println("MCTS done: "+root.getNumberOfVisits()+" deepest node: "+deepest+" "+(endTime-startTime));
+
+		System.out.println(
+				"MCTS done: " + root.getNumberOfVisits() + " deepest node: " + deepest + " " + (endTime - startTime));
 
 		// System.out.println(root.getChildrenExpandedSoFar() + "Nodes: " +
 		// root.getNodesInTree());

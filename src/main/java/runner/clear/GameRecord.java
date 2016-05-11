@@ -5,6 +5,8 @@ import api.ObservableGameState;
 
 public interface GameRecord {
 
+	void gameStarted();
+
 	String getActionSet();
 
 	String getID();
@@ -28,7 +30,5 @@ public interface GameRecord {
 	void recordResult(int tick, double score, Result result);
 
 	void recordState(int tick, ObservableGameState state, Action act0, Action act1);
-
-	void gameStarted();
 
 }

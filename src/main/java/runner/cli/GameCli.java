@@ -1,12 +1,6 @@
 package runner.cli;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -21,8 +15,6 @@ import api.controller.Controller;
 import gamesrc.Filters;
 import gamesrc.level.GameLevel;
 import gamesrc.level.LevelParser;
-import runner.experiment.GameResult;
-import runner.experiment.GameRunner;
 import runner.tinycoop.GameManager;
 
 public class GameCli {
@@ -59,7 +51,7 @@ public class GameCli {
 				for (String secondAgent : p2) {
 					Controller c1 = utils.parseDescription(GameState.PLAYER_0, firstAgent);
 					Controller c2 = utils.parseDescription(GameState.PLAYER_1, secondAgent);
-					
+
 					manager.addGame(level, c1, c2);
 				}
 			}
@@ -103,12 +95,12 @@ public class GameCli {
 					"baisRandom(0.25)" };
 		}
 
-		//create the game manager and start it
+		// create the game manager and start it
 		GameManager manager = new GameManager();
 		Thread managerThread = new Thread(manager);
 		managerThread.start();
-		
-		//add the runs and let the manager deal with them for us
+
+		// add the runs and let the manager deal with them for us
 		for (int i = 0; i < numRuns; i++) {
 			buildRun(manager, levelFiles, firstAgentList, secondAgentList, tickLimit);
 		}

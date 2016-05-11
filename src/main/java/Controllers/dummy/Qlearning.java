@@ -113,7 +113,7 @@ public class Qlearning extends Controller {
 	public Action get(GameState game) {
 		doWalks(game);
 		Action a = selectAction(game);
-		//System.out.println("best action so far: " + a);
+		// System.out.println("best action so far: " + a);
 		return a;
 	}
 
@@ -162,7 +162,7 @@ public class Qlearning extends Controller {
 		}
 
 		if (bestActions.isEmpty()) {
-			//System.err.println("strange, got no actions...");
+			// System.err.println("strange, got no actions...");
 			return Action.NOOP;
 		}
 

@@ -30,16 +30,16 @@ public class Utils {
 		return host;
 	}
 
+	public static Predictor buildRandomPolicy() {
+		return new RandomPredictor();
+	}
+
 	public static Controller buildRandomPredictor() {
 		// predicting a random controller
 		Controller predicted = new RandomController();
 		return buildPredictor(predicted, "RND");
 	}
 
-	public static Predictor buildRandomPolicy() {
-		return new RandomPredictor();
-	}
-	
 	public static String getHostname() {
 		String hostname = System.getenv("HOSTNAME");
 		if (hostname != null) {

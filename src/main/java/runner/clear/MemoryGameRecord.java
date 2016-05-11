@@ -57,6 +57,12 @@ public class MemoryGameRecord implements GameRecord {
 	}
 
 	@Override
+	public void gameStarted() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public String getActionSet() {
 		// TODO Auto-generated method stub
 		return null;
@@ -159,12 +165,6 @@ public class MemoryGameRecord implements GameRecord {
 	@Override
 	public String toString() {
 		return String.format("%s - %s & %s (%s,%s)", id, player1, player2, level, actionSet);
-	}
-
-	@Override
-	public void gameStarted() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
