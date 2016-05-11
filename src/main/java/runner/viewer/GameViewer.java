@@ -8,18 +8,15 @@ import java.util.concurrent.Callable;
 
 import javax.swing.JFrame;
 
-import Controllers.Controller;
-import Controllers.dummy.Qlearning;
-import Controllers.enhanced.Predictor;
-import Controllers.enhanced.RandomPredictor;
 import api.Action;
+import api.controller.Controller;
 import gamesrc.Filters;
 import gamesrc.SimpleGame;
 import gamesrc.level.GameLevel;
 import gamesrc.level.LevelParser;
 import runner.experiment.GameResult;
 import runner.experiment.GameSetup;
-import runner.experiment.Utils;
+import utils.AgentFactory;
 
 public class GameViewer implements Callable<GameResult> {
 	private static final Integer SLEEP_TIME = 60 / 1;
@@ -56,9 +53,8 @@ public class GameViewer implements Callable<GameResult> {
 				// Controller p1 = Utils.buildPredictor(new FollowTheFlare(),
 				// "pmcts");
 
-				Predictor p = new RandomPredictor();
-				Controller p1 = new Qlearning(p);
-				Controller p2 = Utils.buildMCTS(false);
+				Controller p1 = AgentFactory.buildStandardMCTS();
+				Controller p2 = AgentFactory.buildStandardMCTS();
 
 				GameViewer viewer = new GameViewer(level, p1, p2);
 				GameResult r = viewer.call();
@@ -87,14 +83,14 @@ public class GameViewer implements Callable<GameResult> {
 		GameSetup setup = new GameSetup();
 		setup.levelID = level.getLevelName();
 		setup.actionSet = level.getActionSetName();
-		setup.p1 = p1.getSimpleName();
-		setup.p2 = p2.getSimpleName();
+		setup.p1 = p1.getFriendlyName();
+		setup.p2 = p2.getFriendlyName();
 
 		GameResult result = new GameResult(setup);
 
 		SimpleGame game = new SimpleGame(level);
-		p1.startGame(0);
-		p2.startGame(1);
+		p1.startGame(0, 1);
+		p2.startGame(1, 0);
 
 		JFrame frame = new JFrame("TinyCoOp - Observable Edition");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -117,8 +113,8 @@ public class GameViewer implements Callable<GameResult> {
 
 		int tickCount = 0;
 		while (!game.hasWon()) {
-			Action p1Move = p1.get(game.getClone());
-			Action p2Move = p2.get(game.getClone());
+			Action p1Move = p1.getAction(game.getObservationFor(0));
+			Action p2Move = p2.getAction(game.getObservationFor(1));
 
 			if (!legalMoves1.contains(p1Move) || !legalMoves2.contains(p2Move)) {
 				System.err.println("illegal move detected " + p1Move + " " + p2Move);

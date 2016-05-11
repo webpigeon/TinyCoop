@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import api.controller.Controller;
-import runner.tinycoop.AgentFactory;
+import utils.AgentFactory;
 
 public class ControllerUtils {
 	private Pattern p;
