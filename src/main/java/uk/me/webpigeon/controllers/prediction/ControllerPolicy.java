@@ -21,8 +21,11 @@ public class ControllerPolicy implements Policy {
 
 	@Override
 	public Action getActionAt(GameObservation obs) {
-		// TODO Auto-generated method stub
-		return null;
+		return controller.getAction(obs);
+	}
+	
+	public String toString() {
+		return controller.getFriendlyName();
 	}
 
 }

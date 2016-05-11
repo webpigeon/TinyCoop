@@ -8,6 +8,7 @@ import api.GameState;
 import api.controller.Controller;
 import api.controller.GameObservation;
 import gamesrc.SimpleGame;
+import runner.tinycoop.GameSetup;
 
 public class GameEngine implements Callable<GameRecord> {
 	private final GameSetup setup;
@@ -62,6 +63,7 @@ public class GameEngine implements Callable<GameRecord> {
 			return record;
 		} catch (Exception ex) {
 			// if something goes wrong, report the crash and kill the thread
+			ex.printStackTrace();
 			System.err.println("[ex] game runner: " + ex);
 			record.recordResult(-1, 0.0, Result.CRASH);
 			return record;

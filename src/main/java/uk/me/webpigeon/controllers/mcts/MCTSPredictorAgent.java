@@ -17,9 +17,21 @@ public class MCTSPredictorAgent extends MCTSAgent {
 		super(iterationLimit, treeDepth, rolloutDepth);
 		this.policy = policy;
 	}
+	
+	@Override
+	public void startGame(int myID, int theirID) {
+		super.startGame(myID, theirID);
+		policy.init(theirID, myID);
+	}
 
-	public Action getOppAction(GameObservation obs) {
-		return policy.getActionAt(obs);
+	public Action getOppAction(GameObservation obs) {	
+		GameObservation theirs = obs.fromPerspective(theirID);
+		return policy.getActionAt(theirs);
+	}
+
+	@Override
+	public String getFriendlyName() {
+		return super.getFriendlyName()+"["+policy+"]";
 	}
 
 }

@@ -10,5 +10,7 @@ public interface GameObservation extends ObservableGameState {
 	public GameObservation getCopy();
 
 	public GameObservation simulate(Action ours, Action theirs);
+	
+	public GameObservation fromPerspective(int newAgent);
 
 }

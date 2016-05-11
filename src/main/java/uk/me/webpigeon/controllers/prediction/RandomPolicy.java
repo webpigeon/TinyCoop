@@ -26,4 +26,8 @@ public class RandomPolicy implements Policy {
 		return Utils.getRandomAction(legalActions, random);
 	}
 
+	public String toString() {
+		return "RandomPolicy";
+	}
+	
 }

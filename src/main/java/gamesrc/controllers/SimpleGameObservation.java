@@ -135,4 +135,13 @@ public class SimpleGameObservation implements GameObservation {
 		state.update(p1, p2);
 	}
 
+	@Override
+	public GameObservation fromPerspective(int newAgent) {
+		return new SimpleGameObservation(state.getClone(), newAgent);
+	}
+	
+	public String toString() {
+		return String.format("OBS: %d %s", playerID, state);
+	}
+
 }

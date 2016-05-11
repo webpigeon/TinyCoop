@@ -14,6 +14,7 @@ import gamesrc.Filters;
 import gamesrc.level.GameLevel;
 import gamesrc.level.LevelParser;
 import runner.cli.ControllerUtils;
+import runner.tinycoop.GameSetup;
 import utils.GenerateCSV;
 
 public class GameTester {

@@ -3,6 +3,7 @@ package utils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.io.PrintStream;
 
 /**
@@ -13,11 +14,15 @@ public class GenerateCSV {
 	private PrintStream fout;
 
 	public GenerateCSV(File moveFile) throws FileNotFoundException {
-		this.fout = new PrintStream(new FileOutputStream(moveFile, true));
+		this(new FileOutputStream(moveFile, true));
 	}
-
+	
 	public GenerateCSV(String moveFile) throws FileNotFoundException {
-		this.fout = new PrintStream(new FileOutputStream(moveFile, true));
+		this(new FileOutputStream(moveFile, true));
+	}
+	
+	public GenerateCSV(OutputStream out) {
+		this.fout = new PrintStream(out);
 	}
 
 	public void close() {

@@ -42,13 +42,13 @@ public class MCTSAgent extends AbstractController {
 			selected.update(score);
 		}
 
-		System.out.println("MCTS done: " + root.getVisits() + " deepest node: " + root.getDeepestNode());
+		//System.out.println("MCTS done: " + root.getVisits() + " deepest node: " + root.getDeepestNode());
 
 		return root.getBestAction();
 	}
 
 	public Action getDefaultMove() {
-		System.out.println("invoking default move, this is bad");
+		System.err.println("invoking default move, this is bad");
 		return Action.NOOP;
 	}
 

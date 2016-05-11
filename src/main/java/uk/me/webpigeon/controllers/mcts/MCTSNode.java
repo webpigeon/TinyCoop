@@ -174,6 +174,10 @@ public class MCTSNode {
 				currentObs.apply(current.moveToState, agent.getOppAction(currentObs));
 			} else {
 				MCTSNode expanded = current.expand(currentObs);
+				if (expanded.moveToState == null) {
+					throw new RuntimeException("BROKEN MCTS "+expanded.depth);
+				}
+				
 				currentObs.apply(expanded.moveToState, agent.getOppAction(currentObs));
 				return expanded;
 			}

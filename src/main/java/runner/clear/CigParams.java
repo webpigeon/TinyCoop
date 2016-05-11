@@ -15,6 +15,12 @@ import gamesrc.level.GameLevel;
 import gamesrc.level.LevelParser;
 import runner.cli.ControllerUtils;
 import runner.experiment.Utils;
+import runner.tinycoop.GameManager;
+import runner.tinycoop.GameSetup;
+import uk.me.webpigeon.controllers.prediction.ControllerPolicy;
+import uk.me.webpigeon.controllers.prediction.Policy;
+import uk.me.webpigeon.controllers.prediction.RandomPolicy;
+import utils.AgentFactory;
 import utils.GenerateCSV;
 
 public class CigParams {
@@ -23,10 +29,7 @@ public class CigParams {
 	private static final Integer NUM_RUNS = 1;
 
 	public static GameSetup buildSetup(Controller p1, Controller p2, GameLevel level) {
-		GameSetup setup = new GameSetup();
-		setup.p1 = p1;
-		setup.p2 = p2;
-		setup.level = level;
+		GameSetup setup = new GameSetup(p1.getFriendlyName(), p2.getFriendlyName(), level.getLevelName(), level.getActionSetName());
 		return setup;
 	}
 
@@ -44,8 +47,10 @@ public class CigParams {
 				"data/maps/single_door.txt" };
 
 		ControllerUtils controllers = new ControllerUtils();
+		
+		//start the game processing workers
+		GameManager manager = new GameManager();
 
-		List<GameEngine> tasks = new ArrayList<GameEngine>();
 		for (String level : levels) {
 			GameLevel levelRel = LevelParser.buildParser(level);
 			levelRel.setLegalMoves("relative", Filters.getAllRelativeActions());
@@ -57,25 +62,31 @@ public class CigParams {
 
 					// setup (random predictor)
 					{
+						Controller p1 = AgentFactory.buildPredictorMCTS(new RandomPolicy());
 						Controller p2 = controllers.parseDescription(GameState.PLAYER_1, player2);
-						GameSetup setup = buildSetup(Utils.buildRandomPredictor(), p2, levelRel);
-						tasks.add(new GameEngine(setup, MAX_TICKS, new TraceGameRecord(setup)));
+						manager.addGame(levelRel, p1, p2);
 					}
 
 					// setup (mirror predictor)
 					{
 						Controller p2 = controllers.parseDescription(GameState.PLAYER_1, player2);
+						
+						//build the predictor setup for p1
 						Controller p2Predictor = controllers.parseDescription(GameState.PLAYER_1, player2);
-						GameSetup setup = buildSetup(Utils.buildPredictor(p2Predictor, "MIRROR"), p2, levelRel);
-						tasks.add(new GameEngine(setup, MAX_TICKS, new TraceGameRecord(setup)));
+						Policy policy = new ControllerPolicy(p2Predictor);
+						Controller p1 = AgentFactory.buildPredictorMCTS(policy);
+
+						manager.addGame(levelRel, p1, p2);
 					}
 
 					// setup (mcts predictor)
 					{
 						Controller p2 = controllers.parseDescription(GameState.PLAYER_1, player2);
-						GameSetup setup = buildSetup(Utils.buildMCTSPredictor(), p2, levelRel);
-						tasks.add(new GameEngine(setup, MAX_TICKS, new TraceGameRecord(setup)));
-					} /*
+						Policy policy = new ControllerPolicy(AgentFactory.buildStandardMCTS());
+						Controller p1 = AgentFactory.buildPredictorMCTS(policy);
+						manager.addGame(levelRel, p1, p2);
+					}
+					/*
 						 * 
 						 * // setup (baisRandom) { Controller p2 =
 						 * controllers.parseDescription(GameState.PLAYER_1,
@@ -121,35 +132,12 @@ public class CigParams {
 
 		}
 
-		System.out.println(tasks.size());
-
-		GenerateCSV csv = new GenerateCSV(String.format("results-%d.csv", System.nanoTime()));
-
-		try {
-			int threads = MAX_THREADS;
-			if (args.length == 1) {
-				threads = Integer.parseInt(args[0]);
-			}
-
-			ExecutorService service = Executors.newFixedThreadPool(threads);
-			List<Future<GameRecord>> recordFutures = service.invokeAll(tasks);
-
-			for (Future<GameRecord> recordFuture : recordFutures) {
-				try {
-					GameRecord record = recordFuture.get();
-					csv.writeLine(record.getID(), record.getPlayer1(), record.getPlayer2(), record.getLevel(),
-							record.getActionSet(), record.getResult(), record.getScore(), record.getTicks());
-					System.out.println(record + " " + record.getResultString());
-				} catch (ExecutionException ex) {
-					System.err.println("game crashed: writing to stats failed");
-					ex.printStackTrace();
-				}
-			}
-
-			service.shutdown();
-		} catch (InterruptedException ex) {
-			ex.printStackTrace();
-		}
+		//start the data collection thread
+		Thread managerThread = new Thread(manager);
+		managerThread.start();
+		
+		//this should wait until all games have finished
+		manager.shutdown();
 	}
 
 }

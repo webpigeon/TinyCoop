@@ -37,7 +37,8 @@ public class RepeatRunner {
 			Controller p1 = utils.parseDescription(GameState.PLAYER_0, agent1);
 			Controller p2 = utils.parseDescription(GameState.PLAYER_1, agent2);
 
-			GameExecutor executor = new GameExecutor(game, p1, p2);
+			GameSetup setup = new GameSetup(p1.getFriendlyName(), p2.getFriendlyName(), levelRel.getLevelName(), levelRel.getActionSetName());
+			GameExecutor executor = new GameExecutor(setup, game, p1, p2);
 			GameResult r = executor.call();
 			System.out.println(r);
 		}

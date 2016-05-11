@@ -1,4 +1,4 @@
-package runner.experiment;
+package utils;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
@@ -13,6 +13,10 @@ public class GameTimer {
 	public static long getUserTime() {
 		ThreadMXBean bean = ManagementFactory.getThreadMXBean();
 		return bean.isCurrentThreadCpuTimeSupported() ? bean.getCurrentThreadUserTime() : 0L;
+	}
+
+	public static long getWallTime() {
+		return System.currentTimeMillis();
 	}
 
 }

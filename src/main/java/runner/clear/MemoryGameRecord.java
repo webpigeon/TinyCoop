@@ -9,6 +9,7 @@ import java.util.UUID;
 import api.Action;
 import api.GameState;
 import api.ObservableGameState;
+import runner.tinycoop.GameSetup;
 
 public class MemoryGameRecord implements GameRecord {
 	static class MoveTimer {

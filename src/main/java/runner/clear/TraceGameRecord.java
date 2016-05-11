@@ -10,7 +10,8 @@ import java.util.UUID;
 
 import api.Action;
 import api.ObservableGameState;
-import runner.experiment.GameTimer;
+import runner.tinycoop.GameSetup;
+import utils.GameTimer;
 import utils.GenerateCSV;
 
 public class TraceGameRecord implements GameRecord {

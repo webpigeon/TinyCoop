@@ -1,21 +1,26 @@
 package runner.tinycoop;
 
 import java.util.concurrent.Callable;
+import java.util.logging.Logger;
 
 import api.Action;
 import api.GameState;
 import api.controller.Controller;
 import gamesrc.SimpleGame;
 import runner.clear.Result;
+import utils.GameTimer;
 
 public class GameExecutor implements Callable<GameResult> {
 	private static final Integer MAX_TICKS = 20000;
+	private static final Logger LOG = Logger.getLogger(GameExecutor.class.getCanonicalName());
 
+	private final GameSetup setup;
 	private final SimpleGame game;
 	private final Controller p1;
 	private final Controller p2;
 
-	public GameExecutor(SimpleGame game, Controller p1, Controller p2) {
+	public GameExecutor(GameSetup setup, SimpleGame game, Controller p1, Controller p2) {
+		this.setup = setup;
 		this.game = game;
 		this.p1 = p1;
 		this.p2 = p2;
@@ -23,11 +28,17 @@ public class GameExecutor implements Callable<GameResult> {
 
 	@Override
 	public GameResult call() throws Exception {
-
+		LOG.info("game run started: "+setup);
+		
+		long wallStartTime = GameTimer.getWallTime();
+		long cpuStartTime = GameTimer.getUserTime();
+		Result result = Result.WON;
+		
 		int tick = 0;
 		try {
 			p1.startGame(GameState.PLAYER_0, GameState.PLAYER_1);
 			p2.startGame(GameState.PLAYER_1, GameState.PLAYER_0);
+			LOG.fine("game initialised: "+setup);
 
 			while (!game.hasWon()) {
 
@@ -40,17 +51,23 @@ public class GameExecutor implements Callable<GameResult> {
 
 				// check for timeout condition
 				if (tick >= MAX_TICKS) {
-					return new GameResult(Result.TIMEOUT, game.getScore(), tick);
+					LOG.fine("game timeout: "+setup);
+					result = Result.TIMEOUT;
+					break;
 				}
 
 				tick++;
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			return new GameResult(Result.CRASH, game.getScore(), tick);
+			result = Result.CRASH;
+			LOG.severe("game run crashed: "+setup+" "+ex);
 		}
 
-		return new GameResult(Result.WON, game.getScore(), tick);
+		LOG.info("game run complete: "+setup+" "+result);
+		
+		long cpuTime = GameTimer.getUserTime() - cpuStartTime;
+		long wallTime = GameTimer.getWallTime() - wallStartTime;
+		return new GameResult(setup, result, game.getScore(), tick, wallTime, cpuTime);
 	}
 
 }
