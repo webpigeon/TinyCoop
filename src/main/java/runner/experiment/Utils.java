@@ -1,5 +1,9 @@
 package runner.experiment;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
 import Controllers.Controller;
 import Controllers.MCTS;
 import Controllers.RandomController;
@@ -7,6 +11,7 @@ import Controllers.enhanced.NestedControllerPredictor;
 import Controllers.enhanced.Predictor;
 import Controllers.enhanced.PredictorMCTS;
 import Controllers.enhanced.RandomPredictor;
+import api.Action;
 
 public class Utils {
 	private static final Integer NUM_ROLLOUTS = 20000;
@@ -52,6 +57,11 @@ public class Utils {
 		}
 
 		return "UNKNOWN_HOST";
+	}
+	
+	public static Action getRandomAction(List<Action> actions, Random rnd) {
+		int choice = rnd.nextInt(actions.size());
+		return actions.get(choice);
 	}
 
 }

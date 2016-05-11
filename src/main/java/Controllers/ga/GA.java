@@ -1,6 +1,7 @@
 package Controllers.ga;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import api.Action;
@@ -21,7 +22,7 @@ public class GA {
 
 	public GAIndividual[] m_individuals;
 
-	public GA(Action[] actions) {
+	public GA(List<Action> actions) {
 		m_rnd = new Random();
 
 		m_actionList = new ArrayList<MacroAction>();

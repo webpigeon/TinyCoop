@@ -1,10 +1,12 @@
 package Controllers.VariGA;
 
+import java.util.List;
 import java.util.Random;
 
 import Controllers.Controller;
 import api.Action;
 import api.GameState;
+import runner.experiment.Utils;
 
 class ActionSequence {
 	private static Random random = new Random();
@@ -24,7 +26,7 @@ class ActionSequence {
 	}
 
 	// New random sequence
-	public ActionSequence(int minNum, int maxNum, int minLength, int maxLength, Action[] actionList) {
+	public ActionSequence(int minNum, int maxNum, int minLength, int maxLength, List<Action> actionList) {
 		this.minLength = minLength;
 		this.maxLength = maxLength;
 		this.minNum = minNum;
@@ -41,10 +43,10 @@ class ActionSequence {
 			GameState game = state.getClone();
 			for (int i = 0; !game.hasWon() && i < totalLength; i++) {
 				if (first) {
-					Action[] actionList = state.getLegalActions(0);
+					List<Action> actionList = state.getLegalActions(0);
 					game.update(getActionAt(i, actionList), getRandom(1, state));
 				} else {
-					Action[] actionList = state.getLegalActions(1);
+					List<Action> actionList = state.getLegalActions(1);
 					game.update(getRandom(0, state), getActionAt(i, actionList));
 				}
 			}
@@ -53,12 +55,12 @@ class ActionSequence {
 		return totalScore / 3.0;
 	}
 
-	public Action getActionAt(int position, Action[] actionList) {
+	public Action getActionAt(int position, List<Action> actionList) {
 		int runningTotal = 0;
 		for (int i = 0; i < numberOfActions; i++) {
 			runningTotal += lengths[i];
 			if (position < runningTotal)
-				return actionList[actions[i]];
+				return actionList.get(actions[i]);
 		}
 		return Action.NOOP;
 	}
@@ -83,8 +85,8 @@ class ActionSequence {
 	}
 
 	public Action getRandom(int pid, GameState state) {
-		Action[] legalActions = state.getLegalActions(pid);
-		return legalActions[random.nextInt(legalActions.length)];
+		List<Action> legalActions = state.getLegalActions(pid);
+		return legalActions.get(random.nextInt(legalActions.size()));
 	}
 
 	public int getTotalLength() {
@@ -95,7 +97,7 @@ class ActionSequence {
 		return total;
 	}
 
-	private void growSequenceLength(Action[] actionsList) {
+	private void growSequenceLength(List<Action> actionsList) {
 		numberOfActions++;
 		int[] newLengths = new int[numberOfActions];
 		int[] newActions = new int[numberOfActions];
@@ -120,7 +122,7 @@ class ActionSequence {
 	 *            - Chance that the individual action of each parameter will be
 	 *            randomly changed
 	 */
-	public void mutate(double numChance, double lengthChance, double actionChance, Action[] actionList) {
+	public void mutate(double numChance, double lengthChance, double actionChance, List<Action> actionList) {
 		double test = random.nextDouble();
 		if (test < numChance) {
 			if (numberOfActions == maxLength) {
@@ -148,19 +150,19 @@ class ActionSequence {
 				}
 			}
 			if (random.nextDouble() < actionChance) {
-				actions[i] = random.nextInt(actionList.length);
+				actions[i] = random.nextInt(actionList.size());
 			}
 		}
 	}
 
-	private void randomize(Action[] actionList) {
+	private void randomize(List<Action> actionList) {
 		numberOfActions = random.nextInt(maxNum - minNum) + minNum;
 		lengths = new int[numberOfActions];
 		actions = new int[numberOfActions];
 
 		for (int i = 0; i < numberOfActions; i++) {
 			lengths[i] = random.nextInt(maxLength - minLength) + minLength;
-			actions[i] = random.nextInt(actionList.length);
+			actions[i] = random.nextInt(actionList.size());
 		}
 	}
 
@@ -241,10 +243,10 @@ public class VariGA extends Controller {
 			fastForwardedGame = game.getClone();
 			for (int i = 0; !fastForwardedGame.hasWon() && i < currentBest.getFirstActionLength(); i++) {
 				if (first) {
-					Action[] actionList = fastForwardedGame.getLegalActions(0);
+					List<Action> actionList = fastForwardedGame.getLegalActions(0);
 					fastForwardedGame.update(currentBest.getActionAt(i, actionList), getRandom(1, game));
 				} else {
-					Action[] actionList = fastForwardedGame.getLegalActions(1);
+					List<Action> actionList = fastForwardedGame.getLegalActions(1);
 					fastForwardedGame.update(getRandom(0, game), currentBest.getActionAt(i, actionList));
 				}
 			}
@@ -269,7 +271,7 @@ public class VariGA extends Controller {
 	}
 
 	// int minNum, int maxNum, int minLength, int maxLength
-	private ActionSequence getNewParent(Action[] actionList) {
+	private ActionSequence getNewParent(List<Action> actionList) {
 		if (params == null)
 			return new ActionSequence(3, 10, 1, 5, actionList);
 		return new ActionSequence(params[0], params[1], params[2], params[3], actionList);
@@ -280,8 +282,7 @@ public class VariGA extends Controller {
 	}
 
 	public Action getRandom(int pid, GameState state) {
-		Action[] legalActions = state.getLegalActions(pid);
-		return legalActions[random.nextInt(legalActions.length)];
+		return Utils.getRandomAction(state.getLegalActions(pid), random);
 	}
 
 	@Override

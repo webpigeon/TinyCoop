@@ -1,5 +1,6 @@
 package Controllers.enhanced;
 
+import java.util.List;
 import java.util.Random;
 
 import Controllers.Controller;
@@ -69,8 +70,8 @@ public class PredictorMCTS extends Controller {
 				}
 			}
 
-			Action[] allActions = state.getLegalActions(0);
-			children[bestAction] = new MCTSNode(this, allActions[bestAction], state.getActionLength());
+			List<Action> allActions = state.getLegalActions(0);
+			children[bestAction] = new MCTSNode(this, allActions.get(bestAction), state.getActionLength());
 			childrenExpandedSoFar++;
 			return children[bestAction];
 		}
@@ -133,9 +134,9 @@ public class PredictorMCTS extends Controller {
 		}
 
 		protected Action getRandomAction(int playerID, GameState state) {
-			Action[] legalActions = state.getLegalActions(playerID);
-			int id = random.nextInt(legalActions.length);
-			return legalActions[id];
+			List<Action> legalActions = state.getLegalActions(playerID);
+			int id = random.nextInt(legalActions.size());
+			return legalActions.get(id);
 		}
 
 		public double getTotalValue() {

@@ -1,5 +1,6 @@
 package Controllers.ga;
 
+import java.util.List;
 import java.util.Random;
 
 import api.Action;
@@ -49,13 +50,13 @@ public class GAIndividual {
 	}
 
 	public Action getAction(Random rnd, GameState state) {
-		Action[] legalActions = state.getLegalActions(isFirst ? 0 : 1);
-		return legalActions[rnd.nextInt(legalActions.length)];
+		List<Action> legalActions = state.getLegalActions(isFirst ? 0 : 1);
+		return legalActions.get(rnd.nextInt(legalActions.size()));
 	}
 
 	public Action getOppAction(Random rnd, GameState state) {
-		Action[] legalActions = state.getLegalActions(-1);
-		return legalActions[rnd.nextInt(legalActions.length)];
+		List<Action> legalActions = state.getLegalActions(isFirst ? 1 : 0);
+		return legalActions.get(rnd.nextInt(legalActions.size()));
 	}
 
 	public void mutate(Random a_rnd, GameState state) {

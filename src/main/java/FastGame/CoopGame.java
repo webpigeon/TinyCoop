@@ -146,9 +146,8 @@ public class CoopGame implements GameState {
 	}
 
 	@Override
-	public Action[] getLegalActions(int playerID) {
-		List<Action> legalActions = Filters.getBasicActions();
-		return legalActions.toArray(new FastAction[legalActions.size()]);
+	public List<Action> getLegalActions(int playerID) {
+		return Filters.getBasicActions();
 	}
 
 	public Point getPos(int id) {

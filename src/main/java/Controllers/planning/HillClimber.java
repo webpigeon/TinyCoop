@@ -50,7 +50,7 @@ public class HillClimber extends Controller {
 		double best = -Double.MAX_VALUE;
 		List<Action> bestActions = new ArrayList<Action>();
 
-		Action[] legalMoves = current.getLegalActions(playerID);
+		List<Action> legalMoves = current.getLegalActions(playerID);
 		for (Action legalMove : legalMoves) {
 			GameState state = current.getClone();
 			state.update(legalMove, predictor.predict(oppID, state));
