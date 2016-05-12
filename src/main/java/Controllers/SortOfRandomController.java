@@ -10,7 +10,7 @@ import gamesrc.Filters;
 /**
  * Created by pwillic on 30/06/2015.
  */
-public class SortOfRandomController extends Controller {
+public class SortOfRandomController extends PiersController {
 	private static final Double COMM_CHANCE = 0.75;
 
 	private Random random;

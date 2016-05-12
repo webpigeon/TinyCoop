@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import FastGame.CoopGame;
 
 class Candidate {
@@ -146,8 +146,8 @@ public class Tuner {
 	// Same tactic as the sampler in the other thing
 
 	public static void main(String[] args) throws UnknownHostException {
-		Controller c1;
-		Controller c2;
+		PiersController c1;
+		PiersController c2;
 
 		int threadNumber = Integer.parseInt(args[0]);
 
@@ -201,7 +201,7 @@ public class Tuner {
 		}
 	}
 
-	public static double[][] runGames(Controller c1, Controller c2, String[] games, int candidates) {
+	public static double[][] runGames(PiersController c1, PiersController c2, String[] games, int candidates) {
 		String levelPath = "data/maps/";
 		int gamesPerMatchup = 5;
 

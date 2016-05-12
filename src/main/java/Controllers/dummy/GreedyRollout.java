@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import api.Action;
 import api.GameState;
 
@@ -12,7 +12,7 @@ import api.GameState;
  * Performs random rollouts and selects the move which had the highest payout
  * across all rollouts.
  */
-public class GreedyRollout extends Controller {
+public class GreedyRollout extends PiersController {
 	public static final Integer NUM_ROLLOUTS = 500;
 	public static final Integer MAX_ROLLOUT_DEPTH = 25;
 

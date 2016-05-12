@@ -18,7 +18,7 @@ import api.Action;
 /**
  * An implementation of A* for path finding
  */
-public class AStar extends Controller {
+public class AStar extends PiersController {
 
 	static class ActionNode {
 		Action p1action;

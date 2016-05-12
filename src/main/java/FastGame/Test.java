@@ -2,7 +2,7 @@ package FastGame;
 
 import java.util.Arrays;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import Controllers.MCTS;
 import Controllers.RandomController;
 
@@ -13,13 +13,13 @@ public class Test {
 
 	public static void main(String[] args) {
 		// Controller m1 = new PlanningController();
-		Controller m2 = new MCTS(false, 500);
-		Controller r1 = new RandomController();
+		PiersController m2 = new MCTS(false, 500);
+		PiersController r1 = new RandomController();
 
 		// Controller c1 = m1;
 		// Controller c1 = new RandomController();
 		// Controller c2 = new MCTS(false);
-		Controller c2 = m2;
+		PiersController c2 = m2;
 
 		int gamesPerMatchup = 10;
 		// double[] results1 = runGames(m1, m2, gamesPerMatchup);
@@ -32,7 +32,7 @@ public class Test {
 		// System.out.println(results3);
 	}
 
-	public static double[] runGames(Controller c1, Controller c2, int gamesPerMatchup) {
+	public static double[] runGames(PiersController c1, PiersController c2, int gamesPerMatchup) {
 		double[] results = new double[2];
 		for (int i = 0; i < gamesPerMatchup; i++) {
 			int ticksTaken = 0;

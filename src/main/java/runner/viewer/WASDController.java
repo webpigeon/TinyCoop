@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import api.Action;
 import api.GameState;
 import gamesrc.Filters;
@@ -16,7 +16,7 @@ import gamesrc.actions.absolute.AbsoluteFlare;
 /**
  * Created by pwillic on 23/06/2015.
  */
-public class WASDController extends Controller implements KeyListener, MouseListener {
+public class WASDController extends PiersController implements KeyListener, MouseListener {
 	private Action action;
 	private Point flarePos;
 	private int agentID;

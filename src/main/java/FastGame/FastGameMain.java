@@ -3,7 +3,7 @@ package FastGame;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import Controllers.RandomController;
 import runner.viewer.WASDController;
 
@@ -23,7 +23,7 @@ public class FastGameMain {
 
 		// Controller c1 = new MCTS(true, 1000, 10, 45);
 		// Controller c1 = new VariGA(true, 2000);
-		Controller c1 = new RandomController();
+		PiersController c1 = new RandomController();
 
 		// Controller c1 = new VariGA(true, 500);
 		// Controller c1 = new RandomController();
@@ -33,7 +33,7 @@ public class FastGameMain {
 		// Controller c2 = new GAController(false);
 		// Controller c2 = new MCTS(false, 1000, 10, 45);
 		// Controller c2 = new VariGA(false, 2000);
-		Controller c2 = new RandomController();
+		PiersController c2 = new RandomController();
 		// Controller c2 = arrows;
 		// Controller c2 = new NoOp();
 

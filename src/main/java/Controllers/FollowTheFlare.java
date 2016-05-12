@@ -7,7 +7,7 @@ import api.Flare;
 import api.GameState;
 import api.ObservableGameState;
 
-public class FollowTheFlare extends Controller {
+public class FollowTheFlare extends PiersController {
 
 	private int myID;
 

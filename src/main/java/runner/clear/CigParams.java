@@ -1,31 +1,18 @@
 package runner.clear;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
+import Controllers.PiersController;
 import api.GameState;
 import api.controller.Controller;
 import gamesrc.Filters;
 import gamesrc.level.GameLevel;
 import gamesrc.level.LevelParser;
 import runner.cli.ControllerUtils;
-import runner.experiment.Utils;
 import runner.tinycoop.GameManager;
 import runner.tinycoop.GameSetup;
-import uk.me.webpigeon.controllers.prediction.ControllerPolicy;
-import uk.me.webpigeon.controllers.prediction.Policy;
-import uk.me.webpigeon.controllers.prediction.RandomPolicy;
-import utils.AgentFactory;
-import utils.GenerateCSV;
+import utils.LegacyAgentFactory;
 
 public class CigParams {
-	private static final Integer MAX_THREADS = 4;
-	private static final Integer MAX_TICKS = 2000;
 	private static final Integer NUM_RUNS = 1;
 
 	public static GameSetup buildSetup(Controller p1, Controller p2, GameLevel level) {
@@ -35,8 +22,8 @@ public class CigParams {
 
 	public static void main(String[] args) throws IOException {
 
-		String[] player2List = new String[] { "pathfinder", "random", "baisRandom", "mcts(500;10;45)" };
-
+		String[] player2List = new String[] { "pathfinder", "random", "baisRandom", "mcts" };
+		
 		/*
 		 * String[] levels = new String[] { "data/norm_maps/airlock.txt",
 		 * "data/norm_maps/butterfly.txt", "data/norm_maps/maze.txt",
@@ -62,28 +49,26 @@ public class CigParams {
 
 					// setup (random predictor)
 					{
-						Controller p1 = AgentFactory.buildPredictorMCTS(new RandomPolicy());
-						Controller p2 = controllers.parseDescription(GameState.PLAYER_1, player2);
+						PiersController p1 = LegacyAgentFactory.buildStandardMCTS();
+						PiersController p2 = controllers.parseLegacyDescription(GameState.PLAYER_1, player2);
 						manager.addGame(levelRel, p1, p2);
 					}
 
 					// setup (mirror predictor)
 					{
-						Controller p2 = controllers.parseDescription(GameState.PLAYER_1, player2);
+						PiersController p2 = controllers.parseLegacyDescription(GameState.PLAYER_1, player2);
 						
 						//build the predictor setup for p1
-						Controller p2Predictor = controllers.parseDescription(GameState.PLAYER_1, player2);
-						Policy policy = new ControllerPolicy(p2Predictor);
-						Controller p1 = AgentFactory.buildPredictorMCTS(policy);
+						PiersController p2Predictor = controllers.parseLegacyDescription(GameState.PLAYER_1, player2);
+						PiersController p1 = LegacyAgentFactory.buildHighPredictor(p2Predictor);
 
 						manager.addGame(levelRel, p1, p2);
 					}
 
 					// setup (mcts predictor)
 					{
-						Controller p2 = controllers.parseDescription(GameState.PLAYER_1, player2);
-						Policy policy = new ControllerPolicy(AgentFactory.buildStandardMCTS());
-						Controller p1 = AgentFactory.buildPredictorMCTS(policy);
+						PiersController p2 = controllers.parseLegacyDescription(GameState.PLAYER_1, player2);
+						Controller p1 = LegacyAgentFactory.buildHighMCTS2();
 						manager.addGame(levelRel, p1, p2);
 					}
 					/*

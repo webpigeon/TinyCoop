@@ -11,7 +11,7 @@ import runner.clear.Result;
 import utils.GameTimer;
 
 public class GameExecutor implements Callable<GameResult> {
-	private static final Integer MAX_TICKS = 20000;
+	private static final Integer MAX_TICKS = 2000;
 	private static final Logger LOG = Logger.getLogger(GameExecutor.class.getCanonicalName());
 
 	private final GameSetup setup;

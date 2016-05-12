@@ -17,7 +17,7 @@ import api.ObservableGameState;
  * TinyCoop levels *should* be solvable with this agent if the other agent
  * figures out what is going on (I'm evil and won't tell it ;P).
  */
-public class PassiveController extends Controller {
+public class PassiveController extends PiersController {
 	private static final Action DEFAULT_MOVE = Action.NOOP;
 	private Queue<Point> nextMoves;
 	private int agentID;

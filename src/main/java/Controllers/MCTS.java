@@ -9,7 +9,7 @@ import api.GameState;
 /**
  * Created by pwillic on 23/06/2015.
  */
-public class MCTS extends Controller {
+public class MCTS extends PiersController {
 	private class MCTSNode {
 		private static final double EPSILON = 1e-6;
 

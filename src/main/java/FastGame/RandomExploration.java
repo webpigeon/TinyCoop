@@ -2,7 +2,7 @@ package FastGame;
 
 import java.util.ArrayList;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import Controllers.RandomController;
 
 /**
@@ -14,8 +14,8 @@ public class RandomExploration {
 
 	public static void main(String[] args) {
 
-		Controller c1 = new RandomController();
-		Controller c2 = new RandomController();
+		PiersController c1 = new RandomController();
+		PiersController c2 = new RandomController();
 
 		ArrayList<CoopGame> games = new ArrayList<>();
 		games.add(new CoopGame("data/maps/level1.txt"));

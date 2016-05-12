@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import Controllers.PassiveController;
 import Controllers.SortOfRandomController;
 import api.Action;
@@ -53,13 +53,13 @@ public class ReadableGame {
 		 * new MCTS(true, 250), new RandomController(), new WASDController() );
 		 */
 
-		Controller c1 = new SortOfRandomController();
+		PiersController c1 = new SortOfRandomController();
 		// Controller c1 = new MCTS(true, 5000);
 		for (GameLevel level : levelList) {
 			GameState initalStateS = new SimpleGame(level);
 
 			// for (Controller c1 : controllers) {
-			Controller c2 = new PassiveController();
+			PiersController c2 = new PassiveController();
 			// Controller c2 = new RandomController();
 			// Controller c2 = new NoOp();
 
@@ -71,7 +71,7 @@ public class ReadableGame {
 		}
 	}
 
-	public static double runGames(GameState initialState, int runs, int tickLimit, Controller p1, Controller p2) {
+	public static double runGames(GameState initialState, int runs, int tickLimit, PiersController p1, PiersController p2) {
 		List<Long> timings = new ArrayList<Long>(runs);
 
 		for (int i = 0; i < runs; i++) {
@@ -100,7 +100,7 @@ public class ReadableGame {
 		return totalDuration / (timings.size() * 1.0);
 	}
 
-	public static void runGraphicalGame(GameState initial, Viewer viewer, Controller p1, Controller p2)
+	public static void runGraphicalGame(GameState initial, Viewer viewer, PiersController p1, PiersController p2)
 			throws InterruptedException {
 
 		SimpleGame state = (SimpleGame) initial.getClone();

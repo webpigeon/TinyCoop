@@ -18,7 +18,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import Controllers.MCTS;
 import Controllers.PassiveRefindController;
 import Controllers.RandomController;
@@ -186,13 +186,13 @@ public class GameRunner implements Callable<GameResult> {
 	}
 
 	private GameLevel level;
-	private Controller p1;
-	private Controller p2;
+	private PiersController p1;
+	private PiersController p2;
 	private int tickLimit;
 	private UUID id;
 	private GenerateCSV moves;
 
-	public GameRunner(GameLevel level, Controller p1, Controller p2, int tickLimit) throws FileNotFoundException {
+	public GameRunner(GameLevel level, PiersController p1, PiersController p2, int tickLimit) throws FileNotFoundException {
 		this.level = level;
 		this.p1 = p1;
 		this.p2 = p2;
@@ -201,7 +201,7 @@ public class GameRunner implements Callable<GameResult> {
 		this.id = UUID.randomUUID();
 	}
 
-	public GameRunner(GameLevel level, Controller p1, Controller p2, int tickLimit, GenerateCSV moves) {
+	public GameRunner(GameLevel level, PiersController p1, PiersController p2, int tickLimit, GenerateCSV moves) {
 		this.level = level;
 		this.p1 = p1;
 		this.p2 = p2;

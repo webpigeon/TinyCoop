@@ -3,7 +3,7 @@ package Controllers.VariGA;
 import java.util.List;
 import java.util.Random;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import api.Action;
 import api.GameState;
 import runner.experiment.Utils;
@@ -186,7 +186,7 @@ class ActionSequence {
 /**
  * Do a 1 + 1 ES Created by Piers on 01/07/2015.
  */
-public class VariGA extends Controller {
+public class VariGA extends PiersController {
 
 	private boolean first;
 	private int iterations;

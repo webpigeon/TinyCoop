@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import Controllers.MCTS;
 import Controllers.RandomController;
 import Controllers.VariGA.VariGA;
@@ -22,12 +22,12 @@ import utils.GenerateCSV;
 public class RoundRobinMT {
 	static class Matchup implements Callable<RoundRobinMT.Result> {
 		static int count = 0;
-		Controller p1;
-		Controller p2;
+		PiersController p1;
+		PiersController p2;
 		String map;
 		int trialID;
 
-		Matchup(Controller p1, Controller p2, String map, int trialID) {
+		Matchup(PiersController p1, PiersController p2, String map, int trialID) {
 			this.p1 = p1.getClone();
 			this.p2 = p2.getClone();
 			this.map = map;
@@ -75,8 +75,8 @@ public class RoundRobinMT {
 	}
 
 	static class Result {
-		Controller p1;
-		Controller p2;
+		PiersController p1;
+		PiersController p2;
 		String map;
 		int trialID;
 		double score;
@@ -109,17 +109,17 @@ public class RoundRobinMT {
 		String[] maps = { "data/maps/level1.txt", "data/maps/level2.txt", "data/maps/level3.txt",
 				"data/maps/level4.txt", "data/maps/level5.txt", "data/maps/level6.txt", "data/maps/level1E.txt" };
 
-		Controller[] player1List = new Controller[] { new MCTS(true, 500, 10, 45), new MCTS(true, 75, 3, 15),
+		PiersController[] player1List = new PiersController[] { new MCTS(true, 500, 10, 45), new MCTS(true, 75, 3, 15),
 				new MCTS(true, 200), new VariGA(true, 500), new GAController(true), new RandomController() };
 
-		Controller[] player2List = new Controller[] { new MCTS(false, 500, 10, 45), new MCTS(false, 75, 3, 15),
+		PiersController[] player2List = new PiersController[] { new MCTS(false, 500, 10, 45), new MCTS(false, 75, 3, 15),
 				new MCTS(false, 200), new VariGA(false, 500), new GAController(true), new RandomController() };
 
 		while (!Thread.interrupted()) {
 			System.out.println("generating matchups");
 			List<Matchup> tasks = new ArrayList<>();
-			for (Controller p1 : player1List) {
-				for (Controller p2 : player2List) {
+			for (PiersController p1 : player1List) {
+				for (PiersController p2 : player2List) {
 					for (String map : maps) {
 						for (int trial = 0; trial < REPEATS; trial++) {
 							tasks.add(new Matchup(p1, p2, map, trial));

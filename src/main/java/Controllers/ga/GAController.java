@@ -1,6 +1,6 @@
 package Controllers.ga;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import api.Action;
 import api.GameState;
 
@@ -9,7 +9,7 @@ import api.GameState;
  *
  * Created by jwalto on 01/07/2015.
  */
-public class GAController extends Controller {
+public class GAController extends PiersController {
 	private static final Integer GENERATIONS = 10;
 	private static final MacroAction NOOP = new MacroAction(Action.NOOP, GAConstants.MACRO_ACTION_LENGTH);
 
@@ -67,7 +67,7 @@ public class GAController extends Controller {
 	}
 
 	@Override
-	public Controller getClone() {
+	public PiersController getClone() {
 		GAController other = new GAController(first);
 		return other;
 	}

@@ -1,8 +1,8 @@
 package Controllers.mcts;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 
-public class SimpleMCTS extends Controller {
+public class SimpleMCTS extends PiersController {
 
 	public void backup() {
 

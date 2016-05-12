@@ -3,7 +3,7 @@ package Controllers.enhanced;
 import java.util.List;
 import java.util.Random;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import FastGame.FastAction;
 import api.Action;
 import api.GameState;
@@ -11,7 +11,7 @@ import api.GameState;
 /**
  * Created by pwillic on 23/06/2015.
  */
-public class PredictorMCTSSmallReturns extends Controller {
+public class PredictorMCTSSmallReturns extends PiersController {
 
 	private class MCTSNode {
 

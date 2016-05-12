@@ -9,7 +9,7 @@ import api.GameState;
 /**
  * Created by pwillic on 30/06/2015.
  */
-public class RandomController extends Controller {
+public class RandomController extends PiersController {
 	private Random random;
 
 	public RandomController() {

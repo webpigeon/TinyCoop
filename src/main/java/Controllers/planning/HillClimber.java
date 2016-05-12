@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import Controllers.enhanced.Predictor;
 import api.Action;
 import api.GameState;
@@ -14,7 +14,7 @@ import api.GameState;
  *
  * Kinda HSPish but not really.
  */
-public class HillClimber extends Controller {
+public class HillClimber extends PiersController {
 	private final Heuristic herustic;
 	private final Predictor predictor;
 	private final Random random;

@@ -1,14 +1,14 @@
 package Controllers.enhanced;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import api.Action;
 import api.GameState;
 
 public class NestedControllerPredictor implements Predictor {
-	private Controller controller;
+	private PiersController controller;
 	private int agentID;
 
-	public NestedControllerPredictor(Controller controller) {
+	public NestedControllerPredictor(PiersController controller) {
 		this.controller = controller;
 	}
 

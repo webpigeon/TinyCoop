@@ -3,7 +3,7 @@ package runner.experiment;
 import java.util.List;
 import java.util.Random;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import Controllers.MCTS;
 import Controllers.RandomController;
 import Controllers.enhanced.NestedControllerPredictor;
@@ -17,17 +17,17 @@ public class Utils {
 	private static final Integer TREE_SIZE = 5;
 	private static final Integer ROLLOUT_LENGTH = 250;
 
-	public static Controller buildMCTS(boolean first) {
+	public static PiersController buildMCTS(boolean first) {
 		return new MCTS(first, NUM_ROLLOUTS, TREE_SIZE, ROLLOUT_LENGTH);
 	}
 
-	public static Controller buildMCTSPredictor() {
+	public static PiersController buildMCTSPredictor() {
 		// predicting a MCTSPredictor(Random)
-		Controller predicted = buildPredictor(new RandomController(), "inner");
+		PiersController predicted = buildPredictor(new RandomController(), "inner");
 		return buildPredictor(predicted, "2MCTS");
 	}
 
-	public static PredictorMCTS buildPredictor(Controller nested, String tag) {
+	public static PredictorMCTS buildPredictor(PiersController nested, String tag) {
 		NestedControllerPredictor p = new NestedControllerPredictor(nested);
 		PredictorMCTS host = new PredictorMCTS(NUM_ROLLOUTS, TREE_SIZE, ROLLOUT_LENGTH, p);
 		host.tag = "#[" + tag + "]#";
@@ -38,9 +38,9 @@ public class Utils {
 		return new RandomPredictor();
 	}
 
-	public static Controller buildRandomPredictor() {
+	public static PiersController buildRandomPredictor() {
 		// predicting a random controller
-		Controller predicted = new RandomController();
+		PiersController predicted = new RandomController();
 		return buildPredictor(predicted, "RND");
 	}
 

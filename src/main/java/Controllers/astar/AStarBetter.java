@@ -2,7 +2,7 @@ package Controllers.astar;
 
 import java.util.List;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import FastGame.FastAction;
 import api.Action;
 import api.GameState;
@@ -10,7 +10,7 @@ import api.GameState;
 /**
  * Created by jwalto on 02/07/2015.
  */
-public class AStarBetter extends Controller {
+public class AStarBetter extends PiersController {
 	private PathFind find;
 	private boolean isFirst;
 	private MovePair lastMove;
@@ -46,7 +46,7 @@ public class AStarBetter extends Controller {
 	}
 
 	@Override
-	public Controller getClone() {
+	public PiersController getClone() {
 		AStarBetter btr = new AStarBetter(isFirst);
 		btr.lastMove = lastMove;
 		return btr;

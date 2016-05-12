@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import Controllers.Controller;
+import Controllers.PiersController;
 import Controllers.enhanced.Predictor;
 import api.Action;
 import api.GameState;
@@ -16,7 +16,7 @@ import api.ObservableGameState;
 /**
  * Online QLearner, learning using the forward model and a predictor
  */
-public class Qlearning extends Controller {
+public class Qlearning extends PiersController {
 	private static class Transision {
 		Point p0;
 		Point p1;

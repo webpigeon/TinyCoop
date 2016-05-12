@@ -3,8 +3,10 @@ package runner.cli;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Controllers.PiersController;
 import api.controller.Controller;
 import utils.AgentFactory;
+import utils.LegacyAgentFactory;
 
 public class ControllerUtils {
 	private Pattern p;
@@ -33,6 +35,27 @@ public class ControllerUtils {
 
 		throw new IllegalArgumentException("no such agent! " + name);
 	}
+	
+	public PiersController buildLegacyController(int pid, String name, String[] args) {
+
+		if ("mcts".equals(name)) {
+			return LegacyAgentFactory.buildStandardMCTS();
+		}
+
+		if ("random".equals(name)) {
+			return LegacyAgentFactory.buildRandomAgent();
+		}
+
+		if ("baisRandom".equals(name)) {
+			return LegacyAgentFactory.buildBiasRandomAgent();
+		}
+
+		if ("pathfinder".equals(name)) {
+			return LegacyAgentFactory.buildFlareFollower();
+		}
+
+		throw new IllegalArgumentException("no such agent! " + name);
+	}
 
 	public Controller parseDescription(int pid, String description) {
 		Matcher m = p.matcher(description);
@@ -45,6 +68,22 @@ public class ControllerUtils {
 				args = argStr.split(";");
 			}
 			return buildController(pid, name, args);
+		}
+
+		throw new IllegalArgumentException("invalid controller spec");
+	}
+	
+	public PiersController parseLegacyDescription(int pid, String description) {
+		Matcher m = p.matcher(description);
+		if (m.matches()) {
+			String name = m.group(1);
+
+			String argStr = m.group(2);
+			String[] args = new String[0];
+			if (argStr != null) {
+				args = argStr.split(";");
+			}
+			return buildLegacyController(pid, name, args);
 		}
 
 		throw new IllegalArgumentException("invalid controller spec");

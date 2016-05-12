@@ -59,7 +59,7 @@ public class GameManager implements Runnable {
 		
 		//this is used to keep track of restarts
 		try (
-				OutputStream out = new FileOutputStream(String.format("results-%s", runID), true);
+				OutputStream out = new FileOutputStream(String.format("results-%s.csv", runID), true);
 				){
 			GenerateCSV csv = new GenerateCSV(out);
 			csv.writeLine("gameID","levelID","actionSet","player1","player2","result","score","ticks","wallTime","userTime","runID");
