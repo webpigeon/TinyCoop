@@ -256,8 +256,8 @@ public class MCTS extends PiersController {
 
 		long endTime = System.nanoTime();
 
-		System.out.println(
-				"MCTS done: " + root.getNumberOfVisits() + " deepest node: " + deepest + " " + (endTime - startTime));
+		//System.out.println(
+		//		"MCTS done: " + root.getNumberOfVisits() + " deepest node: " + deepest + " " + (endTime - startTime));
 
 		// System.out.println(root.getChildrenExpandedSoFar() + "Nodes: " +
 		// root.getNodesInTree());

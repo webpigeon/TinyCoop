@@ -1,6 +1,7 @@
 package utils;
 
 import Controllers.FollowTheFlare;
+import Controllers.MCTS;
 import Controllers.PiersController;
 import Controllers.RandomController;
 import Controllers.SortOfRandomController;
@@ -16,6 +17,10 @@ public class LegacyAgentFactory {
 	private static final Integer NUM_ITERS = 500;
 	private static final Integer UCT_BORDER = 10;
 	private static final Integer NUM_ROLLOUTS = 25;
+	
+	public static MCTS buildStandardPiersMCTS(boolean isFirst) {
+		return new MCTS(isFirst, NUM_ITERS, UCT_BORDER, NUM_ROLLOUTS);
+	}
 	
 	public static PredictorMCTS buildStandardMCTS() {
 		Predictor random = new RandomPredictor();

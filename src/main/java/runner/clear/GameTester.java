@@ -23,11 +23,7 @@ public class GameTester {
 	private static final Integer NUM_RUNS = 1;
 
 	public static GameSetup buildSetup(Controller p1, Controller p2, GameLevel level) {
-		GameSetup setup = new GameSetup();
-		setup.p1 = p1;
-		setup.p2 = p2;
-		setup.level = level;
-		return setup;
+		return new GameSetup(p1.getFriendlyName(), p2.getFriendlyName(), level.getLevelName(), level.getActionSetName());
 	}
 
 	public static void main(String[] args) throws IOException {

@@ -16,8 +16,8 @@ class Door extends AbstractGameObject {
 	}
 
 	@Override
-	public int getType() {
-		return ObjectTypes.DOOR;
+	public ObjectType getType() {
+		return ObjectType.DOOR;
 	}
 
 	@Override

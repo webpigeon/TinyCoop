@@ -1,8 +1,5 @@
 package gamesrc.level;
 
-import static FastGame.ObjectTypes.OBJECT_COLOURS;
-import static FastGame.ObjectTypes.TEXT_COLOURS;
-
 import java.awt.Graphics;
 
 import api.GameObject;
@@ -25,7 +22,7 @@ abstract class AbstractGameObject implements GameObject {
 	 * @see gamesrc.GameObjectI#getType()
 	 */
 	@Override
-	public abstract int getType();
+	public abstract ObjectType getType();
 
 	/*
 	 * (non-Javadoc)
@@ -54,10 +51,11 @@ abstract class AbstractGameObject implements GameObject {
 	}
 
 	public void paint(int x, int y, int gridSize, ObservableGameState game, Graphics g) {
-		g.setColor(OBJECT_COLOURS[getType()]);
+		ObjectType type = getType();
+		g.setColor(type.getObjectColor());
 		g.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
 
-		g.setColor(TEXT_COLOURS[getType()]);
+		g.setColor(type.getTextColor());
 		g.drawString("" + getSignal(), x * gridSize + gridSize / 2, (y * gridSize) + gridSize / 2);
 	}
 }

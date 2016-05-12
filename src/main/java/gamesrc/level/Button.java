@@ -1,6 +1,5 @@
 package gamesrc.level;
 
-import FastGame.ObjectTypes;
 import gamesrc.SimpleGame;
 
 class Button extends AbstractGameObject {
@@ -16,8 +15,8 @@ class Button extends AbstractGameObject {
 	}
 
 	@Override
-	public int getType() {
-		return ObjectTypes.BUTTON;
+	public ObjectType getType() {
+		return ObjectType.BUTTON;
 	}
 
 	@Override

@@ -1,10 +1,12 @@
 package api;
 
+import gamesrc.level.ObjectType;
+
 public interface GameObject {
 
 	int getSignal();
 
-	int getType();
+	ObjectType getType();
 
 	boolean isWalkable(ObservableGameState state, int playerId);
 

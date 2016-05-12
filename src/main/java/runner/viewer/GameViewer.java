@@ -17,6 +17,7 @@ import gamesrc.level.LevelParser;
 import runner.experiment.GameResult;
 import runner.experiment.GameSetup;
 import utils.AgentFactory;
+import utils.LegacyAgentFactory;
 
 public class GameViewer implements Callable<GameResult> {
 	private static final Integer SLEEP_TIME = 60 / 1;
@@ -29,7 +30,7 @@ public class GameViewer implements Callable<GameResult> {
 				// "data/norm_maps/airlock.txt",
 				// "data/norm_maps/butterfly.txt",
 				// "data/norm_maps/single_door.txt",
-				"data/norm_maps/empty.txt",
+				"data/norm_maps/cloverleaf.txt",
 				// "data/norm_maps/mirror_lock.txt",
 				// "data/norm_maps/maze.txt"
 		};
@@ -45,7 +46,7 @@ public class GameViewer implements Callable<GameResult> {
 				}
 
 				GameLevel level = LevelParser.buildParser(map);
-				level.setLegalMoves("simple", Filters.getAllRelativeActions());
+				level.setLegalMoves("simple", Filters.getBasicActions());
 
 				// Controller p1 = new WASDController();
 				// Controller p2 = new PassiveRefindController();
@@ -53,8 +54,8 @@ public class GameViewer implements Callable<GameResult> {
 				// Controller p1 = Utils.buildPredictor(new FollowTheFlare(),
 				// "pmcts");
 
-				Controller p1 = AgentFactory.buildStandardMCTS();
-				Controller p2 = AgentFactory.buildStandardMCTS();
+				Controller p1 = LegacyAgentFactory.buildStandardPiersMCTS(true);
+				Controller p2 = LegacyAgentFactory.buildStandardPiersMCTS(false);
 
 				GameViewer viewer = new GameViewer(level, p1, p2);
 				GameResult r = viewer.call();

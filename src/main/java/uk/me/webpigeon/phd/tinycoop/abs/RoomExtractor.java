@@ -3,26 +3,26 @@ package uk.me.webpigeon.phd.tinycoop.abs;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import api.GameObject;
 import gamesrc.Filters;
 import gamesrc.SimpleGame;
 import gamesrc.level.GameLevel;
 import gamesrc.level.LevelParser;
-import runner.clear.GameEngine;
 
 public class RoomExtractor {
 	private final SimpleGame game;
 	private final int[][] regions;
 	private int region;
-	private final List<Object> objects;
+	private final List<ObjectData> objects;
+	private final List<RegionLink> links;
 
 	public static void main(String[] args) throws IOException {
-		GameLevel levelRel = LevelParser.buildParser("data/norm_maps/maze.txt");
+		GameLevel levelRel = LevelParser.buildParser("data/norm_maps/cloverleaf.txt");
 		levelRel.setLegalMoves("relative", Filters.getAllRelativeActions());
 		
 		RoomExtractor room = new RoomExtractor(new SimpleGame(levelRel));
@@ -33,6 +33,7 @@ public class RoomExtractor {
 		this.game = game;
 		this.regions = new int[game.getWidth()][game.getHeight()];
 		this.objects = new ArrayList<>();
+		this.links = new ArrayList<>();
 		this.region = 1;
 	}
 	
@@ -52,9 +53,19 @@ public class RoomExtractor {
 			}
 		}
 		
-		printRegionGraph();
-		System.out.println(extractRegions());
+		processObjects();
+		printRegionLabels();
+		Map<Integer, List<Point>> regions = extractRegions();
+		
+		//print out region data
+		for (Entry<Integer, List<Point>> region : regions.entrySet()) {
+			Integer type = region.getKey();
+			List<Point> points = region.getValue();
+			System.out.println(String.format("%d: %d cells", type, points.size()));
+		}
+		
 		System.out.println(objects);
+		System.out.println(links);
 	}
 	
 	public Map<Integer, List<Point>> extractRegions() {
@@ -106,7 +117,34 @@ public class RoomExtractor {
 		recusiveFloodFill(new Point(start.x, start.y - 1), target, replacement);
 	}
 	
-	public void printRegionGraph(){
+	public void processObjects() {
+		
+		for (ObjectData data : objects) {
+			
+			switch (data.type){
+				//A door connects two (or more) regions
+				case DOOR:
+					processDoor(data.x, data.y, data.signal);
+					
+				//We don't care about this object type
+				default:
+			}
+			
+		}
+		
+	}
+	
+	private void processDoor(int x, int y, int signal) {
+		RegionLink link = new RegionLink();
+		link.signal = signal;
+		link.top = regions[x][y-1];
+		link.bottom = regions[x][y+1];
+		link.left = regions[x-1][y];
+		link.right = regions[x+1][y];
+		links.add(link);
+	}
+	
+	public void printRegionLabels(){
 		for (int y = 0; y<game.getHeight(); y++) {
 			for (int x = 0; x<game.getWidth(); x++) {
 				System.out.print(regions[x][y]+" ");

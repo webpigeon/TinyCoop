@@ -42,7 +42,7 @@ public class MemoryGameRecord implements GameRecord {
 	private int tick;
 
 	public MemoryGameRecord(GameSetup setup) {
-		this(setup.getPlayer0Name(), setup.getPlayer1Name(), setup.getLevelName(), setup.getActionSetName());
+		this(setup.p1, setup.p2, setup.level, setup.actionSet);
 	}
 
 	public MemoryGameRecord(String player1, String player2, String level, String actionSet) {

@@ -45,7 +45,7 @@ public class TraceGameRecord implements GameRecord {
 	private GenerateCSV csv;
 
 	public TraceGameRecord(GameSetup setup) throws FileNotFoundException {
-		this(setup.getPlayer0Name(), setup.getPlayer1Name(), setup.getLevelName(), setup.getActionSetName());
+		this(setup.p1, setup.p2, setup.level, setup.actionSet);
 	}
 
 	public TraceGameRecord(String player1, String player2, String level, String actionSet)

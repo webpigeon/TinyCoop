@@ -1,8 +1,6 @@
 package gamesrc.level;
 
-import static FastGame.ObjectTypes.OBJECT_COLOURS;
-import static FastGame.ObjectTypes.TEXT_COLOURS;
-
+import java.awt.Color;
 import java.awt.Graphics;
 
 import FastGame.ObjectTypes;
@@ -28,8 +26,8 @@ class TrapDoor extends AbstractGameObject {
 	}
 
 	@Override
-	public int getType() {
-		return ObjectTypes.DOOR;
+	public ObjectType getType() {
+		return ObjectType.DOOR;
 	}
 
 	@Override
@@ -44,14 +42,17 @@ class TrapDoor extends AbstractGameObject {
 
 	@Override
 	public void paint(int x, int y, int gridSize, ObservableGameState game, Graphics g) {
-		g.setColor(OBJECT_COLOURS[getType()]);
+		ObjectType type = getType();
+		Color objColour = type.getObjectColor();
+		
+		g.setColor(type.getObjectColor());
 		if (game.isSignalHigh(getSignal())) {
 			g.drawRect(x * gridSize, y * gridSize, gridSize, gridSize);
 		} else {
 			g.fillRect(x * gridSize, y * gridSize, gridSize, gridSize);
 		}
 
-		g.setColor(TEXT_COLOURS[getType()]);
+		g.setColor(type.getTextColor());
 		g.drawString("" + getSignal(), x * gridSize + gridSize / 2, (y * gridSize) + gridSize / 2);
 	}
 }

@@ -16,8 +16,8 @@ class Goal extends AbstractGameObject {
 	}
 
 	@Override
-	public int getType() {
-		return ObjectTypes.GOAL;
+	public ObjectType getType() {
+		return ObjectType.GOAL;
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import api.controller.GameObservation;
 import gamesrc.SimpleGame;
 import runner.tinycoop.GameSetup;
 
+@Deprecated
 public class GameEngine implements Callable<GameRecord> {
 	private final GameSetup setup;
 	private final int maxTicks;
@@ -23,12 +24,15 @@ public class GameEngine implements Callable<GameRecord> {
 
 	@Override
 	public GameRecord call() {
-
+		if (1==1) {
+			return null;
+		}
+		
 		try {
 			// work on copies to avoid problems
-			SimpleGame runner = setup.buildGame();
-			Controller p1Real = setup.getPlayer0();
-			Controller p2Real = setup.getPlayer1();
+			SimpleGame runner = null;
+			Controller p1Real = null;
+			Controller p2Real = null;
 
 			// phase 0: initialisation
 			int ticks = 0;

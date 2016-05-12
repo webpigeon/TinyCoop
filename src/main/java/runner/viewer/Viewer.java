@@ -2,8 +2,6 @@ package runner.viewer;
 
 import static FastGame.GroundTypes.GROUND;
 import static FastGame.GroundTypes.WALL;
-import static FastGame.ObjectTypes.OBJECT_COLOURS;
-import static FastGame.ObjectTypes.TEXT_COLOURS;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,6 +14,7 @@ import api.Flare;
 import api.GameObject;
 import api.ObservableGameState;
 import gamesrc.SimpleGame;
+import gamesrc.level.ObjectType;
 
 /**
  * Created by pwillic on 25/06/2015.
@@ -59,15 +58,17 @@ public class Viewer extends JComponent {
 				GameObject object = game.getObject(x, y);
 				if (object != null) {
 					switch (object.getType()) {
-					case 3:
+					case DOOR:
 						paintDoor(g, game, object, x, y);
 						break;
-					case 2:
-					case 4:
+					case AGENT:
+					case BUTTON:
+					case GOAL:
 						paintObject(g, game, object, x, y);
 						break;
 					default:
-						System.err.println("something blew up!");
+						System.err.println("something blew up!" + object.getType());
+						paintObject(g, game, object, x, y);
 					}
 				}
 			}
@@ -134,22 +135,26 @@ public class Viewer extends JComponent {
 	}
 
 	private void paintDoor(Graphics g, ObservableGameState state, GameObject o, int x, int y) {
-		g.setColor(OBJECT_COLOURS[o.getType()]);
+		ObjectType type = o.getType();
+		
+		g.setColor(type.getObjectColor());
 		if (game.isSignalHigh(o.getSignal())) {
 			g.drawRect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
 		} else {
 			g.fillRect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
 		}
 
-		g.setColor(TEXT_COLOURS[o.getType()]);
+		g.setColor(type.getTextColor());
 		g.drawString("" + o.getSignal(), x * GRID_SIZE + GRID_SIZE / 2, (y * GRID_SIZE) + GRID_SIZE / 2);
 	}
 
 	private void paintObject(Graphics g, ObservableGameState state, GameObject o, int x, int y) {
-		g.setColor(OBJECT_COLOURS[o.getType()]);
+		ObjectType type = o.getType();
+		
+		g.setColor(type.getObjectColor());
 		g.fillRect(x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
 
-		g.setColor(TEXT_COLOURS[o.getType()]);
+		g.setColor(type.getTextColor());
 		g.drawString("" + o.getSignal(), x * GRID_SIZE + GRID_SIZE / 2, (y * GRID_SIZE) + GRID_SIZE / 2);
 	}
 

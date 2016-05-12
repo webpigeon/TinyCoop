@@ -55,15 +55,17 @@ public class GraphCounter {
 
 		String[] levelStr = new String[] {
 				// normalised maps
-				"data/norm_maps/airlock.txt",
+				/*"data/norm_maps/airlock.txt",
 				// "data/norm_maps/butterfly.txt",
 				"data/norm_maps/empty.txt", "data/norm_maps/maze.txt", "data/norm_maps/mirror_lock.txt",
-				"data/norm_maps/single_door.txt",
+				"data/norm_maps/single_door.txt",*/
 
 				// non-normalised maps
-				"data/maps/airlock.txt", "data/maps/butterflies.txt", "data/maps/duellock.txt",
+				/*"data/maps/airlock.txt", "data/maps/butterflies.txt", "data/maps/duellock.txt",
 				"data/maps/extended_side.txt", "data/maps/pathfinding.txt", "data/maps/side_by_side.txt",
-				"data/maps/symmetric_single_door.txt" };
+				"data/maps/symmetric_single_door.txt"*/
+				"data/norm_maps/cloverleaf.txt"
+		};
 
 		for (String level : levelStr) {
 
