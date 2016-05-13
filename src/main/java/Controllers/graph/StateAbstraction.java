@@ -1,5 +1,7 @@
 package Controllers.graph;
 
-public interface StateAbstraction {
+import java.io.Serializable;
+
+public interface StateAbstraction extends Serializable {
 
 }

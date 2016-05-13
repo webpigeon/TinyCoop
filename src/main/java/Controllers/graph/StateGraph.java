@@ -1,5 +1,6 @@
 package Controllers.graph;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.Set;
 
 import api.Action;
 
-public class StateGraph {
+public class StateGraph implements Serializable {
 	private final List<StateAbstraction> vertices;
 	private final List<Arc> arcs;
 	private final Set<Arc> noops;

@@ -134,7 +134,7 @@ public class GraphCounter {
 	}
 
 	public static StateAbstraction makeAbstraction(ObservableGameState state) {
-		return new FullState(state);
+		return new PosAndVisitList(state);
 	}
 
 }
