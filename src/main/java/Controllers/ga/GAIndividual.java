@@ -3,8 +3,8 @@ package Controllers.ga;
 import java.util.List;
 import java.util.Random;
 
-import api.Action;
-import api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
 
 /**
  * PTSP-Competition Created by Diego Perez, University of Essex. Date: 17/10/12

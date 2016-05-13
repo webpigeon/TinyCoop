@@ -3,10 +3,10 @@ package runner.experiment;
 import java.io.IOException;
 
 import FastGame.CoopGame;
-import gamesrc.Filters;
-import gamesrc.SimpleGame;
-import gamesrc.level.GameLevel;
-import gamesrc.level.LevelParser;
+import uk.me.webpigeon.phd.tinycoop.engine.Filters;
+import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
+import uk.me.webpigeon.phd.tinycoop.engine.level.GameLevel;
+import uk.me.webpigeon.phd.tinycoop.engine.level.LevelParser;
 
 public class Benchmark {
 

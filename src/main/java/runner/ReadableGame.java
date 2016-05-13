@@ -12,12 +12,12 @@ import javax.swing.JFrame;
 import Controllers.PiersController;
 import Controllers.PassiveController;
 import Controllers.SortOfRandomController;
-import api.Action;
-import api.GameState;
-import gamesrc.SimpleGame;
-import gamesrc.level.GameLevel;
-import gamesrc.level.LevelParser;
 import runner.viewer.Viewer;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
+import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
+import uk.me.webpigeon.phd.tinycoop.engine.level.GameLevel;
+import uk.me.webpigeon.phd.tinycoop.engine.level.LevelParser;
 
 public class ReadableGame {
 

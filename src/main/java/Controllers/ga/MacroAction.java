@@ -1,6 +1,6 @@
 package Controllers.ga;
 
-import api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
 
 /**
  * PTSP-Competition Created by Diego Perez, University of Essex. Date: 16/10/12

@@ -1,12 +1,12 @@
 package utils;
 
-import api.controller.Controller;
-import uk.me.webpigeon.controllers.BaisRandomAgent;
-import uk.me.webpigeon.controllers.FlareFollowingAgent;
-import uk.me.webpigeon.controllers.RandomAgent;
-import uk.me.webpigeon.controllers.mcts.MCTSAgent;
-import uk.me.webpigeon.controllers.mcts.MCTSPredictorAgent;
-import uk.me.webpigeon.controllers.prediction.Policy;
+import uk.me.webpigeon.phd.tinycoop.api.controller.Controller;
+import uk.me.webpigeon.phd.tinycoop.controllers.BaisRandomAgent;
+import uk.me.webpigeon.phd.tinycoop.controllers.FlareFollowingAgent;
+import uk.me.webpigeon.phd.tinycoop.controllers.RandomAgent;
+import uk.me.webpigeon.phd.tinycoop.controllers.mcts.MCTSAgent;
+import uk.me.webpigeon.phd.tinycoop.controllers.mcts.MCTSPredictorAgent;
+import uk.me.webpigeon.phd.tinycoop.controllers.prediction.Policy;
 
 public class AgentFactory {
 

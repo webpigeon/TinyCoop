@@ -9,9 +9,9 @@ import java.util.Random;
 
 import Controllers.PiersController;
 import Controllers.enhanced.Predictor;
-import api.Action;
-import api.GameState;
-import api.ObservableGameState;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.ObservableGameState;
 
 /**
  * Online QLearner, learning using the forward model and a predictor

@@ -18,9 +18,9 @@ import Controllers.PiersController;
 import Controllers.PassiveRefindController;
 import Controllers.RandomController;
 import Controllers.SortOfRandomController;
-import gamesrc.Filters;
-import gamesrc.level.GameLevel;
-import gamesrc.level.LevelParser;
+import uk.me.webpigeon.phd.tinycoop.engine.Filters;
+import uk.me.webpigeon.phd.tinycoop.engine.level.GameLevel;
+import uk.me.webpigeon.phd.tinycoop.engine.level.LevelParser;
 import utils.GenerateCSV;
 import utils.StatSummary;
 

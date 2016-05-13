@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import api.Action;
-import api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
 
 /**
  * An implementation of A* for path finding

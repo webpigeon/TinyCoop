@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import Controllers.PiersController;
-import api.Action;
-import api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
 
 /**
  * Performs random rollouts and selects the move which had the highest payout

@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import api.Action;
-import api.GameState;
-import api.ObservableGameState;
 import runner.tinycoop.GameSetup;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.ObservableGameState;
 
 public class MemoryGameRecord implements GameRecord {
 	static class MoveTimer {

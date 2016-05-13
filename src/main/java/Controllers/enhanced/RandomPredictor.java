@@ -3,8 +3,8 @@ package Controllers.enhanced;
 import java.util.List;
 import java.util.Random;
 
-import api.Action;
-import api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
 
 public class RandomPredictor implements Predictor {
 

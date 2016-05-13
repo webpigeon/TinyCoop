@@ -1,8 +1,8 @@
 package Controllers.enhanced;
 
 import Controllers.PiersController;
-import api.Action;
-import api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
 
 public class NestedControllerPredictor implements Predictor {
 	private PiersController controller;

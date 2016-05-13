@@ -1,6 +1,6 @@
 package Controllers.planning;
 
-import api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
 
 /**
  * Heuristic which returns the current state's value according to the game.

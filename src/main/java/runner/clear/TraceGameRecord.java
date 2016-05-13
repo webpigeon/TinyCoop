@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import api.Action;
-import api.ObservableGameState;
 import runner.tinycoop.GameSetup;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.ObservableGameState;
 import utils.GameTimer;
 import utils.GenerateCSV;
 

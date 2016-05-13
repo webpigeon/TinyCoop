@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import api.Action;
-import api.ObservableGameState;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.ObservableGameState;
 
 /**
  * An implementation of A* for path finding

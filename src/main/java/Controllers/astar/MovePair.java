@@ -1,6 +1,6 @@
 package Controllers.astar;
 
-import api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
 
 /**
  * Created by jwalto on 02/07/2015.

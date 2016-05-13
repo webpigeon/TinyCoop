@@ -17,9 +17,9 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
-import api.Action;
-import api.GameState;
-import gamesrc.Filters;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
+import uk.me.webpigeon.phd.tinycoop.engine.Filters;
 
 /**
  * Created by pwillic on 25/06/2015.
@@ -237,6 +237,7 @@ public class CoopGame implements GameState {
 			this.maxID = maxID + 1;
 			this.maxIDs = maxIDs;
 			findAgents();
+			scanner.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

@@ -2,10 +2,10 @@ package Controllers;
 
 import java.awt.Point;
 
-import api.Action;
-import api.Flare;
-import api.GameState;
-import api.ObservableGameState;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.Flare;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.ObservableGameState;
 
 public class FollowTheFlare extends PiersController {
 

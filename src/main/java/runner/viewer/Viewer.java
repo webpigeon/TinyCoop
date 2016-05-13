@@ -10,11 +10,11 @@ import java.awt.Point;
 
 import javax.swing.JComponent;
 
-import api.Flare;
-import api.GameObject;
-import api.ObservableGameState;
-import gamesrc.SimpleGame;
-import gamesrc.level.ObjectType;
+import uk.me.webpigeon.phd.tinycoop.api.Flare;
+import uk.me.webpigeon.phd.tinycoop.api.GameObject;
+import uk.me.webpigeon.phd.tinycoop.api.ObservableGameState;
+import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
+import uk.me.webpigeon.phd.tinycoop.engine.level.ObjectType;
 
 /**
  * Created by pwillic on 25/06/2015.

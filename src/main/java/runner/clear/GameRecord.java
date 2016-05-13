@@ -1,7 +1,7 @@
 package runner.clear;
 
-import api.Action;
-import api.ObservableGameState;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.ObservableGameState;
 
 public interface GameRecord {
 

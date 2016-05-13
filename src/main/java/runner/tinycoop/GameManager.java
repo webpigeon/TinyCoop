@@ -1,10 +1,8 @@
 package runner.tinycoop;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -13,9 +11,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import api.controller.Controller;
-import gamesrc.SimpleGame;
-import gamesrc.level.GameLevel;
+import uk.me.webpigeon.phd.tinycoop.api.controller.Controller;
+import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
+import uk.me.webpigeon.phd.tinycoop.engine.level.GameLevel;
 import utils.GenerateCSV;
 
 /**

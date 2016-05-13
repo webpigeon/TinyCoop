@@ -2,8 +2,8 @@ package FastGame;
 
 import java.util.Objects;
 
-import api.Action;
-import api.ActionType;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.ActionType;
 
 /**
  * Created by pwillic on 23/06/2015.

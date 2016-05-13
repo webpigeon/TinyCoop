@@ -1,15 +1,15 @@
 package runner.clear;
 
 import java.io.IOException;
+
 import Controllers.PiersController;
-import api.GameState;
-import api.controller.Controller;
-import gamesrc.Filters;
-import gamesrc.level.GameLevel;
-import gamesrc.level.LevelParser;
 import runner.cli.ControllerUtils;
 import runner.tinycoop.GameManager;
 import runner.tinycoop.GameSetup;
+import uk.me.webpigeon.phd.tinycoop.api.controller.Controller;
+import uk.me.webpigeon.phd.tinycoop.engine.Filters;
+import uk.me.webpigeon.phd.tinycoop.engine.level.GameLevel;
+import uk.me.webpigeon.phd.tinycoop.engine.level.LevelParser;
 import utils.LegacyAgentFactory;
 
 public class CigParams {

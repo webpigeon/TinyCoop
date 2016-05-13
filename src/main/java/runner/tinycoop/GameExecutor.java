@@ -3,11 +3,11 @@ package runner.tinycoop;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
-import api.Action;
-import api.GameState;
-import api.controller.Controller;
-import gamesrc.SimpleGame;
 import runner.clear.Result;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.controller.Controller;
+import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
 import utils.GameTimer;
 
 public class GameExecutor implements Callable<GameResult> {

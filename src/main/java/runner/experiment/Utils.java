@@ -10,7 +10,7 @@ import Controllers.enhanced.NestedControllerPredictor;
 import Controllers.enhanced.Predictor;
 import Controllers.enhanced.PredictorMCTS;
 import Controllers.enhanced.RandomPredictor;
-import api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
 
 public class Utils {
 	private static final Integer NUM_ROLLOUTS = 20000;

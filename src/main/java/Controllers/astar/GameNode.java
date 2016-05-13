@@ -1,6 +1,6 @@
 package Controllers.astar;
 
-import api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
 
 /**
  * Created by jwalto on 02/07/2015.

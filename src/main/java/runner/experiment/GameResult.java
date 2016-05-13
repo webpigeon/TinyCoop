@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
 
 public class GameResult {
 

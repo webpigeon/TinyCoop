@@ -2,7 +2,7 @@ package Controllers.dummy;
 
 import java.util.List;
 
-import api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
 
 public class UCBGreedyRollout extends GreedyRollout {
 

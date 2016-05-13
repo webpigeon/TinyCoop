@@ -1,9 +1,9 @@
 package Controllers;
 
-import api.Action;
-import api.GameState;
-import api.controller.Controller;
-import api.controller.GameObservation;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.controller.Controller;
+import uk.me.webpigeon.phd.tinycoop.api.controller.GameObservation;
 
 /**
  * Created by pwillic on 23/06/2015.

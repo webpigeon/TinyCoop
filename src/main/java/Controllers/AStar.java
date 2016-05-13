@@ -13,7 +13,7 @@ import java.util.Queue;
 import FastGame.CoopGame;
 import FastGame.FastAction;
 import FastGame.ObjectTypes;
-import api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
 
 /**
  * An implementation of A* for path finding
@@ -35,6 +35,10 @@ public class AStar extends PiersController {
 
 		@Override
 		public boolean equals(Object o) {
+			if (o == null) {
+				return false;
+			}
+			
 			ActionNode other = (ActionNode) o;
 			return p1action.equals(other.p1action) && p2action.equals(other.p2action) && gameEquals(game, other.game);
 		}
@@ -64,9 +68,9 @@ public class AStar extends PiersController {
 		}
 	}
 
-	public static LinkedList<api.Action> buildPath(ActionNode current, Map<ActionNode, ActionNode> cameFrom,
+	public static LinkedList<uk.me.webpigeon.phd.tinycoop.api.Action> buildPath(ActionNode current, Map<ActionNode, ActionNode> cameFrom,
 			boolean first) {
-		LinkedList<api.Action> path = new LinkedList<>();
+		LinkedList<uk.me.webpigeon.phd.tinycoop.api.Action> path = new LinkedList<>();
 		if (first) {
 			path.addFirst(current.p1action);
 		} else {
@@ -163,7 +167,7 @@ public class AStar extends PiersController {
 		return goals;
 	}
 
-	public static Queue<api.Action> getPath(CoopGame game, ActionNode start, boolean isFirst) {
+	public static Queue<uk.me.webpigeon.phd.tinycoop.api.Action> getPath(CoopGame game, ActionNode start, boolean isFirst) {
 		int maxExpands = 25;
 
 		List<Point> goals = getGoals(game);
@@ -208,7 +212,7 @@ public class AStar extends PiersController {
 		}
 
 		// we didn't find a path
-		return new LinkedList<api.Action>();
+		return new LinkedList<uk.me.webpigeon.phd.tinycoop.api.Action>();
 	}
 
 	private boolean isFirst;

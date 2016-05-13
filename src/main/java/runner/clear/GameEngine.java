@@ -3,12 +3,12 @@ package runner.clear;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import api.Action;
-import api.GameState;
-import api.controller.Controller;
-import api.controller.GameObservation;
-import gamesrc.SimpleGame;
 import runner.tinycoop.GameSetup;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.controller.Controller;
+import uk.me.webpigeon.phd.tinycoop.api.controller.GameObservation;
+import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
 
 @Deprecated
 public class GameEngine implements Callable<GameRecord> {

@@ -1,12 +1,12 @@
 package runner.tinycoop;
 
-import api.GameState;
-import api.controller.Controller;
-import gamesrc.Filters;
-import gamesrc.SimpleGame;
-import gamesrc.level.GameLevel;
-import gamesrc.level.LevelParser;
 import runner.cli.ControllerUtils;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.controller.Controller;
+import uk.me.webpigeon.phd.tinycoop.engine.Filters;
+import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
+import uk.me.webpigeon.phd.tinycoop.engine.level.GameLevel;
+import uk.me.webpigeon.phd.tinycoop.engine.level.LevelParser;
 
 /**
  * Play a single game on a single map

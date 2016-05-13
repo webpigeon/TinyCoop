@@ -5,10 +5,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import Controllers.astar.PathFinder;
-import api.Action;
-import api.Flare;
-import api.GameState;
-import api.ObservableGameState;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.Flare;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.ObservableGameState;
 
 /**
  * This agent will do nothing unless the other agent uses flare, then it will

@@ -16,9 +16,9 @@ import java.util.concurrent.Future;
 import Controllers.MCTS;
 import Controllers.enhanced.PredictorMCTS;
 import Controllers.enhanced.RandomPredictor;
-import gamesrc.Filters;
-import gamesrc.level.GameLevel;
-import gamesrc.level.LevelParser;
+import uk.me.webpigeon.phd.tinycoop.engine.Filters;
+import uk.me.webpigeon.phd.tinycoop.engine.level.GameLevel;
+import uk.me.webpigeon.phd.tinycoop.engine.level.LevelParser;
 import utils.StatSummary;
 
 public class DebugTheThing {

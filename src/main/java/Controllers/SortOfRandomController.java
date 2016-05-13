@@ -3,9 +3,9 @@ package Controllers;
 import java.util.List;
 import java.util.Random;
 
-import api.Action;
-import api.GameState;
-import gamesrc.Filters;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
+import uk.me.webpigeon.phd.tinycoop.engine.Filters;
 
 /**
  * Created by pwillic on 30/06/2015.

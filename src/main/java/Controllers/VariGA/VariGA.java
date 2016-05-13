@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import Controllers.PiersController;
-import api.Action;
-import api.GameState;
 import runner.experiment.Utils;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
 
 class ActionSequence {
 	private static Random random = new Random();

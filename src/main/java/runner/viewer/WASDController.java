@@ -8,10 +8,10 @@ import java.awt.event.MouseListener;
 import java.util.List;
 
 import Controllers.PiersController;
-import api.Action;
-import api.GameState;
-import gamesrc.Filters;
-import gamesrc.actions.absolute.AbsoluteFlare;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
+import uk.me.webpigeon.phd.tinycoop.engine.Filters;
+import uk.me.webpigeon.phd.tinycoop.engine.actions.absolute.AbsoluteFlare;
 
 /**
  * Created by pwillic on 23/06/2015.

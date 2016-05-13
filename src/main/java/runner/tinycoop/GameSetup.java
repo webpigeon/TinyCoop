@@ -2,10 +2,6 @@ package runner.tinycoop;
 
 import java.util.UUID;
 
-import api.controller.Controller;
-import gamesrc.SimpleGame;
-import gamesrc.level.GameLevel;
-
 public class GameSetup {
 	public final UUID id;
 	public final String p1;

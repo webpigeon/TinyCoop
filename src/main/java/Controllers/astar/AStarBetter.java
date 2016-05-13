@@ -4,8 +4,8 @@ import java.util.List;
 
 import Controllers.PiersController;
 import FastGame.FastAction;
-import api.Action;
-import api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
 
 /**
  * Created by jwalto on 02/07/2015.

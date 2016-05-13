@@ -6,8 +6,8 @@ import java.util.Random;
 
 import Controllers.PiersController;
 import Controllers.enhanced.Predictor;
-import api.Action;
-import api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
 
 /**
  * Basic hill climber.

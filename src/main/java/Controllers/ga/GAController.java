@@ -1,8 +1,8 @@
 package Controllers.ga;
 
 import Controllers.PiersController;
-import api.Action;
-import api.GameState;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameState;
 
 /**
  * GA controller for CoopGame, modified from PTSP.
