@@ -2,15 +2,19 @@ package uk.me.webpigeon.phd.gvgai;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import core.game.ForwardModel;
 import ontology.Types;
-import tools.Vector2d;
 import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.controller.GameObservation;
+import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,14 +28,15 @@ public class StateObservation {
      * This is the model of the game, used to apply an action and
      * get to the next state. This model MUST NOT be public.
      */
-    protected ForwardModel model;
+    protected GameObservation model;
+    protected int player;
 
     /**
      * Constructor for StateObservation. Requires a forward model
      *
      * @param a_model forward model of the game.
      */
-    public StateObservation(ForwardModel a_model) {
+    public StateObservation(GameObservation a_model) {
         model = a_model;
     }
 
@@ -41,7 +46,7 @@ public class StateObservation {
      * @return a copy of the state observation.
      */
     public StateObservation copy() {
-        StateObservation copyObs = new StateObservation(model.copy());
+        StateObservation copyObs = new StateObservation(model.getClone());
         return copyObs;
     }
 
@@ -55,7 +60,9 @@ public class StateObservation {
      *
      * @param action agent action to execute in the next cycle.
      */
-        model.advance(action);
+    public void advance(Action action)
+    {
+        model.update(action, null);
     }
 
     /**
@@ -73,7 +80,7 @@ public class StateObservation {
      * the avatar.
      * @return the available actions.
      */
-    public ArrayList<Action> getAvailableActions()
+    public List<Action> getAvailableActions()
     {
         return model.getAvatarActions(false);
     }
@@ -85,7 +92,7 @@ public class StateObservation {
      * @param includeNIL true to include Types.ACTIONS.ACTION_NIL in the array of actions.
      * @return the available actions.
      */
-    public ArrayList<Action> getAvailableActions(boolean includeNIL)
+    public List<Action> getAvailableActions(boolean includeNIL)
     {
         return model.getAvatarActions(includeNIL);
     }
@@ -94,7 +101,7 @@ public class StateObservation {
     /**
      * Returns the number of players in the game.
      */
-    public int getNoPlayers() { return model.getNoPlayers(); }
+    public int getNoPlayers() { return 2; }
 
     /**
      * Gets the score of the game at this observation.
@@ -102,7 +109,7 @@ public class StateObservation {
      */
     public double getGameScore()
     {
-        return model.getGameScore();
+        return model.getScore();
     }
 
     /**
@@ -111,7 +118,7 @@ public class StateObservation {
      */
     public int getGameTick()
     {
-        return model.getGameTick();
+        return -1;
     }
 
     /**
@@ -131,7 +138,7 @@ public class StateObservation {
      */
     public boolean isGameOver()
     {
-        return model.isGameOver();
+        return model.hasWon();
     }
 
     /**
@@ -162,7 +169,7 @@ public class StateObservation {
      */
     public Vector2d getAvatarPosition()
     {
-        return model.getAvatarPosition();
+        return model.getPos(player);
     }
 
     /**
@@ -194,8 +201,8 @@ public class StateObservation {
      * If the avatar has no resources, an empty HashMap is returned.
      * @return resources owned by the avatar.
      */
-    public HashMap<Integer, Integer> getAvatarResources() {
-        return model.getAvatarResources();
+    public Map<Integer, Integer> getAvatarResources() {
+        return Collections.emptyMap();
     }
 
     /**
@@ -254,7 +261,7 @@ public class StateObservation {
      * may occupy more than one grid cell.
      * @return the grid of observations
      */
-    public ArrayList<Observation>[][] getObservationGrid()
+    public List<Observation>[][] getObservationGrid()
     {
         return model.getObservationGrid();
     }
@@ -282,7 +289,7 @@ public class StateObservation {
      *
      * @return Observations of NPCs in the game.
      */
-    public ArrayList<Observation>[] getNPCPositions()
+    public List<Observation>[] getNPCPositions()
     {
         return model.getNPCPositions(null);
     }
@@ -299,7 +306,7 @@ public class StateObservation {
      *                    by ascending distance to this point.
      * @return Observations of NPCs in the game.
      */
-    public ArrayList<Observation>[] getNPCPositions(Vector2d reference)
+    public List<Observation>[] getNPCPositions(Vector2d reference)
     {
         return model.getNPCPositions(reference);
     }
@@ -313,7 +320,7 @@ public class StateObservation {
      *
      * @return Observations of immovable sprites in the game.
      */
-    public ArrayList<Observation>[] getImmovablePositions() {
+    public List<Observation>[] getImmovablePositions() {
         return model.getImmovablePositions(null);
     }
 
@@ -328,7 +335,7 @@ public class StateObservation {
      *                    by ascending distance to this point.
      * @return Observations of immovable sprites in the game.
      */
-    public ArrayList<Observation>[] getImmovablePositions(Vector2d reference) {
+    public List<Observation>[] getImmovablePositions(Vector2d reference) {
         return model.getImmovablePositions(reference);
     }
 
@@ -341,7 +348,7 @@ public class StateObservation {
      *
      * @return Observations of movable, not NPCs, sprites in the game.
      */
-    public ArrayList<Observation>[] getMovablePositions() {
+    public List<Observation>[] getMovablePositions() {
         return model.getMovablePositions(null);
     }
 
@@ -356,7 +363,7 @@ public class StateObservation {
      *                    by ascending distance to this point.
      * @return Observations of movable (not NPCs) sprites in the game.
      */
-    public ArrayList<Observation>[] getMovablePositions(Vector2d reference) {
+    public List<Observation>[] getMovablePositions(Vector2d reference) {
         return model.getMovablePositions(reference);
     }
 
@@ -369,7 +376,7 @@ public class StateObservation {
      *
      * @return Observations of resources in the game.
      */
-    public ArrayList<Observation>[] getResourcesPositions() {
+    public List<Observation>[] getResourcesPositions() {
         return model.getResourcesPositions(null);
     }
 
@@ -384,7 +391,7 @@ public class StateObservation {
      *                    by ascending distance to this point.
      * @return Observations of resources in the game.
      */
-    public ArrayList<Observation>[] getResourcesPositions(Vector2d reference) {
+    public List<Observation>[] getResourcesPositions(Vector2d reference) {
         return model.getResourcesPositions(reference);
     }
 
@@ -396,7 +403,7 @@ public class StateObservation {
      *
      * @return Observations of portals in the game.
      */
-    public ArrayList<Observation>[] getPortalsPositions() {
+    public List<Observation>[] getPortalsPositions() {
         return model.getPortalsPositions(null);
     }
 
@@ -411,7 +418,7 @@ public class StateObservation {
      *                    by ascending distance to this point.
      * @return Observations of portals in the game.
      */
-    public ArrayList<Observation>[] getPortalsPositions(Vector2d reference) {
+    public List<Observation>[] getPortalsPositions(Vector2d reference) {
         return model.getPortalsPositions(reference);
     }
 
@@ -424,7 +431,7 @@ public class StateObservation {
      *
      * @return Observations of sprites the avatar created.
      */
-    public ArrayList<Observation>[] getFromAvatarSpritesPositions() {
+    public List<Observation>[] getFromAvatarSpritesPositions() {
         return model.getFromAvatarSpPositions(null);
     }
 
@@ -439,18 +446,9 @@ public class StateObservation {
      *                    by ascending distance to this point.
      * @return Observations of sprites the avatar created.
      */
-    public ArrayList<Observation>[] getFromAvatarSpritesPositions(Vector2d reference) {
+    public List<Observation>[] getFromAvatarSpritesPositions(Vector2d reference) {
         return model.getFromAvatarSpPositions(reference);
     }
-
-
-    /**
-     * Returns key handler available to the player.
-     * @param playerID ID of the player to query.
-     * @return KeyHandler object.
-     */
-    public KeyHandler getKeyHandler(int playerID) { return model.avatars[playerID].getKeyHandler(); }
-
 
     /**
      * Compares if this and the received StateObservation state are equivalent.

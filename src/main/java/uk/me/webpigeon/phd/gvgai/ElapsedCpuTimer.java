@@ -114,7 +114,6 @@ public class ElapsedCpuTimer {
 
     public void setMaxTimeMillis(long time) {
         maxTime = time * 1000000;
-
     }
 
     public long remainingTimeMillis()

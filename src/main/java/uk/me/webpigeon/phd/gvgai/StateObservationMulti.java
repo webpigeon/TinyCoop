@@ -1,11 +1,10 @@
 package uk.me.webpigeon.phd.gvgai;
 
-import ontology.Types;
 import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.controller.GameObservation;
+import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
 
 import java.util.*;
-
-import core.game.ForwardModel;
 
 /**
  * Created by Raluca on 07-Apr-16.
@@ -15,10 +14,10 @@ public class StateObservationMulti extends StateObservation {
     /**
      * Constructor for StateObservation in multi player games. Requires a forward model
      *
-     * @param a_model forward model of the game.
+     * @param state forward model of the game.
      */
-    public StateObservationMulti(ForwardModel a_model) {
-        super(a_model);
+    public StateObservationMulti(GameObservation state) {
+        super(state);
     }
 
     /**
@@ -34,7 +33,7 @@ public class StateObservationMulti extends StateObservation {
      * @param actions array of agent actions to execute in the next cycle for all players.
      */
     public void advance(Action[] actions) {
-        model.advance(actions);
+        model.update(actions[0], actions[1]);
     }
 
     /**
@@ -44,7 +43,7 @@ public class StateObservationMulti extends StateObservation {
      * @param playerID ID of the player to query
      * @return the available actions.
      */
-    public ArrayList<Action> getAvailableActions(int playerID) { return model.getAvatarActions(playerID, true); }
+    public List<Action> getAvailableActions(int playerID) { return model.getAvatarActions(playerID, true); }
 
     /**
      * Method overloaded for multi player games. Now passes the playerID.
@@ -186,7 +185,7 @@ public class StateObservationMulti extends StateObservation {
 
 
     public StateObservationMulti copy() {
-        StateObservationMulti copyObs = new StateObservationMulti(model.copy());
+        StateObservationMulti copyObs = new StateObservationMulti(model.getClone());
         return copyObs;
     }
 

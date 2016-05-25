@@ -3,6 +3,7 @@ package uk.me.webpigeon.phd.tinycoop.controllers;
 import java.util.List;
 import java.util.Random;
 
+import runner.clear.Result;
 import uk.me.webpigeon.phd.tinycoop.api.Action;
 import uk.me.webpigeon.phd.tinycoop.api.controller.GameObservation;
 import uk.me.webpigeon.phd.tinycoop.engine.controllers.AbstractController;
