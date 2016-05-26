@@ -28,7 +28,7 @@ public class GVGAIFacade extends AbstractController {
 	@Override
 	public Action getAction(GameObservation state) {
 		
-		StateObservationMulti multiObs = new StateObservationMulti(state);
+		StateObservationMulti multiObs = new StateObservationMulti(state, myID);
 		ElapsedCpuTimer timer = new ElapsedCpuTimer();
 		timer.setMaxTimeMillis(40);
 		
@@ -44,7 +44,7 @@ public class GVGAIFacade extends AbstractController {
 
 	@Override
 	public void endGame(Result result, GameObservation state) {
-		StateObservationMulti multiObs = new StateObservationMulti(state);
+		StateObservationMulti multiObs = new StateObservationMulti(state, myID);
 		ElapsedCpuTimer timer = new ElapsedCpuTimer();
 		timer.setMaxTimeMillis(System.currentTimeMillis()+40);
 		

@@ -28,8 +28,8 @@ public class GameViewer implements Callable<GameResult> {
 		// viewer.call();
 
 		String[] maps = new String[] {
-				"data/norm_maps/airlock.txt",
-				"data/norm_maps/butterfly.txt",
+				//"data/maps/airlock.txt",
+				"data/maps/butterflies.txt",
 				"data/norm_maps/single_door.txt",
 				"data/norm_maps/cloverleaf.txt",
 				"data/norm_maps/mirror_lock.txt",

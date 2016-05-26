@@ -17,8 +17,8 @@ public class StateObservationMulti extends StateObservation {
      *
      * @param state forward model of the game.
      */
-    public StateObservationMulti(GameObservation state) {
-        super(state);
+    public StateObservationMulti(GameObservation state, int player) {
+        super(state, player);
     }
 
     /**
@@ -33,7 +33,7 @@ public class StateObservationMulti extends StateObservation {
      *
      * @param actions array of agent actions to execute in the next cycle for all players.
      */
-    public void advance(Action[] actions) {
+    public void advance(Action[] actions) {  	
         model.update(actions[0], actions[1]);
     }
 
@@ -195,7 +195,7 @@ public class StateObservationMulti extends StateObservation {
 
 
     public StateObservationMulti copy() {
-        StateObservationMulti copyObs = new StateObservationMulti(model.getCopy());
+        StateObservationMulti copyObs = new StateObservationMulti(model.getCopy(), player);
         return copyObs;
     }
 

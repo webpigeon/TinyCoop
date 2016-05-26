@@ -66,6 +66,8 @@ public class SingleTreeNode
             avgTimeTaken  = acumTimeTaken/numIters;
             remaining = elapsedTimer.remainingTimeMillis();
         }
+        
+        System.out.println(numIters);
     }
 
     public SingleTreeNode treePolicy(StateObservationMulti state) {

@@ -19,7 +19,7 @@ public class Agent extends AbstractMultiPlayer {
 
     public static int[] NUM_ACTIONS;
     public static int MCTS_ITERATIONS = 100;
-    public static int ROLLOUT_DEPTH = 10;
+    public static int ROLLOUT_DEPTH = 250;
     public static double K = Math.sqrt(2);
     public static double REWARD_DISCOUNT = 1.00;
     public static Action[][] actions;

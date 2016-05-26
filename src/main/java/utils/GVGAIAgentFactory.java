@@ -12,7 +12,7 @@ public class GVGAIAgentFactory {
 
 	public static Controller buildMCTS(SimpleGame game, int playerID) {
 		GameObservation obs = game.getObservationFor(playerID);
-		StateObservationMulti multiObs = new StateObservationMulti(obs);
+		StateObservationMulti multiObs = new StateObservationMulti(obs, playerID);
 		ElapsedCpuTimer timer = new ElapsedCpuTimer();
 		timer.setMaxTimeMillis(System.currentTimeMillis()+40);
 		

@@ -28,16 +28,17 @@ public class StateObservation {
      * This is the model of the game, used to apply an action and
      * get to the next state. This model MUST NOT be public.
      */
-    protected GameObservation model;
-    protected int player;
+    protected final GameObservation model;
+    protected final int player;
 
     /**
      * Constructor for StateObservation. Requires a forward model
      *
      * @param a_model forward model of the game.
      */
-    public StateObservation(GameObservation a_model) {
-        model = a_model;
+    public StateObservation(GameObservation a_model, int player) {
+        this.model = a_model;
+        this.player = player;
     }
 
     /**
@@ -46,7 +47,7 @@ public class StateObservation {
      * @return a copy of the state observation.
      */
     public StateObservation copy() {
-        StateObservation copyObs = new StateObservation((GameObservation)model.getClone());
+        StateObservation copyObs = new StateObservation((GameObservation)model.getClone(), player);
         return copyObs;
     }
 
