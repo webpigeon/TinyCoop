@@ -1,4 +1,4 @@
-package uk.me.webpigeon.phd.gvgai.controllers.olmcts;
+package uk.me.webpigeon.phd.gvgai.controllers.polmcts;
 
 import java.util.Random;
 
@@ -6,30 +6,35 @@ import uk.me.webpigeon.phd.gvgai.Constants;
 import uk.me.webpigeon.phd.gvgai.ElapsedCpuTimer;
 import uk.me.webpigeon.phd.gvgai.StateObservationMulti;
 import uk.me.webpigeon.phd.gvgai.Utils;
+import uk.me.webpigeon.phd.gvgai.controllers.polmcts.policy.GVGPolicy;
 import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.controllers.prediction.Policy;
 
-public class SingleTreeNode
+public class PolicyTreeNode
 {
+	
     private static final double HUGE_NEGATIVE = -10000000.0;
     private static final double HUGE_POSITIVE =  10000000.0;
     public static double epsilon = 1e-6;
     public static double egreedyEpsilon = 0.05;
-    public SingleTreeNode parent;
-    public SingleTreeNode[] children;
+    public PolicyTreeNode parent;
+    public PolicyTreeNode[] children;
     public double totValue;
     public int nVisits;
     public static Random m_rnd;
     public int m_depth;
     protected static double[] bounds = new double[]{Double.MAX_VALUE, -Double.MAX_VALUE};
+	private static GVGPolicy policy;
     public int childIdx;
 
     public static StateObservationMulti rootState;
 
-    public SingleTreeNode(Random rnd) {
+    public PolicyTreeNode(Random rnd, GVGPolicy policy) {
         this(null, -1, rnd);
+        this.policy = policy;
     }
 
-    public SingleTreeNode(SingleTreeNode parent, int childIdx, Random rnd) {
+    public PolicyTreeNode(PolicyTreeNode parent, int childIdx, Random rnd) {
         this.parent = parent;
         this.m_rnd = rnd;
         totValue = 0.0;
@@ -38,7 +43,7 @@ public class SingleTreeNode
             m_depth = parent.m_depth+1;
         else
             m_depth = 0;
-        children = new SingleTreeNode[Agent.NUM_ACTIONS[Agent.id]];
+        children = new PolicyTreeNode[PredictorAgent.NUM_ACTIONS[PredictorAgent.id]];
     }
 
 
@@ -56,7 +61,7 @@ public class SingleTreeNode
             StateObservationMulti state = rootState.copy();
 
             ElapsedCpuTimer elapsedTimerIteration = new ElapsedCpuTimer();
-            SingleTreeNode selected = treePolicy(state);
+            PolicyTreeNode selected = treePolicy(state);
             double delta = selected.rollOut(state);
             backUp(selected, delta);
 
@@ -67,20 +72,20 @@ public class SingleTreeNode
             remaining = elapsedTimer.remainingTimeMillis();
         }
         
-        //System.out.println(numIters);
+        System.out.println(numIters);
     }
 
-    public SingleTreeNode treePolicy(StateObservationMulti state) {
+    public PolicyTreeNode treePolicy(StateObservationMulti state) {
 
-        SingleTreeNode cur = this;
+    	PolicyTreeNode cur = this;
 
-        while (!state.isGameOver() && cur.m_depth < Agent.ROLLOUT_DEPTH)
+        while (!state.isGameOver() && cur.m_depth < PredictorAgent.ROLLOUT_DEPTH)
         {
             if (cur.notFullyExpanded()) {
                 return cur.expand(state);
 
             } else {
-                SingleTreeNode next = cur.uct(state);
+            	PolicyTreeNode next = cur.uct(state);
                 cur = next;
             }
         }
@@ -89,7 +94,7 @@ public class SingleTreeNode
     }
 
 
-    public SingleTreeNode expand(StateObservationMulti state) {
+    public PolicyTreeNode expand(StateObservationMulti state) {
 
         int bestAction = 0;
         double bestValue = -1;
@@ -105,27 +110,58 @@ public class SingleTreeNode
         //Roll the state
 
         //need to provide actions for all players to advance the forward model
-        Action[] acts = new Action[Agent.no_players];
+        Action[] acts = new Action[PredictorAgent.no_players];
 
         //set this agent's action
-        acts[Agent.id] = Agent.actions[Agent.id][bestAction];
-
-        //get actions available to the opponent and assume they will do a random action
-        Action[] oppActions = Agent.actions[Agent.oppID];
-        acts[Agent.oppID] = oppActions[new Random().nextInt(oppActions.length)];
+        acts[PredictorAgent.id] = PredictorAgent.actions[PredictorAgent.id][bestAction];
+        acts[PredictorAgent.oppID] = policy.getActionAt(acts[PredictorAgent.id], state);
 
         state.advance(acts);
 
-        SingleTreeNode tn = new SingleTreeNode(this,bestAction,this.m_rnd);
+        PolicyTreeNode tn = new PolicyTreeNode(this,bestAction,this.m_rnd);
         children[bestAction] = tn;
         return tn;
     }
 
-    public SingleTreeNode uct(StateObservationMulti state) {
+    public double rollOut(StateObservationMulti state)
+    {
+        int thisDepth = this.m_depth;
 
-        SingleTreeNode selected = null;
+        while (!finishRollout(state,thisDepth)) {
+
+            //random move for all players
+        	Action[] acts = new Action[PredictorAgent.no_players];
+        	
+        	if (1 != 1) {
+        		acts[PredictorAgent.id] = PredictorAgent.actions[PredictorAgent.id][m_rnd.nextInt(PredictorAgent.NUM_ACTIONS[PredictorAgent.id])];
+        		acts[PredictorAgent.oppID] = policy.getActionAt(acts[PredictorAgent.id], state);
+        	} else {
+        		for (int i = 0; i < PredictorAgent.no_players; i++) {
+        			acts[i] = PredictorAgent.actions[i][m_rnd.nextInt(PredictorAgent.NUM_ACTIONS[PredictorAgent.id])];
+        		}
+        	}
+            state.advance(acts);
+            thisDepth++;
+        }
+
+
+        double delta = value(state);
+
+        if(delta < bounds[0])
+            bounds[0] = delta;
+        if(delta > bounds[1])
+            bounds[1] = delta;
+
+        //double normDelta = Utils.normalise(delta ,lastBounds[0], lastBounds[1]);
+
+        return delta;
+    }
+    
+    public PolicyTreeNode uct(StateObservationMulti state) {
+
+    	PolicyTreeNode selected = null;
         double bestValue = -Double.MAX_VALUE;
-        for (SingleTreeNode child : this.children)
+        for (PolicyTreeNode child : this.children)
         {
             double hvVal = child.totValue;
             double childValue =  hvVal / (child.nVisits + this.epsilon);
@@ -134,7 +170,7 @@ public class SingleTreeNode
             //System.out.println("norm child value: " + childValue);
 
             double uctValue = childValue +
-                    Agent.K * Math.sqrt(Math.log(this.nVisits + 1) / (child.nVisits + this.epsilon));
+                    PredictorAgent.K * Math.sqrt(Math.log(this.nVisits + 1) / (child.nVisits + this.epsilon));
 
             uctValue = Utils.noise(uctValue, this.epsilon, this.m_rnd.nextDouble());     //break ties randomly
 
@@ -153,56 +189,28 @@ public class SingleTreeNode
         //Roll the state:
 
         //need to provide actions for all players to advance the forward model
-        Action[] acts = new Action[Agent.no_players];
+        Action[] acts = new Action[PredictorAgent.no_players];
 
         //set this agent's action
-        acts[Agent.id] = Agent.actions[Agent.id][selected.childIdx];
+        acts[PredictorAgent.id] = PredictorAgent.actions[PredictorAgent.id][selected.childIdx];
 
         //get actions available to the opponent and assume they will do a random action
-        Action[] oppActions = Agent.actions[Agent.oppID];
-        acts[Agent.oppID] = oppActions[new Random().nextInt(oppActions.length)];
+        Action[] oppActions = PredictorAgent.actions[PredictorAgent.oppID];
+        acts[PredictorAgent.oppID] = oppActions[new Random().nextInt(oppActions.length)];
 
         state.advance(acts);
 
         return selected;
     }
-
-
-    public double rollOut(StateObservationMulti state)
-    {
-        int thisDepth = this.m_depth;
-
-        while (!finishRollout(state,thisDepth)) {
-
-            //random move for all players
-        	Action[] acts = new Action[Agent.no_players];
-            for (int i = 0; i < Agent.no_players; i++) {
-                acts[i] = Agent.actions[i][m_rnd.nextInt(Agent.NUM_ACTIONS[Agent.id])];
-            }
-            state.advance(acts);
-            thisDepth++;
-        }
-
-
-        double delta = value(state);
-
-        if(delta < bounds[0])
-            bounds[0] = delta;
-        if(delta > bounds[1])
-            bounds[1] = delta;
-
-        //double normDelta = Utils.normalise(delta ,lastBounds[0], lastBounds[1]);
-
-        return delta;
-    }
-
+    
+    
     public double value(StateObservationMulti a_gameState) {
 
         boolean gameOver = a_gameState.isGameOver();
 
 
-        int win = a_gameState.getMultiGameWinner()[Agent.id];
-        double rawScore = a_gameState.getGameScore(Agent.id);
+        int win = a_gameState.getMultiGameWinner()[PredictorAgent.id];
+        double rawScore = a_gameState.getGameScore(PredictorAgent.id);
 
         if(gameOver && win == Constants.PLAYER_LOSES)
             rawScore += HUGE_NEGATIVE;
@@ -215,7 +223,7 @@ public class SingleTreeNode
 
     public boolean finishRollout(StateObservationMulti rollerState, int depth)
     {
-        if(depth >= Agent.ROLLOUT_DEPTH)      //rollout end condition.
+        if(depth >= PredictorAgent.ROLLOUT_DEPTH)      //rollout end condition.
             return true;
 
         if(rollerState.isGameOver())               //end of game
@@ -224,9 +232,9 @@ public class SingleTreeNode
         return false;
     }
 
-    public void backUp(SingleTreeNode node, double result)
+    public void backUp(PolicyTreeNode node, double result)
     {
-        SingleTreeNode n = node;
+    	PolicyTreeNode n = node;
         while(n != null)
         {
             n.nVisits++;
@@ -303,7 +311,7 @@ public class SingleTreeNode
 
 
     public boolean notFullyExpanded() {
-        for (SingleTreeNode tn : children) {
+        for (PolicyTreeNode tn : children) {
             if (tn == null) {
                 return true;
             }
