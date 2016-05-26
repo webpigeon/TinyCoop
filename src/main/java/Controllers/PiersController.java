@@ -1,5 +1,6 @@
 package Controllers;
 
+import runner.clear.Result;
 import uk.me.webpigeon.phd.tinycoop.api.Action;
 import uk.me.webpigeon.phd.tinycoop.api.GameState;
 import uk.me.webpigeon.phd.tinycoop.api.controller.Controller;
@@ -64,4 +65,11 @@ public abstract class PiersController implements Controller {
 	public void startGame(int agentID) {
 
 	}
+
+	@Override
+	public void endGame(Result result, GameObservation state) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

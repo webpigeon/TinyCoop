@@ -1,6 +1,7 @@
 package uk.me.webpigeon.phd.gvgai;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,9 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import core.game.ForwardModel;
-import ontology.Types;
 import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.GameObject;
 import uk.me.webpigeon.phd.tinycoop.api.controller.GameObservation;
 import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
 
@@ -46,7 +46,7 @@ public class StateObservation {
      * @return a copy of the state observation.
      */
     public StateObservation copy() {
-        StateObservation copyObs = new StateObservation(model.getClone());
+        StateObservation copyObs = new StateObservation((GameObservation)model.getClone());
         return copyObs;
     }
 
@@ -82,7 +82,7 @@ public class StateObservation {
      */
     public List<Action> getAvailableActions()
     {
-        return model.getAvatarActions(false);
+        return model.getLegalActions(player);
     }
 
     /**
@@ -94,7 +94,7 @@ public class StateObservation {
      */
     public List<Action> getAvailableActions(boolean includeNIL)
     {
-        return model.getAvatarActions(includeNIL);
+        return model.getLegalActions(player);
     }
 
 
@@ -127,9 +127,13 @@ public class StateObservation {
      * Types.WINNER.NO_WINNER.
      * @return the winner of the game.
      */
-    public Types.WINNER getGameWinner()
+    public int getGameWinner()
     {
-        return model.getGameWinner();
+    	if (model.hasWon()) {
+    		return Constants.PLAYER_WINS;
+    	} else {
+    		return Constants.NO_WINNER;
+    	}
     }
 
     /**
@@ -147,7 +151,7 @@ public class StateObservation {
      */
     public Dimension getWorldDimension()
     {
-        return model.getWorldDimension();
+        return new Dimension(model.getWidth(), model.getHeight());
     }
 
     /**
@@ -156,7 +160,7 @@ public class StateObservation {
      */
     public int getBlockSize()
     {
-        return model.getBlockSize();
+        return 1;
     }
 
     //Methods to retrieve the state of the avatar, in the game...
@@ -169,7 +173,8 @@ public class StateObservation {
      */
     public Vector2d getAvatarPosition()
     {
-        return model.getPos(player);
+    	Point location = model.getPos(player);
+    	return new Vector2d(location.x, location.y);
     }
 
     /**
@@ -180,7 +185,7 @@ public class StateObservation {
      */
     public double getAvatarSpeed()
     {
-        return model.getAvatarSpeed();
+        return 1;
     }
 
     /**
@@ -190,7 +195,7 @@ public class StateObservation {
      * @return orientation of the avatar, or Types.NIL if game is over.
      */
     public Vector2d getAvatarOrientation() {
-        return model.getAvatarOrientation();
+        return new Vector2d(0,0);
     }
 
     /**
@@ -214,7 +219,7 @@ public class StateObservation {
      */
     public Action getAvatarLastAction()
     {
-        return model.getAvatarLastAction();
+        return null;
     }
 
     /**
@@ -223,7 +228,7 @@ public class StateObservation {
      */
     public int getAvatarType()
     {
-        return model.getAvatarType();
+        return 1;
     }
 
     /**
@@ -231,224 +236,25 @@ public class StateObservation {
      * mean that the avatar is dead (could be that no health points are in use in that game).
      * @return a numeric value, the amount of remaining health points.
      */
-    public int getAvatarHealthPoints() { return model.getAvatarHealthPoints(); }
+    public int getAvatarHealthPoints() { return 1; }
 
     /**
      * Returns the maximum amount of health points.
      * @return the maximum amount of health points the avatar ever had.
      */
-    public int getAvatarMaxHealthPoints() { return model.getAvatarMaxHealthPoints(); }
+    public int getAvatarMaxHealthPoints() { return 1; }
 
     /**
      * Returns the limit of health points this avatar can have.
      * @return the limit of health points the avatar can have.
      */
-    public int getAvatarLimitHealthPoints() {return model.getAvatarLimitHealthPoints();}
+    public int getAvatarLimitHealthPoints() {return 1; }
 
     /**
      * returns true if the avatar is alive.
      * @return true if the avatar is alive.
      */
-    public boolean isAvatarAlive() {return model.isAvatarAlive();}
-
-
-    //Methods to retrieve the state external to the avatar, in the game...
-
-    /**
-     * Returns a grid with all observations in the level, accessible by the x,y coordinates
-     * of the grid. Each grid cell has a width and height of getBlockSize() pixels. Each cell
-     * contains a list with all observations in that position. Note that the same observation
-     * may occupy more than one grid cell.
-     * @return the grid of observations
-     */
-    public List<Observation>[][] getObservationGrid()
-    {
-        return model.getObservationGrid();
-    }
-
-    /**
-     * This method retrieves a list of events that happened so far in the game. In this
-     * context, events are collisions of the avatar with other sprites in the game. Additionally,
-     * the list also contains information about collisions of a sprite created by the avatar
-     * (usually by using the action Types.ACTIONS.ACTION_USE) with other sprites. The list
-     * is ordered asc. by game step.
-     *
-     * @return list of events triggered by the avatar or sprites it created.
-     */
-    public TreeSet<Event> getEventsHistory()
-    {
-         return model.getEventsHistory();
-    }
-
-    /**
-     * Returns a list of observations of NPC in the game. As there can be
-     * NPCs of different type, each entry in the array corresponds to a sprite type.
-     * Every ArrayList contains a list of objects of type Observation.
-     * Each Observation holds the position, unique id and
-     * sprite id of that particular sprite.
-     *
-     * @return Observations of NPCs in the game.
-     */
-    public List<Observation>[] getNPCPositions()
-    {
-        return model.getNPCPositions(null);
-    }
-
-
-    /**
-     * Returns a list of observations of NPC in the game. As there can be
-     * NPCs of different type, each entry in the array corresponds to a sprite type.
-     * Every ArrayList contains a list of objects of type Observation, ordered asc. by
-     * distance to the reference passed. Each Observation holds the position, sprite type id and
-     * sprite id of that particular sprite.
-     *
-     * @param reference   Reference position to use when sorting this array,
-     *                    by ascending distance to this point.
-     * @return Observations of NPCs in the game.
-     */
-    public List<Observation>[] getNPCPositions(Vector2d reference)
-    {
-        return model.getNPCPositions(reference);
-    }
-
-    /**
-     * Returns a list of observations of immovable sprites in the game. As there can be
-     * immovable sprites of different type, each entry in the array corresponds to a sprite type.
-     * Every ArrayList contains a list of objects of type Observation.
-     * Each Observation holds the position, unique id and
-     * sprite id of that particular sprite.
-     *
-     * @return Observations of immovable sprites in the game.
-     */
-    public List<Observation>[] getImmovablePositions() {
-        return model.getImmovablePositions(null);
-    }
-
-    /**
-     * Returns a list of observations of immovable sprites in the game. As there can be
-     * immovable sprites of different type, each entry in the array corresponds to a sprite type.
-     * Every ArrayList contains a list of objects of type Observation, ordered asc. by
-     * distance to the reference passed. Each Observation holds the position, sprite type id and
-     * sprite id of that particular sprite.
-     *
-     * @param reference   Reference position to use when sorting this array,
-     *                    by ascending distance to this point.
-     * @return Observations of immovable sprites in the game.
-     */
-    public List<Observation>[] getImmovablePositions(Vector2d reference) {
-        return model.getImmovablePositions(reference);
-    }
-
-    /**
-     * Returns a list of observations of sprites that move, but are NOT NPCs in the game.
-     * As there can be movable sprites of different type, each entry in the array
-     * corresponds to a sprite type. Every ArrayList contains a list of objects of type
-     * Observation. Each Observation holds the position,
-     * unique id and sprite id of that particular sprite.
-     *
-     * @return Observations of movable, not NPCs, sprites in the game.
-     */
-    public List<Observation>[] getMovablePositions() {
-        return model.getMovablePositions(null);
-    }
-
-    /**
-     * Returns a list of observations of movable (not NPCs) sprites in the game. As there can be
-     * movable (not NPCs) sprites of different type, each entry in the array corresponds to a sprite type.
-     * Every ArrayList contains a list of objects of type Observation, ordered asc. by
-     * distance to the reference passed. Each Observation holds the position, sprite type id and
-     * sprite id of that particular sprite.
-     *
-     * @param reference   Reference position to use when sorting this array,
-     *                    by ascending distance to this point.
-     * @return Observations of movable (not NPCs) sprites in the game.
-     */
-    public List<Observation>[] getMovablePositions(Vector2d reference) {
-        return model.getMovablePositions(reference);
-    }
-
-    /**
-     * Returns a list of observations of resources in the game. As there can be
-     * resources of different type, each entry in the array corresponds to a sprite type.
-     * Every ArrayList contains a list of objects of type Observation.
-     * Each Observation holds the position, unique id and
-     * sprite id of that particular sprite.
-     *
-     * @return Observations of resources in the game.
-     */
-    public List<Observation>[] getResourcesPositions() {
-        return model.getResourcesPositions(null);
-    }
-
-    /**
-     * Returns a list of observations of resources in the game. As there can be
-     * resources of different type, each entry in the array corresponds to a sprite type.
-     * Every ArrayList contains a list of objects of type Observation, ordered asc. by
-     * distance to the reference passed. Each Observation holds the position, sprite type id and
-     * sprite id of that particular sprite.
-     *
-     * @param reference   Reference position to use when sorting this array,
-     *                    by ascending distance to this point.
-     * @return Observations of resources in the game.
-     */
-    public List<Observation>[] getResourcesPositions(Vector2d reference) {
-        return model.getResourcesPositions(reference);
-    }
-
-    /**
-     * Returns a list of observations of portals in the game. As there can be
-     * portals of different type, each entry in the array corresponds to a sprite type.
-     * Every ArrayList contains a list of objects of type Observation. Each Observation
-     * holds the position, unique id and sprite id of that particular sprite.
-     *
-     * @return Observations of portals in the game.
-     */
-    public List<Observation>[] getPortalsPositions() {
-        return model.getPortalsPositions(null);
-    }
-
-    /**
-     * Returns a list of observations of portals in the game. As there can be
-     * portals of different type, each entry in the array corresponds to a sprite type.
-     * Every ArrayList contains a list of objects of type Observation, ordered asc. by
-     * distance to the reference passed. Each Observation holds the position, sprite type id and
-     * sprite id of that particular sprite.
-     *
-     * @param reference   Reference position to use when sorting this array,
-     *                    by ascending distance to this point.
-     * @return Observations of portals in the game.
-     */
-    public List<Observation>[] getPortalsPositions(Vector2d reference) {
-        return model.getPortalsPositions(reference);
-    }
-
-    /**
-     * Returns a list of observations of sprites created by the avatar (usually, by applying the
-     * action Types.ACTIONS.ACTION_USE). As there can be sprites of different type, each entry in
-     * the array corresponds to a sprite type. Every ArrayList contains a list of objects of
-     * type Observation. Each Observation holds the position, unique id and sprite id
-     * of that particular sprite.
-     *
-     * @return Observations of sprites the avatar created.
-     */
-    public List<Observation>[] getFromAvatarSpritesPositions() {
-        return model.getFromAvatarSpPositions(null);
-    }
-
-    /**
-     * Returns a list of observations of sprites created by the avatar (usually, by applying the
-     * action Types.ACTIONS.ACTION_USE). As there can be sprites of different type, each entry in
-     * the array corresponds to a sprite type. Every ArrayList contains a list of objects of
-     * type Observation, ordered asc. by distance to the reference passed. Each Observation holds
-     * the position, sprite type id and sprite id of that particular sprite.
-     *
-     * @param reference   Reference position to use when sorting this array,
-     *                    by ascending distance to this point.
-     * @return Observations of sprites the avatar created.
-     */
-    public List<Observation>[] getFromAvatarSpritesPositions(Vector2d reference) {
-        return model.getFromAvatarSpPositions(reference);
-    }
+    public boolean isAvatarAlive() { return true; }
 
     /**
      * Compares if this and the received StateObservation state are equivalent.
@@ -456,6 +262,7 @@ public class StateObservation {
      * @param o Object to compare this to.
      * @return true if o has the same components as this.
      */
+    @Deprecated
     public boolean equiv(Object o)
     {
         System.out.println("StateObservation.equiv() is a Deprecated Method. And it always returns False, now.");

@@ -16,6 +16,7 @@ public class GVGAIFacade extends AbstractController {
 	
 	public GVGAIFacade(AbstractMultiPlayer gvgAgent) {
 		super("GVG-"+gvgAgent);
+		this.gvgAgent = gvgAgent;
 	}
 
 	@Override
@@ -29,7 +30,7 @@ public class GVGAIFacade extends AbstractController {
 		
 		StateObservationMulti multiObs = new StateObservationMulti(state);
 		ElapsedCpuTimer timer = new ElapsedCpuTimer();
-		timer.setMaxTimeMillis(System.currentTimeMillis()+40);
+		timer.setMaxTimeMillis(40);
 		
 		Action gvgAction = gvgAgent.act(multiObs, timer);
 		

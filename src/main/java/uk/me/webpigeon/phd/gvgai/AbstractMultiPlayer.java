@@ -2,6 +2,7 @@ package uk.me.webpigeon.phd.gvgai;
 
 import uk.me.webpigeon.phd.gvgai.ElapsedCpuTimer;
 import uk.me.webpigeon.phd.gvgai.StateObservation;
+import uk.me.webpigeon.phd.tinycoop.api.Action;
 
 import java.awt.*;
 import java.io.BufferedWriter;
@@ -35,7 +36,7 @@ public abstract class AbstractMultiPlayer extends Player {
      * @param elapsedTimer Timer when the action returned is due.
      * @return An action for the current state.
      */
-    public Types.ACTIONS act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
-        return Types.ACTIONS.ACTION_NIL;
+    public Action act(StateObservation stateObs, ElapsedCpuTimer elapsedTimer) {
+        return Action.NOOP;
     }
 }

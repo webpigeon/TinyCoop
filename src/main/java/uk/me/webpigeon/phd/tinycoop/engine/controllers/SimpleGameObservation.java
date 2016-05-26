@@ -144,4 +144,9 @@ public class SimpleGameObservation implements GameObservation {
 		return String.format("OBS: %d %s", playerID, state);
 	}
 
+	@Override
+	public void setNewSeed(int seed) {
+		// TODO Auto-generated method stub
+	}
+
 }

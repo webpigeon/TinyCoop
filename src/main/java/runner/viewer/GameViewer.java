@@ -17,6 +17,7 @@ import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
 import uk.me.webpigeon.phd.tinycoop.engine.level.GameLevel;
 import uk.me.webpigeon.phd.tinycoop.engine.level.LevelParser;
 import utils.AgentFactory;
+import utils.GVGAIAgentFactory;
 import utils.LegacyAgentFactory;
 
 public class GameViewer implements Callable<GameResult> {
@@ -27,12 +28,12 @@ public class GameViewer implements Callable<GameResult> {
 		// viewer.call();
 
 		String[] maps = new String[] {
-				// "data/norm_maps/airlock.txt",
-				// "data/norm_maps/butterfly.txt",
-				// "data/norm_maps/single_door.txt",
+				"data/norm_maps/airlock.txt",
+				"data/norm_maps/butterfly.txt",
+				"data/norm_maps/single_door.txt",
 				"data/norm_maps/cloverleaf.txt",
-				// "data/norm_maps/mirror_lock.txt",
-				// "data/norm_maps/maze.txt"
+				"data/norm_maps/mirror_lock.txt",
+				"data/norm_maps/maze.txt"
 		};
 
 		Map<String, List<GameResult>> resultMap = new HashMap<String, List<GameResult>>();
@@ -54,10 +55,12 @@ public class GameViewer implements Callable<GameResult> {
 				// Controller p1 = Utils.buildPredictor(new FollowTheFlare(),
 				// "pmcts");
 
-				Controller p1 = LegacyAgentFactory.buildStandardPiersMCTS(true);
-				Controller p2 = LegacyAgentFactory.buildStandardPiersMCTS(false);
+				SimpleGame game = new SimpleGame(level);
+				
+				Controller p1 = GVGAIAgentFactory.buildMCTS(game, 0);
+				Controller p2 = GVGAIAgentFactory.buildMCTS(game, 1);
 
-				GameViewer viewer = new GameViewer(level, p1, p2);
+				GameViewer viewer = new GameViewer(level, game, p1, p2);
 				GameResult r = viewer.call();
 				results.add(r);
 			}
@@ -68,11 +71,13 @@ public class GameViewer implements Callable<GameResult> {
 	}
 
 	private GameLevel level;
+	private SimpleGame game;
 	private Controller p1;
 	private Controller p2;
 
-	public GameViewer(GameLevel level, Controller p1, Controller p2) {
+	public GameViewer(GameLevel level, SimpleGame game, Controller p1, Controller p2) {
 		this.level = level;
+		this.game = game;
 		this.p1 = p1;
 		this.p2 = p2;
 	}
@@ -88,8 +93,7 @@ public class GameViewer implements Callable<GameResult> {
 		setup.p2 = p2.getFriendlyName();
 
 		GameResult result = new GameResult(setup);
-
-		SimpleGame game = new SimpleGame(level);
+;
 		p1.startGame(0, 1);
 		p2.startGame(1, 0);
 

@@ -13,4 +13,6 @@ public interface GameObservation extends ObservableGameState {
 	
 	public GameObservation fromPerspective(int newAgent);
 
+	public void setNewSeed(int seed);
+
 }

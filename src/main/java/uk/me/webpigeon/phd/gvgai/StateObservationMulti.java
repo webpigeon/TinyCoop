@@ -4,6 +4,7 @@ import uk.me.webpigeon.phd.tinycoop.api.Action;
 import uk.me.webpigeon.phd.tinycoop.api.controller.GameObservation;
 import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
 
+import java.awt.Point;
 import java.util.*;
 
 /**
@@ -43,7 +44,7 @@ public class StateObservationMulti extends StateObservation {
      * @param playerID ID of the player to query
      * @return the available actions.
      */
-    public List<Action> getAvailableActions(int playerID) { return model.getAvatarActions(playerID, true); }
+    public List<Action> getAvailableActions(int playerID) { return model.getLegalActions(player); }
 
     /**
      * Method overloaded for multi player games. Now passes the playerID.
@@ -53,7 +54,7 @@ public class StateObservationMulti extends StateObservation {
      */
     public double getGameScore(int playerID)
     {
-        return model.getGameScore(playerID);
+        return model.getScore();
     }
 
     /**
@@ -66,9 +67,13 @@ public class StateObservationMulti extends StateObservation {
      * Types.WINNER.NO_WINNER.
      * @return array of type Types.WINNER, length of number of players in the game.
      */
-    public Types.WINNER[] getMultiGameWinner()
+    public int[] getMultiGameWinner()
     {
-        return model.getMultiGameWinner();
+    	if (model.hasWon()) {
+    		return new int[]{Constants.PLAYER_WINS, Constants.PLAYER_WINS};
+    	}
+    	
+        return new int[]{Constants.NO_WINNER, Constants.NO_WINNER};
     }
 
     /**
@@ -76,7 +81,7 @@ public class StateObservationMulti extends StateObservation {
      * Indicates if the game is over or if it hasn't finished yet.
      * @return true if the game is over.
      */
-    public boolean isGameOver() { return model.isMultiGameOver(); }
+    public boolean isGameOver() { return model.hasWon(); }
 
     /**
      * Method overloaded for multi player games. Now passes the player ID.
@@ -88,7 +93,8 @@ public class StateObservationMulti extends StateObservation {
      */
     public Vector2d getAvatarPosition(int playerID)
     {
-        return model.getAvatarPosition(playerID);
+    	Point pos = model.getPos(playerID);
+    	return new Vector2d(pos.x, pos.y);
     }
 
     /**
@@ -101,7 +107,11 @@ public class StateObservationMulti extends StateObservation {
      */
     public double getAvatarSpeed(int playerID)
     {
-        return model.getAvatarSpeed(playerID);
+    	if (model.hasWon()) {
+    		return 0;
+    	}
+    	
+        return 1;
     }
 
     /**
@@ -113,7 +123,7 @@ public class StateObservationMulti extends StateObservation {
      * @return orientation of the avatar, or Types.NIL if game is over.
      */
     public Vector2d getAvatarOrientation(int playerID) {
-        return model.getAvatarOrientation(playerID);
+        return new Vector2d(0,0);
     }
 
     /**
@@ -127,7 +137,7 @@ public class StateObservationMulti extends StateObservation {
      * @return resources owned by the avatar.
      */
     public HashMap<Integer, Integer> getAvatarResources(int playerID) {
-        return model.getAvatarResources(playerID);
+    	return new HashMap<Integer,Integer>();
     }
 
     /**
@@ -141,7 +151,7 @@ public class StateObservationMulti extends StateObservation {
      */
     public Action getAvatarLastAction(int playerID)
     {
-        return model.getAvatarLastAction(playerID);
+        return null;
     }
 
     /**
@@ -150,7 +160,7 @@ public class StateObservationMulti extends StateObservation {
      * @param playerID ID of the player to query.
      * @return the itype of the avatar.
      */
-    public int getAvatarType(int playerID) { return model.getAvatarType(playerID); }
+    public int getAvatarType(int playerID) { return 1; }
 
     /**
      * Method overloaded for multi player games. Now passes the player ID.
@@ -159,7 +169,7 @@ public class StateObservationMulti extends StateObservation {
      * @param playerID ID of the player to query.
      * @return a numeric value, the amount of remaining health points.
      */
-    public int getAvatarHealthPoints(int playerID) { return model.getAvatarHealthPoints(playerID); }
+    public int getAvatarHealthPoints(int playerID) { return 1; }
 
     /**
      * Method overloaded for multi player games. Now passes the player ID.
@@ -167,7 +177,7 @@ public class StateObservationMulti extends StateObservation {
      * @param playerID ID of the player to query.
      * @return the maximum amount of health points the avatar ever had.
      */
-    public int getAvatarMaxHealthPoints(int playerID) { return model.getAvatarMaxHealthPoints(playerID); }
+    public int getAvatarMaxHealthPoints(int playerID) { return 1; }
 
     /**
      * Method overloaded for multi player games. Now passes the player ID.
@@ -175,17 +185,17 @@ public class StateObservationMulti extends StateObservation {
      * @param playerID ID of the player to query.
      * @return the limit of health points the avatar can have.
      */
-    public int getAvatarLimitHealthPoints(int playerID) {return model.getAvatarLimitHealthPoints(playerID);}
+    public int getAvatarLimitHealthPoints(int playerID) {return 1;}
 
     /**
      * returns true if the avatar is alive.
      * @return true if the avatar is alive.
      */
-    public boolean isAvatarAlive(int playerID) {return model.isAvatarAlive(playerID);}
+    public boolean isAvatarAlive(int playerID) {return true;}
 
 
     public StateObservationMulti copy() {
-        StateObservationMulti copyObs = new StateObservationMulti(model.getClone());
+        StateObservationMulti copyObs = new StateObservationMulti(model.getCopy());
         return copyObs;
     }
 

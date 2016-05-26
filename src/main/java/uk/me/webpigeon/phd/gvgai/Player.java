@@ -1,7 +1,5 @@
 package uk.me.webpigeon.phd.gvgai;
 
-import core.game.Game;
-import ontology.Types;
 import uk.me.webpigeon.phd.gvgai.ElapsedCpuTimer;
 import uk.me.webpigeon.phd.gvgai.StateObservation;
 import uk.me.webpigeon.phd.gvgai.StateObservationMulti;
@@ -9,9 +7,6 @@ import uk.me.webpigeon.phd.tinycoop.api.Action;
 
 import java.awt.*;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -42,12 +37,12 @@ public abstract class Player {
     /**
      * Last action executed by this agent.
      */
-    private Types.ACTIONS lastAction = null;
+    private Action lastAction = null;
 
     /**
      * List of actions to be dumped.
      */
-    private ArrayList<Types.ACTIONS> allActions;
+    private ArrayList<Action> allActions;
 
     /**
      * Random seed of the game.
@@ -115,29 +110,15 @@ public abstract class Player {
     /**
      * Closes the agent, writing actions to file.
      */
-    final public void teardown(Game played) {
-        try {
-            if((this.actionFile != null && !actionFile.equals("")) && SHOULD_LOG) {
-                writer = new BufferedWriter(new FileWriter(new File(this.actionFile)));
-                writer.write(randomSeed +
-                        " " + (played.getWinner() == Types.WINNER.PLAYER_WINS ? 1 : 0) +
-                        " " + played.getScore() + " " + played.getGameTick() + "\n");
-
-                for(Types.ACTIONS act : allActions)
-                    writer.write(act.toString() + "\n");
-
-                writer.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    final public void teardown(Object played) {
+       
     }
 
     /**
      * Logs a single action
      * @param action the action to log.
      */
-    final public void logAction(Types.ACTIONS action) {
+    final public void logAction(Action action) {
 
         lastAction = action;
         if(this.actionFile!=null && SHOULD_LOG)
@@ -151,7 +132,7 @@ public abstract class Player {
      * Gets the last action executed by this controller.
      * @return the last action
      */
-    public Types.ACTIONS getLastAction()
+    public Action getLastAction()
     {
         return lastAction;
     }
@@ -177,7 +158,7 @@ public abstract class Player {
      * Get the history of actions of this player.
      * @return arrayList of all actions
      */
-    public ArrayList<Types.ACTIONS> getAllActions() { return allActions; }
+    public ArrayList<Action> getAllActions() { return allActions; }
 
     /**
      * Gets the player the control to draw something on the screen.
