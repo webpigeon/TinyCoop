@@ -10,12 +10,12 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
-import runner.tinycoop.GameManager;
 import uk.me.webpigeon.phd.tinycoop.api.GameState;
 import uk.me.webpigeon.phd.tinycoop.api.controller.Controller;
 import uk.me.webpigeon.phd.tinycoop.engine.Filters;
 import uk.me.webpigeon.phd.tinycoop.engine.level.GameLevel;
 import uk.me.webpigeon.phd.tinycoop.engine.level.LevelParser;
+import uk.me.webpigeon.phd.tinycoop.runner.GameManager;
 
 public class GameCli {
 

@@ -1,4 +1,4 @@
-package runner.tinycoop;
+package uk.me.webpigeon.phd.tinycoop.runner;
 
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
@@ -10,6 +10,11 @@ import uk.me.webpigeon.phd.tinycoop.api.controller.Controller;
 import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
 import utils.GameTimer;
 
+/**
+ * Executes a TinyCoop game.
+ *
+ * The game terminates after the MAX_TICKS have been reached or the game has been won. 
+ */
 public class GameExecutor implements Callable<GameResult> {
 	private static final Integer MAX_TICKS = 2000;
 	private static final Logger LOG = Logger.getLogger(GameExecutor.class.getCanonicalName());
@@ -61,6 +66,7 @@ public class GameExecutor implements Callable<GameResult> {
 		} catch (Exception ex) {
 			result = Result.CRASH;
 			LOG.severe("game run crashed: "+setup+" "+ex);
+			ex.printStackTrace();
 		}
 
 		LOG.info("game run complete: "+setup+" "+result);

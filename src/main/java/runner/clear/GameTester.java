@@ -9,12 +9,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import runner.cli.ControllerUtils;
-import runner.tinycoop.GameSetup;
 import uk.me.webpigeon.phd.tinycoop.api.GameState;
 import uk.me.webpigeon.phd.tinycoop.api.controller.Controller;
 import uk.me.webpigeon.phd.tinycoop.engine.Filters;
 import uk.me.webpigeon.phd.tinycoop.engine.level.GameLevel;
 import uk.me.webpigeon.phd.tinycoop.engine.level.LevelParser;
+import uk.me.webpigeon.phd.tinycoop.runner.GameSetup;
 import utils.GenerateCSV;
 
 public class GameTester {

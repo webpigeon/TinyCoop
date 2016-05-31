@@ -1,4 +1,4 @@
-package runner.tinycoop;
+package uk.me.webpigeon.phd.tinycoop.runner;
 
 import runner.cli.ControllerUtils;
 import uk.me.webpigeon.phd.tinycoop.api.GameState;
@@ -9,10 +9,10 @@ import uk.me.webpigeon.phd.tinycoop.engine.level.GameLevel;
 import uk.me.webpigeon.phd.tinycoop.engine.level.LevelParser;
 
 /**
- * Play a single game on a single map
+ * Play a single game on a single map using the relative action sets
  */
 public class RepeatRunner {
-	private static final Integer NUM_REPEATS = 1000;
+	private static final Integer NUM_REPEATS = 100;
 
 	public static void main(String[] args) throws Exception {
 

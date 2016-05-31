@@ -1,4 +1,4 @@
-package runner.tinycoop;
+package uk.me.webpigeon.phd.tinycoop.runner;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -18,6 +18,8 @@ import utils.GenerateCSV;
 
 /**
  * Looks after running and logging of games.
+ * 
+ * This is a multi-threaded runner, therefore the games (and agents) must be threadsafe.
  */
 public class GameManager implements Runnable {
 	private static final Integer NUM_THREADS = 4;

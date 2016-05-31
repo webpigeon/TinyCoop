@@ -1,7 +1,10 @@
-package runner.tinycoop;
+package uk.me.webpigeon.phd.tinycoop.runner;
 
 import runner.clear.Result;
 
+/**
+ * Results of a game operation.
+ */
 public class GameResult {
 	public final GameSetup setup;
 	public final Result result;

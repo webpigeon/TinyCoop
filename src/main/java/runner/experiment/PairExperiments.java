@@ -19,6 +19,7 @@ import Controllers.PassiveRefindController;
 import Controllers.RandomController;
 import Controllers.SortOfRandomController;
 import uk.me.webpigeon.phd.tinycoop.engine.Filters;
+import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
 import uk.me.webpigeon.phd.tinycoop.engine.level.GameLevel;
 import uk.me.webpigeon.phd.tinycoop.engine.level.LevelParser;
 import utils.GenerateCSV;
@@ -85,56 +86,56 @@ public class PairExperiments {
 					{
 						PiersController p1 = Utils.buildPredictor(Utils.buildMCTS(false), "pmcts");
 						PiersController p2 = Utils.buildMCTS(false);
-						tasks.add(new GameRunner(level, p1, p2, TICK_LIMIT));
+						tasks.add(new GameRunner(new SimpleGame(level), p1, p2, TICK_LIMIT));
 					}
 
 					// MCTS & MCTS
 					{
 						PiersController p1 = Utils.buildMCTS(true);
 						PiersController p2 = Utils.buildMCTS(false);
-						tasks.add(new GameRunner(level, p1, p2, TICK_LIMIT));
+						tasks.add(new GameRunner(new SimpleGame(level), p1, p2, TICK_LIMIT));
 					}
 
 					// PMCTS(SortOfRandom) & SortOfRandom
 					{
 						PiersController p1 = Utils.buildPredictor(new SortOfRandomController(), "pmcts");
 						PiersController p2 = new SortOfRandomController();
-						tasks.add(new GameRunner(level, p1, p2, TICK_LIMIT));
+						tasks.add(new GameRunner(new SimpleGame(level), p1, p2, TICK_LIMIT));
 					}
 
 					// MCTS & SortOfRandom
 					{
 						PiersController p1 = Utils.buildMCTS(true);
 						PiersController p2 = new SortOfRandomController();
-						tasks.add(new GameRunner(level, p1, p2, TICK_LIMIT));
+						tasks.add(new GameRunner(new SimpleGame(level), p1, p2, TICK_LIMIT));
 					}
 
 					// PMCTS(PassiveRefind) & PassiveRefind
 					{
 						PiersController p1 = Utils.buildPredictor(new PassiveRefindController(), "pmcts");
 						PiersController p2 = new PassiveRefindController();
-						tasks.add(new GameRunner(level, p1, p2, TICK_LIMIT));
+						tasks.add(new GameRunner(new SimpleGame(level), p1, p2, TICK_LIMIT));
 					}
 
 					// MCTS & PassiveRefind
 					{
 						PiersController p1 = Utils.buildMCTS(true);
 						PiersController p2 = new PassiveRefindController();
-						tasks.add(new GameRunner(level, p1, p2, TICK_LIMIT));
+						tasks.add(new GameRunner(new SimpleGame(level), p1, p2, TICK_LIMIT));
 					}
 
 					// Random for scale (control)
 					{
 						PiersController p1 = new RandomController();
 						PiersController p2 = new RandomController();
-						tasks.add(new GameRunner(level, p1, p2, TICK_LIMIT));
+						tasks.add(new GameRunner(new SimpleGame(level), p1, p2, TICK_LIMIT));
 					}
 
 					// Sort of Random for scale (control)
 					{
 						PiersController p1 = new SortOfRandomController();
 						PiersController p2 = new SortOfRandomController();
-						tasks.add(new GameRunner(level, p1, p2, TICK_LIMIT));
+						tasks.add(new GameRunner(new SimpleGame(level), p1, p2, TICK_LIMIT));
 					}
 
 				}

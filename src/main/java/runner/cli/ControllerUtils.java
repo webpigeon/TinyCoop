@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import Controllers.PiersController;
 import uk.me.webpigeon.phd.tinycoop.api.controller.Controller;
+import uk.me.webpigeon.phd.tinycoop.controllers.prediction.ControllerPolicy;
 import utils.AgentFactory;
 import utils.LegacyAgentFactory;
 
@@ -57,6 +58,30 @@ public class ControllerUtils {
 		throw new IllegalArgumentException("no such agent! " + name);
 	}
 
+	/**
+	 * build agents which are predictor aware
+	 * 
+	 * @param pid
+	 * @param name
+	 * @param other
+	 * @return
+	 */
+	public Controller parseDescription(int pid, String name, Controller other) {
+		if ("mcts".equals(name)) {
+			return AgentFactory.buildStandardMCTS();
+		}
+		
+		if ("predictor".equals(name)) {
+			return AgentFactory.buildPredictorMCTS(new ControllerPolicy(other));
+		}
+
+		if ("nested".equals(name)) {
+			return AgentFactory.buildPredictorMCTS(new ControllerPolicy(AgentFactory.buildStandardMCTS()));
+		}
+
+		return parseDescription(pid, name);
+	}
+	
 	public Controller parseDescription(int pid, String description) {
 		Matcher m = p.matcher(description);
 		if (m.matches()) {

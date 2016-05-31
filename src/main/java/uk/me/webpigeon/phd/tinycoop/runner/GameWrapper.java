@@ -1,4 +1,4 @@
-package runner.tinycoop;
+package uk.me.webpigeon.phd.tinycoop.runner;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;

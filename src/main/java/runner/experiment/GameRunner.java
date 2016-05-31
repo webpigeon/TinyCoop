@@ -28,6 +28,7 @@ import Controllers.enhanced.PredictorMCTS;
 import Controllers.enhanced.RandomPredictor;
 import Controllers.ga.GAController;
 import uk.me.webpigeon.phd.tinycoop.api.Action;
+import uk.me.webpigeon.phd.tinycoop.api.controller.Controller;
 import uk.me.webpigeon.phd.tinycoop.engine.Filters;
 import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
 import uk.me.webpigeon.phd.tinycoop.engine.level.GameLevel;
@@ -94,7 +95,7 @@ public class GameRunner implements Callable<GameResult> {
 			for (int j = 0; j < NUMBER_RUNS; j++) {
 				for (GameLevel level : levels) {
 
-					// round robin pairings
+					/*// round robin pairings
 					tasks.add(new GameRunner(level, new MCTS(true, 500, 10, 45), new MCTS(false, 500, 10, 45),
 							TICK_LIMIT));
 					tasks.add(new GameRunner(level, new RandomController(), new RandomController(), TICK_LIMIT));
@@ -122,7 +123,7 @@ public class GameRunner implements Callable<GameResult> {
 								TICK_LIMIT));
 						tasks.add(new GameRunner(level, new PredictorMCTS(500, 10, 45, predictor),
 								new PassiveRefindController(), TICK_LIMIT));
-					}
+					}*/
 				}
 			}
 			referenceCount.addAndGet(tasks.size());
@@ -185,15 +186,15 @@ public class GameRunner implements Callable<GameResult> {
 
 	}
 
-	private GameLevel level;
-	private PiersController p1;
-	private PiersController p2;
+	private SimpleGame game;
+	private Controller p1;
+	private Controller p2;
 	private int tickLimit;
 	private UUID id;
 	private GenerateCSV moves;
 
-	public GameRunner(GameLevel level, PiersController p1, PiersController p2, int tickLimit) throws FileNotFoundException {
-		this.level = level;
+	public GameRunner(SimpleGame game, Controller p1, Controller p2, int tickLimit) throws FileNotFoundException {
+		this.game = game;
 		this.p1 = p1;
 		this.p2 = p2;
 		this.tickLimit = tickLimit;
@@ -201,8 +202,8 @@ public class GameRunner implements Callable<GameResult> {
 		this.id = UUID.randomUUID();
 	}
 
-	public GameRunner(GameLevel level, PiersController p1, PiersController p2, int tickLimit, GenerateCSV moves) {
-		this.level = level;
+	public GameRunner(SimpleGame game, Controller p1, Controller p2, int tickLimit, GenerateCSV moves) {
+		this.game = game;
 		this.p1 = p1;
 		this.p2 = p2;
 		this.tickLimit = tickLimit;
@@ -225,17 +226,16 @@ public class GameRunner implements Callable<GameResult> {
 
 		// setup result entry already
 		GameSetup setup = new GameSetup();
-		setup.levelID = level.getLevelName();
-		setup.actionSet = level.getActionSetName();
-		setup.p1 = p1.getSimpleName();
-		setup.p2 = p2.getSimpleName();
+		//setup.levelID = level.getLevelName();
+		//setup.actionSet = level.getActionSetName();
+		setup.p1 = p1.getFriendlyName();
+		setup.p2 = p2.getFriendlyName();
 
 		GameResult result = new GameResult(setup);
 		result.id = id;
-
-		SimpleGame game = new SimpleGame(level);
-		p1.startGame(0);
-		p2.startGame(1);
+		
+		p1.startGame(0, 1);
+		p2.startGame(1, 0);
 
 		// make a list of legal moves for each player
 		List<Action> legalMoves1 = game.getLegalActions(0);
@@ -243,8 +243,8 @@ public class GameRunner implements Callable<GameResult> {
 
 		int tickCount = 0;
 		while (!game.hasWon() && tickCount < tickLimit) {
-			Action p1Move = p1.get(game.getClone());
-			Action p2Move = p2.get(game.getClone());
+			Action p1Move = p1.getAction(game.getClone().getObservationFor(0));
+			Action p2Move = p2.getAction(game.getClone().getObservationFor(1));
 
 			result.recordMoves(tickCount, p1Move, p2Move);
 			moves.writeLine("MOVE", id, setup.p1, setup.p2, setup.levelID, setup.actionSet, tickCount, p1Move,

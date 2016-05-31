@@ -1,7 +1,10 @@
-package runner.tinycoop;
+package uk.me.webpigeon.phd.tinycoop.runner;
 
 import java.util.UUID;
 
+/**
+ * This is the parameters for controlling how the game works.
+ */
 public class GameSetup {
 	public final UUID id;
 	public final String p1;

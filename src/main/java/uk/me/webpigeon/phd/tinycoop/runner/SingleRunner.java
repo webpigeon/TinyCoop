@@ -1,4 +1,4 @@
-package runner.tinycoop;
+package uk.me.webpigeon.phd.tinycoop.runner;
 
 import uk.me.webpigeon.phd.tinycoop.api.controller.Controller;
 import uk.me.webpigeon.phd.tinycoop.engine.Filters;
@@ -16,7 +16,7 @@ public class SingleRunner {
 
 	public static void main(String[] args) throws Exception {
 
-		for (int i=0; i<10; i++) {
+		for (int i=0; i<100; i++) {
 			GameLevel levelRel = LevelParser.buildParser("data/maps/airlock.txt");
 			levelRel.setLegalMoves("relative", Filters.getAllRelativeActions());
 	
