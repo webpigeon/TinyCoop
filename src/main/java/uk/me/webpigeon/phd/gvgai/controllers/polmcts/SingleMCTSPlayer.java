@@ -44,6 +44,7 @@ public class SingleMCTSPlayer
     {
         //Set the game observation to a newly root node.
         //System.out.println("learning_style = " + learning_style);
+    	policy.init(PredictorAgent.oppID, PredictorAgent.id);
         m_root = new PolicyTreeNode(m_rnd, policy);
         m_root.rootState = a_gameState;
     }

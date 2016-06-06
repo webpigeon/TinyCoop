@@ -31,7 +31,7 @@ public class PolicyTreeNode
 
     public PolicyTreeNode(Random rnd, GVGPolicy policy) {
         this(null, -1, rnd);
-        this.policy = policy;
+        PolicyTreeNode.policy = policy;
     }
 
     public PolicyTreeNode(PolicyTreeNode parent, int childIdx, Random rnd) {
