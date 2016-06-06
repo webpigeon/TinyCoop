@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>uk.ac.essex.csee.pwillic</groupId>
 	<artifactId>tinycoop</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.4</version>
 	<name>Tiny CoOp</name>
 	<description>A simple CoOp game for testing AIs</description>
 
@@ -46,7 +46,7 @@
     <configuration>
         <archive>
             <manifest>
-                <mainClass>runner.clear.CigParams</mainClass>
+                <mainClass>runner.clear.GVGAIMadeMeRewriteMyRunner</mainClass>
             </manifest>
         </archive>
     </configuration>
