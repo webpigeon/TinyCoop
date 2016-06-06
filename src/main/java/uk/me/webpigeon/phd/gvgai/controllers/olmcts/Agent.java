@@ -19,7 +19,7 @@ public class Agent extends AbstractMultiPlayer {
 
     public static int[] NUM_ACTIONS;
     public static int MCTS_ITERATIONS = 100;
-    public static int ROLLOUT_DEPTH = 250;
+    public static int ROLLOUT_DEPTH = 200;
     public static double K = Math.sqrt(2);
     public static double REWARD_DISCOUNT = 1.00;
     public static Action[][] actions;
@@ -84,4 +84,8 @@ public class Agent extends AbstractMultiPlayer {
         return actions[id][action];
     }
 
+    public String toString() {
+    	return "OLMCTS";
+    }
+    
 }

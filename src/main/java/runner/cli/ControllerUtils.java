@@ -6,7 +6,9 @@ import java.util.regex.Pattern;
 import Controllers.PiersController;
 import uk.me.webpigeon.phd.tinycoop.api.controller.Controller;
 import uk.me.webpigeon.phd.tinycoop.controllers.prediction.ControllerPolicy;
+import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
 import utils.AgentFactory;
+import utils.GVGAIAgentFactory;
 import utils.LegacyAgentFactory;
 
 public class ControllerUtils {
@@ -16,10 +18,10 @@ public class ControllerUtils {
 		p = Pattern.compile("([a-zA-Z0-9]+)(?:\\(([a-z0-9;.-]+)\\))?");
 	}
 
-	public Controller buildController(int pid, String name, String[] args) {
+	public Controller buildController(int pid, SimpleGame game, String name, String[] args) {
 
 		if ("mcts".equals(name)) {
-			return AgentFactory.buildStandardMCTS();
+			return GVGAIAgentFactory.buildMCTS(game, pid);
 		}
 
 		if ("random".equals(name)) {
@@ -66,23 +68,23 @@ public class ControllerUtils {
 	 * @param other
 	 * @return
 	 */
-	public Controller parseDescription(int pid, String name, Controller other) {
+	public Controller parseDescription(int pid, SimpleGame game, String name, Controller other) {
 		if ("mcts".equals(name)) {
-			return AgentFactory.buildStandardMCTS();
+			return GVGAIAgentFactory.buildMCTS(game, pid);
 		}
 		
 		if ("predictor".equals(name)) {
-			return AgentFactory.buildPredictorMCTS(new ControllerPolicy(other));
+			return GVGAIAgentFactory.buildMCTSPredictor(game, pid, other);
 		}
 
 		if ("nested".equals(name)) {
 			return AgentFactory.buildPredictorMCTS(new ControllerPolicy(AgentFactory.buildStandardMCTS()));
 		}
 
-		return parseDescription(pid, name);
+		return parseDescription(pid, game, name);
 	}
 	
-	public Controller parseDescription(int pid, String description) {
+	public Controller parseDescription(int pid, SimpleGame game, String description) {
 		Matcher m = p.matcher(description);
 		if (m.matches()) {
 			String name = m.group(1);
@@ -92,7 +94,7 @@ public class ControllerUtils {
 			if (argStr != null) {
 				args = argStr.split(";");
 			}
-			return buildController(pid, name, args);
+			return buildController(pid, game, name, args);
 		}
 
 		throw new IllegalArgumentException("invalid controller spec");

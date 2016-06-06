@@ -5,6 +5,7 @@ import uk.me.webpigeon.phd.tinycoop.api.controller.GameObservation;
 import uk.me.webpigeon.phd.tinycoop.engine.SimpleGame;
 
 import java.awt.Point;
+import java.lang.Thread.State;
 import java.util.*;
 
 /**
@@ -209,4 +210,5 @@ public class StateObservationMulti extends StateObservation {
         System.out.println("StateObservation.equiv() is a Deprecated Method. And it always returns False, now.");
         return false;
     }
+
 }

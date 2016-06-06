@@ -50,16 +50,16 @@ public class CigParams {
 				for (String agent1 : player1List) {
 					for (String agent2 : player2List) {
 						// setup (other agent as 1)
-						Controller predictorAgentP2 = controllers.parseDescription(GameState.PLAYER_1, agent2);
-						Controller testAgentP1 = controllers.parseDescription(GameState.PLAYER_0, agent1,
+						Controller predictorAgentP2 = controllers.parseDescription(GameState.PLAYER_1, null, agent2);
+						Controller testAgentP1 = controllers.parseDescription(GameState.PLAYER_0, null, agent1,
 								predictorAgentP2);
-						Controller coopAgentP2 = controllers.parseDescription(GameState.PLAYER_1, agent2);
+						Controller coopAgentP2 = controllers.parseDescription(GameState.PLAYER_1, null, agent2);
 						manager.addGame(levelRel, testAgentP1, coopAgentP2);
 
 						// setup (other agent as 2)
-						Controller predictorAgentP1 = controllers.parseDescription(GameState.PLAYER_0, agent2);
-						Controller coopAgentP1 = controllers.parseDescription(GameState.PLAYER_0, agent2);
-						Controller testAgentP2 = controllers.parseDescription(GameState.PLAYER_1, agent1,
+						Controller predictorAgentP1 = controllers.parseDescription(GameState.PLAYER_0, null, agent2);
+						Controller coopAgentP1 = controllers.parseDescription(GameState.PLAYER_0, null, agent2);
+						Controller testAgentP2 = controllers.parseDescription(GameState.PLAYER_1, null, agent1,
 								predictorAgentP1);
 						manager.addGame(levelRel, coopAgentP1, testAgentP2);
 					}

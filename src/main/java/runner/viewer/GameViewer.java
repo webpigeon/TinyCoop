@@ -28,12 +28,12 @@ public class GameViewer implements Callable<GameResult> {
 		// viewer.call();
 
 		String[] maps = new String[] {
-				"data/maps/airlock.txt",
-				"data/maps/butterflies.txt",
-				"data/norm_maps/single_door.txt",
+				//"data/maps/airlock.txt",
+				//"data/maps/butterflies.txt",
+				//"data/norm_maps/single_door.txt",
 				"data/norm_maps/cloverleaf.txt",
-				"data/norm_maps/mirror_lock.txt",
-				"data/norm_maps/maze.txt"
+				//"data/norm_maps/mirror_lock.txt",
+				//"data/norm_maps/maze.txt"
 		};
 
 		Map<String, List<GameResult>> resultMap = new HashMap<String, List<GameResult>>();
@@ -58,7 +58,7 @@ public class GameViewer implements Callable<GameResult> {
 				SimpleGame game = new SimpleGame(level);
 				
 				Controller p1 = GVGAIAgentFactory.buildMCTS(game, 0);
-				Controller p2 = GVGAIAgentFactory.buildMCTSPredictor(game, 1);
+				Controller p2 = LegacyAgentFactory.buildStandardMCTS();
 
 				GameViewer viewer = new GameViewer(level, game, p1, p2);
 				GameResult r = viewer.call();

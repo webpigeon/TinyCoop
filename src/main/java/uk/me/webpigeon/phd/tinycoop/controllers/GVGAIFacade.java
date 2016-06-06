@@ -35,7 +35,7 @@ public class GVGAIFacade extends AbstractController {
 		Action gvgAction = gvgAgent.act(multiObs, timer);
 		
 		if (timer.exceededMaxTime()) {
-			System.err.println("Controller exceeded max time: doing noop");
+			System.err.println("Controller "+gvgAgent+" exceeded max time: ("+timer.elapsed()+") doing noop");
 			return Action.NOOP;
 		}
 		

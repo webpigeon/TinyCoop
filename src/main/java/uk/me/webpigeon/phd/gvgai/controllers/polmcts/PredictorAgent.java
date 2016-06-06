@@ -6,6 +6,7 @@ import java.util.Random;
 import uk.me.webpigeon.phd.gvgai.AbstractMultiPlayer;
 import uk.me.webpigeon.phd.gvgai.ElapsedCpuTimer;
 import uk.me.webpigeon.phd.gvgai.StateObservationMulti;
+import uk.me.webpigeon.phd.gvgai.controllers.polmcts.policy.GVGPolicy;
 import uk.me.webpigeon.phd.tinycoop.api.Action;
 
 /**
@@ -26,13 +27,14 @@ public class PredictorAgent extends AbstractMultiPlayer {
     public static int id, oppID, no_players;
 
     protected SingleMCTSPlayer mctsPlayer;
+    protected GVGPolicy policy;
 
     /**
      * Public constructor with state observation and time due.
      * @param so state observation of the current game.
      * @param elapsedTimer Timer for the controller creation.
      */
-    public PredictorAgent(StateObservationMulti so, ElapsedCpuTimer elapsedTimer, int playerID)
+    public PredictorAgent(StateObservationMulti so, ElapsedCpuTimer elapsedTimer, int playerID, GVGPolicy policy)
     {
         //get game information
 
@@ -58,10 +60,11 @@ public class PredictorAgent extends AbstractMultiPlayer {
         //Create the player.
 
         mctsPlayer = getPlayer(so, elapsedTimer);
+        this.policy = policy;
     }
 
     public SingleMCTSPlayer getPlayer(StateObservationMulti so, ElapsedCpuTimer elapsedTimer) {
-        return new SingleMCTSPlayer(new Random());
+        return new SingleMCTSPlayer(new Random(), policy);
     }
 
 
@@ -84,4 +87,9 @@ public class PredictorAgent extends AbstractMultiPlayer {
         return actions[id][action];
     }
 
+    
+    public String toString() {
+    	return "OLMCTS_PREDICTOR["+policy.toString()+"]";
+    }
+    
 }

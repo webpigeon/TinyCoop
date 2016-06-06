@@ -4,6 +4,8 @@ import java.util.Random;
 
 import uk.me.webpigeon.phd.gvgai.ElapsedCpuTimer;
 import uk.me.webpigeon.phd.gvgai.StateObservationMulti;
+import uk.me.webpigeon.phd.gvgai.controllers.polmcts.policy.GVGPolicy;
+import uk.me.webpigeon.phd.gvgai.controllers.polmcts.policy.NestedControllerPolicy;
 import uk.me.webpigeon.phd.gvgai.controllers.polmcts.policy.OneStepLookAhead;
 
 /**
@@ -20,6 +22,7 @@ public class SingleMCTSPlayer
      * Root of the tree.
      */
     public PolicyTreeNode m_root;
+    public GVGPolicy policy;
 
     /**
      * Random generator.
@@ -27,9 +30,10 @@ public class SingleMCTSPlayer
     public Random m_rnd;
 
 
-    public SingleMCTSPlayer(Random a_rnd)
+    public SingleMCTSPlayer(Random a_rnd, GVGPolicy policy)
     {
         m_rnd = a_rnd;
+        this.policy = policy;
     }
 
     /**
@@ -40,7 +44,7 @@ public class SingleMCTSPlayer
     {
         //Set the game observation to a newly root node.
         //System.out.println("learning_style = " + learning_style);
-        m_root = new PolicyTreeNode(m_rnd, new OneStepLookAhead());
+        m_root = new PolicyTreeNode(m_rnd, policy);
         m_root.rootState = a_gameState;
     }
 

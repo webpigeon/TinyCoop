@@ -31,6 +31,9 @@ public class HillClimber implements GVGPolicy {
 		return Action.NOOP;
 	}
 	
+	public String toString() {
+		return "HillClimb";
+	}
 	
 
 }

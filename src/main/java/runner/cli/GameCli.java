@@ -49,8 +49,8 @@ public class GameCli {
 
 			for (String firstAgent : p1) {
 				for (String secondAgent : p2) {
-					Controller c1 = utils.parseDescription(GameState.PLAYER_0, firstAgent);
-					Controller c2 = utils.parseDescription(GameState.PLAYER_1, secondAgent);
+					Controller c1 = utils.parseDescription(GameState.PLAYER_0, null, firstAgent);
+					Controller c2 = utils.parseDescription(GameState.PLAYER_1, null, secondAgent);
 
 					manager.addGame(level, c1, c2);
 				}

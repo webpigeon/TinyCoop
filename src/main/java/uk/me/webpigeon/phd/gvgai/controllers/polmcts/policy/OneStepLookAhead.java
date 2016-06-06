@@ -32,6 +32,10 @@ public class OneStepLookAhead implements GVGPolicy {
 		return bestAction;
 	}
 	
+	public String toString() {
+		return "OneStepAhead";
+	}
+	
 	
 
 }

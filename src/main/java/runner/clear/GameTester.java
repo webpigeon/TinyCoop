@@ -47,8 +47,8 @@ public class GameTester {
 					for (String player2 : player2List) {
 
 						// setup
-						GameSetup setup = buildSetup(controllers.parseDescription(GameState.PLAYER_0, player1),
-								controllers.parseDescription(GameState.PLAYER_1, player2), levelRel);
+						GameSetup setup = buildSetup(controllers.parseDescription(GameState.PLAYER_0, null, player1),
+								controllers.parseDescription(GameState.PLAYER_1, null, player2), levelRel);
 
 						tasks.add(new GameEngine(setup, MAX_TICKS, new TraceGameRecord(setup)));
 					}
