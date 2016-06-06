@@ -39,6 +39,27 @@ public class ControllerUtils {
 		throw new IllegalArgumentException("no such agent! " + name);
 	}
 	
+	/**
+	 * Because the GVGAI MCTS agent can't deal with mirror matches, use pier's MCTS controller as player 2
+	 * rather than the gvgai mcts.
+	 * 
+	 * I hate what this has done to my codebase.
+	 * 
+	 * @param pid
+	 * @param game
+	 * @param name
+	 * @param args
+	 * @return
+	 */
+	public Controller buildCoopController(int pid, SimpleGame game, String name, String[] args) {
+
+		if ("mcts".equals(name)) {
+			return LegacyAgentFactory.buildStandardMCTS();
+		}
+
+		return buildController(pid, game, name, args);
+	}
+	
 	public PiersController buildLegacyController(int pid, String name, String[] args) {
 
 		if ("mcts".equals(name)) {
@@ -111,6 +132,22 @@ public class ControllerUtils {
 				args = argStr.split(";");
 			}
 			return buildLegacyController(pid, name, args);
+		}
+
+		throw new IllegalArgumentException("invalid controller spec");
+	}
+
+	public Controller parseCoopDescription(int pid, SimpleGame game, String description) {
+		Matcher m = p.matcher(description);
+		if (m.matches()) {
+			String name = m.group(1);
+
+			String argStr = m.group(2);
+			String[] args = new String[0];
+			if (argStr != null) {
+				args = argStr.split(";");
+			}
+			return buildCoopController(pid, game, name, args);
 		}
 
 		throw new IllegalArgumentException("invalid controller spec");

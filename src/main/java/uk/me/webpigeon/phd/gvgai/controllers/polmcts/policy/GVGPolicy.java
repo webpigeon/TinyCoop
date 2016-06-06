@@ -7,4 +7,6 @@ public interface GVGPolicy {
 	
 	public Action getActionAt(Action myAction, StateObservationMulti multi);
 
+	public void init(int myID, int oppID);
+
 }

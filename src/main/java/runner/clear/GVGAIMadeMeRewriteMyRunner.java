@@ -62,7 +62,7 @@ public class GVGAIMadeMeRewriteMyRunner {
 						Controller predictorAgentP2 = controllers.parseDescription(GameState.PLAYER_1, game, agent2);
 						Controller testAgentP1 = controllers.parseDescription(GameState.PLAYER_0, game, agent1,
 								predictorAgentP2);
-						Controller coopAgentP2 = controllers.parseDescription(GameState.PLAYER_1, game, agent2);
+						Controller coopAgentP2 = controllers.parseCoopDescription(GameState.PLAYER_1, game, agent2);
 						
 						GameExecutor executor = buildGame(levelRel, game, testAgentP1, coopAgentP2);
 						GameResult result = executor.call();
@@ -71,7 +71,7 @@ public class GVGAIMadeMeRewriteMyRunner {
 						// setup (other agent as 2)
 						SimpleGame game2 = new SimpleGame(levelRel);
 						Controller predictorAgentP1 = controllers.parseDescription(GameState.PLAYER_0, game, agent2);
-						Controller coopAgentP1 = controllers.parseDescription(GameState.PLAYER_0, game, agent2);
+						Controller coopAgentP1 = controllers.parseCoopDescription(GameState.PLAYER_0, game, agent2);
 						Controller testAgentP2 = controllers.parseDescription(GameState.PLAYER_1, game, agent1,
 								predictorAgentP1);
 						

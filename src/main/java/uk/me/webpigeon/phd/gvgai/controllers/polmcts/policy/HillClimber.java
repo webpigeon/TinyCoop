@@ -34,6 +34,12 @@ public class HillClimber implements GVGPolicy {
 	public String toString() {
 		return "HillClimb";
 	}
+
+	@Override
+	public void init(int myID, int oppID) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

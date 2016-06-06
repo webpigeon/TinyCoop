@@ -14,4 +14,10 @@ public class RandomPolicy implements GVGPolicy {
         return oppActions[new Random().nextInt(oppActions.length)];
 	}
 
+	@Override
+	public void init(int myID, int oppID) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

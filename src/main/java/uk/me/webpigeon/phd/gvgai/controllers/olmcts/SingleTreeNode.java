@@ -50,7 +50,7 @@ public class SingleTreeNode
         int numIters = 0;
 
         int remainingLimit = 5;
-        while(remaining > 2*avgTimeTaken && remaining > remainingLimit){
+        while(remaining > avgTimeTaken && remaining > remainingLimit){
         //while(numIters < Agent.MCTS_ITERATIONS){
 
             StateObservationMulti state = rootState.copy();

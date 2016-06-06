@@ -62,8 +62,18 @@ public class PredictorAgent extends AbstractMultiPlayer {
         mctsPlayer = getPlayer(so, elapsedTimer);
         this.policy = policy;
     }
+    
+    
 
-    public SingleMCTSPlayer getPlayer(StateObservationMulti so, ElapsedCpuTimer elapsedTimer) {
+    @Override
+	public void setup(String actionFile, int randomSeed, boolean isHuman) {
+		super.setup(actionFile, randomSeed, isHuman);
+		policy.init(oppID, id);
+	}
+
+
+
+	public SingleMCTSPlayer getPlayer(StateObservationMulti so, ElapsedCpuTimer elapsedTimer) {
         return new SingleMCTSPlayer(new Random(), policy);
     }
 

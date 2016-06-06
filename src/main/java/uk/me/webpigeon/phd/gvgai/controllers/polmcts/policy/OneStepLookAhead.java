@@ -35,6 +35,12 @@ public class OneStepLookAhead implements GVGPolicy {
 	public String toString() {
 		return "OneStepAhead";
 	}
+
+	@Override
+	public void init(int myID, int oppID) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 
