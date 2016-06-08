@@ -24,7 +24,7 @@ public class FlareFollowingAgent extends AbstractController {
 		if (flare == null) {
 			return Action.NOOP;
 		}
-		assert !myID.equals(flare.pid) : "the other agent appears to have flared someone else";
+		assert myID.equals(flare.pid) : "the other agent appears to have flared someone else";
 
 		// find the target pos and location
 		Point myLocation = state.getPos(myID);

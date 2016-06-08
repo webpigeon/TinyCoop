@@ -32,6 +32,7 @@ public class SingleMCTSPlayer
 
     public SingleMCTSPlayer(Random a_rnd, GVGPolicy policy)
     {
+    	assert policy != null;
         m_rnd = a_rnd;
         this.policy = policy;
     }

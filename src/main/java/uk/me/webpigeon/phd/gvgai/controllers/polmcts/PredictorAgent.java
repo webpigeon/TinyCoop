@@ -58,9 +58,8 @@ public class PredictorAgent extends AbstractMultiPlayer {
         }
 
         //Create the player.
-
-        mctsPlayer = getPlayer(so, elapsedTimer);
         this.policy = policy;
+        mctsPlayer = getPlayer(so, elapsedTimer);
     }
     
     
