@@ -18,7 +18,7 @@ public class ElapsedCpuTimer {
         WALL_TIME, CPU_TIME, USER_TIME
     };
 
-    public TimerType type = TimerType.WALL_TIME;
+    public TimerType type = TimerType.USER_TIME;
 
     public ElapsedCpuTimer(TimerType type) {
         this.type = type;
