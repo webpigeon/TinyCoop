@@ -5,6 +5,7 @@ import java.util.List;
 import uk.me.webpigeon.phd.tinycoop.api.Action;
 
 public class UCBGreedyRollout extends GreedyRollout {
+	private static final double epsilon = 0.00000001;
 
 	@Override
 	public int selectAction(List<Action> legalActions) {
@@ -26,7 +27,7 @@ public class UCBGreedyRollout extends GreedyRollout {
 				bestScore = score;
 				used = 1;
 				bestActions[0] = action;
-			} else if (bestScore == score) {
+			} else if (Math.abs(bestScore - score) < epsilon) {
 				bestActions[used] = action;
 				used++;
 			}

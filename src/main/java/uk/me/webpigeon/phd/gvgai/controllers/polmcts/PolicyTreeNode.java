@@ -6,6 +6,7 @@ import uk.me.webpigeon.phd.gvgai.Constants;
 import uk.me.webpigeon.phd.gvgai.ElapsedCpuTimer;
 import uk.me.webpigeon.phd.gvgai.StateObservationMulti;
 import uk.me.webpigeon.phd.gvgai.Utils;
+import uk.me.webpigeon.phd.gvgai.controllers.ControllerConstants;
 import uk.me.webpigeon.phd.gvgai.controllers.polmcts.policy.GVGPolicy;
 import uk.me.webpigeon.phd.tinycoop.api.Action;
 import uk.me.webpigeon.phd.tinycoop.controllers.prediction.Policy;
@@ -72,14 +73,14 @@ public class PolicyTreeNode
             remaining = elapsedTimer.remainingTimeMillis();
         }
         
-        System.out.println(numIters);
+        //System.out.println(numIters);
     }
 
     public PolicyTreeNode treePolicy(StateObservationMulti state) {
 
     	PolicyTreeNode cur = this;
 
-        while (!state.isGameOver() && cur.m_depth < PredictorAgent.ROLLOUT_DEPTH)
+        while (!state.isGameOver() && cur.m_depth < ControllerConstants.ROLLOUT_DEPTH)
         {
             if (cur.notFullyExpanded()) {
                 return cur.expand(state);
@@ -170,7 +171,7 @@ public class PolicyTreeNode
             //System.out.println("norm child value: " + childValue);
 
             double uctValue = childValue +
-                    PredictorAgent.K * Math.sqrt(Math.log(this.nVisits + 1) / (child.nVisits + this.epsilon));
+            		ControllerConstants.K * Math.sqrt(Math.log(this.nVisits + 1) / (child.nVisits + this.epsilon));
 
             uctValue = Utils.noise(uctValue, this.epsilon, this.m_rnd.nextDouble());     //break ties randomly
 
@@ -223,7 +224,7 @@ public class PolicyTreeNode
 
     public boolean finishRollout(StateObservationMulti rollerState, int depth)
     {
-        if(depth >= PredictorAgent.ROLLOUT_DEPTH)      //rollout end condition.
+        if(depth >= ControllerConstants.ROLLOUT_DEPTH)      //rollout end condition.
             return true;
 
         if(rollerState.isGameOver())               //end of game

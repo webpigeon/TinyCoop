@@ -6,6 +6,7 @@ import uk.me.webpigeon.phd.gvgai.Constants;
 import uk.me.webpigeon.phd.gvgai.ElapsedCpuTimer;
 import uk.me.webpigeon.phd.gvgai.StateObservationMulti;
 import uk.me.webpigeon.phd.gvgai.Utils;
+import uk.me.webpigeon.phd.gvgai.controllers.ControllerConstants;
 import uk.me.webpigeon.phd.tinycoop.api.Action;
 
 public class SingleTreeNode
@@ -74,7 +75,7 @@ public class SingleTreeNode
 
         SingleTreeNode cur = this;
 
-        while (!state.isGameOver() && cur.m_depth < Agent.ROLLOUT_DEPTH)
+        while (!state.isGameOver() && cur.m_depth < ControllerConstants.ROLLOUT_DEPTH)
         {
             if (cur.notFullyExpanded()) {
                 return cur.expand(state);
@@ -134,7 +135,7 @@ public class SingleTreeNode
             //System.out.println("norm child value: " + childValue);
 
             double uctValue = childValue +
-                    Agent.K * Math.sqrt(Math.log(this.nVisits + 1) / (child.nVisits + this.epsilon));
+            		ControllerConstants.K * Math.sqrt(Math.log(this.nVisits + 1) / (child.nVisits + this.epsilon));
 
             uctValue = Utils.noise(uctValue, this.epsilon, this.m_rnd.nextDouble());     //break ties randomly
 
@@ -215,7 +216,7 @@ public class SingleTreeNode
 
     public boolean finishRollout(StateObservationMulti rollerState, int depth)
     {
-        if(depth >= Agent.ROLLOUT_DEPTH)      //rollout end condition.
+        if(depth >= ControllerConstants.ROLLOUT_DEPTH)      //rollout end condition.
             return true;
 
         if(rollerState.isGameOver())               //end of game
