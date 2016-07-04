@@ -54,5 +54,4 @@ public class AgentFactory {
 	public static Controller buildPredictorMCTS(Policy policy){
 		return new MCTSPredictorAgent(500, 10, 25, policy);
 	}
-
 }

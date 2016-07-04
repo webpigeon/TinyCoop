@@ -54,7 +54,7 @@ public class ControllerUtils {
 	public Controller buildCoopController(int pid, SimpleGame game, String name, String[] args) {
 
 		if ("mcts".equals(name)) {
-			return LegacyAgentFactory.buildStandardMCTS();
+			return GVGAIAgentFactory.buildMirrorMCTS(game, pid);
 		}
 
 		return buildController(pid, game, name, args);

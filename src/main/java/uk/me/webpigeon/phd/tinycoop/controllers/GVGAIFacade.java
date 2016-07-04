@@ -13,10 +13,12 @@ import uk.me.webpigeon.phd.tinycoop.engine.controllers.AbstractController;
  */
 public class GVGAIFacade extends AbstractController {
 	private AbstractMultiPlayer gvgAgent;
+	private final long timebudget;
 	
-	public GVGAIFacade(AbstractMultiPlayer gvgAgent) {
+	public GVGAIFacade(AbstractMultiPlayer gvgAgent, long timebudget) {
 		super("GVG-"+gvgAgent);
 		this.gvgAgent = gvgAgent;
+		this.timebudget = timebudget;
 	}
 
 	@Override
@@ -30,7 +32,7 @@ public class GVGAIFacade extends AbstractController {
 		
 		StateObservationMulti multiObs = new StateObservationMulti(state, myID);
 		ElapsedCpuTimer timer = new ElapsedCpuTimer();
-		timer.setMaxTimeMillis(40);
+		timer.setMaxTimeMillis(timebudget);
 		
 		Action gvgAction = gvgAgent.act(multiObs, timer);
 		
