@@ -39,7 +39,7 @@ public class RoundRobinMT {
                 new MCTS(true, 200),
                 new VariGA(true, 500),
                 new GAController(true),
-                new RandomController()
+                new RandomController(0)
         };
 
         Controller[] player2List = new Controller[] {
@@ -48,7 +48,7 @@ public class RoundRobinMT {
                 new MCTS(false, 200),
                 new VariGA(false, 500),
                 new GAController(true),
-                new RandomController()
+                new RandomController(1)
         };
 
         while(!Thread.interrupted()) {

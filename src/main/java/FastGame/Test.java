@@ -15,7 +15,7 @@ public class Test {
     public static void main(String[] args) {
         //Controller m1 = new PlanningController();
         Controller m2 = new MCTS(false, 500);
-        Controller r1 = new RandomController();
+        Controller r1 = new RandomController(0);
 
 
         //Controller c1 = m1;

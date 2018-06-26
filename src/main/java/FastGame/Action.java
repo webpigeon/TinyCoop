@@ -29,7 +29,11 @@ public class Action {
 
     public static Action getRandom(int actionID, GameState state) {
     	Action[] allActions = state.getLegalActions(actionID);
-        return allActions[random.nextInt(allActions.length)];
+    	Action selected = null;
+    	while(selected == null){
+            selected = allActions[random.nextInt(allActions.length)];
+        }
+        return selected;
     }
 
     public int getX() {

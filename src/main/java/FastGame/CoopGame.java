@@ -3,6 +3,8 @@ package FastGame;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -29,8 +31,17 @@ public class CoopGame implements GameState {
     private int[] maxIDs;
     private int[] agentLocations;
 
+    private final boolean checkLegalActions;
+
     // volatile, required for A*
     private Map<Integer, Point> playerPos = new TreeMap<>();
+
+    private static final Action[] ALL_ACTIONS = {Action.NOOP, Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT};
+
+    public CoopGame(String fileName, boolean checkLegalActions){
+        initialiseData(fileName);
+        this.checkLegalActions = checkLegalActions;
+    }
 
     /**
      * Opens a file and generates the game from that
@@ -38,11 +49,12 @@ public class CoopGame implements GameState {
      * @param fileName
      */
     public CoopGame(String fileName) {
-        initialiseData(fileName);
+        this(fileName, false);
     }
 
-    public CoopGame(int width, int height) {
+    public CoopGame(int width, int height, boolean checkLegalActions) {
         initialiseData(width, height, NUMBER_OF_LAYERS);
+        this.checkLegalActions = checkLegalActions;
     }
 
     public static int getItemTypeFromValue(int value) {
@@ -58,7 +70,7 @@ public class CoopGame implements GameState {
     }
 
     public CoopGame getClone() {
-        CoopGame other = new CoopGame(this.width, this.height);
+        CoopGame other = new CoopGame(this.width, this.height, this.checkLegalActions);
         System.arraycopy(this.data, 0, other.data, 0, this.data.length);
         other.goalSet = new boolean[this.goalSet.length];
         System.arraycopy(this.goalSet, 0, other.goalSet, 0, this.goalSet.length);
@@ -328,7 +340,24 @@ public class CoopGame implements GameState {
 
 	@Override
 	public Action[] getLegalActions(int playerID) {
-		return new Action[]{Action.NOOP, Action.UP, Action.DOWN, Action.LEFT, Action.RIGHT};
+        if(checkLegalActions) {
+            Action[] actions = new Action[ALL_ACTIONS.length];
+            int x = getAgentX(playerID);
+            int y = getAgentY(playerID);
+            for (int i = 0; i < ALL_ACTIONS.length; i++) {
+                Action action = ALL_ACTIONS[i];
+                // Is it possible?
+                int newX = x + action.getX();
+                int newY = y + action.getY();
+                if (!WALKABLE[get(newX, newY, 0)]) continue;
+                if (get(newX, newY, DOOR) != 0 && doorOpen(getIDFromValue(get(newX, newY, DOOR)))) continue;
+                if (get(newX, newY, AGENT) != 0) continue;
+                actions[i] = action;
+            }
+
+            return actions;
+        }
+		return ALL_ACTIONS;
 	}
 
 	@Override

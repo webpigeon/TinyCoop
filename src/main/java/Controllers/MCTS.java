@@ -36,7 +36,7 @@ public class MCTS extends Controller {
 
     @Override
     public Action get(GameState game) {
-        root = new MCTSNode(2.0, this, game.getActionLength());
+        root = new MCTSNode(2.0, this, game.getLegalActions(first ? 0 : 1).length);
         MCTSNode travel;
         GameState workingGame;
         int iterations = 0;
@@ -72,17 +72,21 @@ public class MCTS extends Controller {
     @Override
     public void paint(Graphics g, Point pos, int gridSize) {
         Map<Point, Integer> visits = calculateVisits(root, pos, new HashMap<>());
-        double max = visits.values().stream().max(Integer::compare).orElse(500);
+        Map<Point, Double> scores = calculateScores(root, pos, new HashMap<>());
+        Map<Point, Double> averages = new HashMap<>();
+        for(Map.Entry<Point, Double> entry : scores.entrySet()){
+            averages.put(entry.getKey(), entry.getValue() / visits.getOrDefault(entry.getKey(), 1));
+        }
 
         int radius = gridSize / 3;
         FontMetrics metrics = g.getFontMetrics();
         // Draw these
-        for(Map.Entry<Point, Integer> entry : visits.entrySet()){
+        for(Map.Entry<Point, Double> entry : averages.entrySet()){
             Point location = entry.getKey();
             int x = (int)((location.getX() * gridSize) + (gridSize / 2));
             int y = (int)((location.getY() * gridSize) + (gridSize / 2));
             g.setColor(Color.CYAN);
-            String visitString = "" + entry.getValue();
+            String visitString = String.format("%.3f", entry.getValue());
 //            int radius = (int)( (entry.getValue() / max) * maxRadius);
             g.fillOval(x - radius, y - radius, radius * 2, radius * 2);
             g.setColor(Color.BLACK);
@@ -101,6 +105,17 @@ public class MCTS extends Controller {
             calculateVisits(child, childPos, visits);
         }
         return visits;
+    }
+
+    public Map<Point, Double> calculateScores(MCTSNode node, Point pos, Map<Point, Double> scores){
+        scores.put(pos, scores.getOrDefault(pos, 0.0) + node.getTotalValue());
+        if(node.getChildren() == null) return scores;
+        for(MCTSNode child : node.getChildren()){
+            if(child == null) continue;
+            Point childPos = new Point(pos.x + child.getMoveToThisState().getX(), pos.y + child.getMoveToThisState().getY());
+            calculateScores(child, childPos, scores);
+        }
+        return scores;
     }
 }
 
@@ -143,7 +158,9 @@ class MCTSNode {
     protected MCTSNode select(GameState state) {
         MCTSNode current = this;
         while (current.currentDepth < mcts.getMaxUCTDepth() && !state.hasWon()) {
-            if (current.isFullyExpanded()) {
+            MCTSNode expandedChild = current.expand(state);
+            if(expandedChild == current){
+//            if (current.isFullyExpanded(state)) {
                 current = current.selectBestChild();
                 if (mcts.isFirst()) {
                     state.update(current.getMoveToThisState(), Action.getRandom(1, state));
@@ -151,8 +168,7 @@ class MCTSNode {
                     state.update(Action.getRandom(0, state), current.getMoveToThisState());
                 }
             } else {
-                /// Expand
-                MCTSNode expandedChild = current.expand(state);
+                /// Expanded so will do this instead
                 if (mcts.isFirst()) {
                     state.update(expandedChild.getMoveToThisState(), Action.getRandom(1, state));
                 } else {
@@ -165,9 +181,10 @@ class MCTSNode {
     }
 
     protected MCTSNode selectBestChild() {
-        int selected = 0;
-        double bestValue = children[0].calculateChild();
-        for (int child = 1; child < children.length; child++) {
+        int selected = -1;
+        double bestValue = -Double.MAX_VALUE;
+        for (int child = 0; child < children.length; child++) {
+            if(children[child] == null) continue;
             double childValue = children[child].calculateChild();
             if (childValue > bestValue) {
                 selected = child;
@@ -206,19 +223,21 @@ class MCTSNode {
     }
 
     private MCTSNode expand(GameState state) {
-        int bestAction = 0;
+        int bestAction = -1;
         double bestValue = -Double.MAX_VALUE;
         if (children == null) children = new MCTSNode[childLength];
+        Action[] allActions = getAllActions(state);
         Random random = mcts.random;
         for (int i = 0; i < children.length; i++) {
+            if(allActions[i] == null) continue; // Wasn't possible this time
             double x = random.nextDouble();
             if (x > bestValue && children[i] == null) {
                 bestAction = i;
                 bestValue = x;
             }
         }
- 
-        Action[] allActions = state.getLegalActions(0);
+        if(bestAction == -1) return this;
+
         children[bestAction] = new MCTSNode(this, allActions[bestAction], state.getActionLength());
         childrenExpandedSoFar++;
         return children[bestAction];
@@ -233,8 +252,16 @@ class MCTSNode {
         return state.getScore();
     }
 
+    private Action[] getAllActions(GameState state){
+        return state.getLegalActions(mcts.isFirst() ? 0 : 1);
+    }
+
     private boolean isFullyExpanded() {
         return childrenExpandedSoFar == childLength;
+    }
+
+    private boolean isFullyExpanded(GameState state){
+        return childrenExpandedSoFar >= getAllActions(state).length;
     }
 
     public double getExplorationConstant() {

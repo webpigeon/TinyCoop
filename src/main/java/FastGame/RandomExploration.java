@@ -15,8 +15,8 @@ public class RandomExploration {
     public static void main(String[] args) {
 
 
-        Controller c1 = new RandomController();
-        Controller c2 = new RandomController();
+        Controller c1 = new RandomController(0);
+        Controller c2 = new RandomController(1);
 
         ArrayList<CoopGame> games = new ArrayList<>();
         games.add(new CoopGame("data/maps/level1.txt"));

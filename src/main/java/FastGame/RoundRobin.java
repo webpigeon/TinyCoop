@@ -31,7 +31,7 @@ public class RoundRobin {
                 new MCTS(true, 200),
                 new GAController(true),
                 new AStar(true),
-                new RandomController()
+                new RandomController(0)
         };
 
         Controller[] player2List = new Controller[] {
@@ -39,7 +39,7 @@ public class RoundRobin {
                 new MCTS(false, 200),
                 new GAController(false),
                 new AStar(false),
-                new RandomController()
+                new RandomController(1)
         };
 
         List<Result> results = new ArrayList<Result>();

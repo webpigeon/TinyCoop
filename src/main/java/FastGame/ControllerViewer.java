@@ -22,7 +22,7 @@ public class ControllerViewer extends Viewer{
     public void paint(Graphics g) {
         super.paint(g);
 
-        c1.paint(g, coopGame.getPos(0), gridSize);
-        c2.paint(g, coopGame.getPos(1), gridSize);
+        if(c1 != null) c1.paint(g, coopGame.getPos(0), gridSize);
+        if(c2 != null) c2.paint(g, coopGame.getPos(1), gridSize);
     }
 }
