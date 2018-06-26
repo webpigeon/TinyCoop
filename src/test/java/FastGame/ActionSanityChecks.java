@@ -31,7 +31,7 @@ public class ActionSanityChecks {
 	public ActionSanityChecks(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.action = new Action(x, y);
+		this.action = new Action("",x, y);
 	}
 	
 	@Test
@@ -47,7 +47,7 @@ public class ActionSanityChecks {
 	
 	@Test
 	public void testEqualsSameVals() {
-		Action cloneAction = new Action(x, y);
+		Action cloneAction = new Action("",x, y);
 		
 		assertEquals(cloneAction, action);
 	}

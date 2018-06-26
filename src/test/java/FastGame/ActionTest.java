@@ -21,7 +21,7 @@ public class ActionTest {
 		int x = 0;
 		int y = 0;
 		
-		Action action = new Action(x, y);
+		Action action = new Action("NOOP", x, y);
 		
 		assertEquals(x, action.getX());
 		assertEquals(y, action.getY());
