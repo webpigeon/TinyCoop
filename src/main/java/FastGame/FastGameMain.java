@@ -22,7 +22,7 @@ public class FastGameMain {
 
 //        Controller c1 = new GAController(true);
 
-        Controller c1 = new MCTS(true, 10000, 10, 45);
+        Controller c1 = new MCTS(true, 1000, 100, 100);
 //        Controller c1 = new VariGA(true, 2000);
 //        Controller c1 = new RandomController();
 
