@@ -4,6 +4,9 @@ import FastGame.Action;
 import FastGame.CoopGame;
 import gamesrc.GameState;
 
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -17,6 +20,7 @@ public class MCTS extends Controller {
     private int iterationLimit = 0;
 
     private boolean first;
+    private MCTSNode root;
 
     public MCTS(boolean first, int iterationLimit, int maxUCTDepth, int maxRolloutDepth) {
         this.first = first;
@@ -32,7 +36,7 @@ public class MCTS extends Controller {
 
     @Override
     public Action get(GameState game) {
-        MCTSNode root = new MCTSNode(2.0, this, game.getActionLength());
+        root = new MCTSNode(2.0, this, game.getActionLength());
         MCTSNode travel;
         GameState workingGame;
         int iterations = 0;
@@ -63,6 +67,40 @@ public class MCTS extends Controller {
     @Override
     public String getSimpleName() {
         return "MCTS: (" + iterationLimit + ";" + maxUCTDepth + ";" + maxRolloutDepth + ")";
+    }
+
+    @Override
+    public void paint(Graphics g, Point pos, int gridSize) {
+        Map<Point, Integer> visits = calculateVisits(root, pos, new HashMap<>());
+        double max = visits.values().stream().max(Integer::compare).orElse(500);
+
+        int radius = gridSize / 3;
+        FontMetrics metrics = g.getFontMetrics();
+        // Draw these
+        for(Map.Entry<Point, Integer> entry : visits.entrySet()){
+            Point location = entry.getKey();
+            int x = (int)((location.getX() * gridSize) + (gridSize / 2));
+            int y = (int)((location.getY() * gridSize) + (gridSize / 2));
+            g.setColor(Color.CYAN);
+            String visitString = "" + entry.getValue();
+//            int radius = (int)( (entry.getValue() / max) * maxRadius);
+            g.fillOval(x - radius, y - radius, radius * 2, radius * 2);
+            g.setColor(Color.BLACK);
+            int width = metrics.stringWidth(visitString);
+            int height = metrics.getHeight();
+            g.drawString(visitString, x - (width / 2), y + (height / 2));
+        }
+    }
+
+    public Map<Point, Integer> calculateVisits(MCTSNode node, Point pos, Map<Point, Integer> visits){
+        visits.put(pos, visits.getOrDefault(pos, 0) + node.getNumberOfVisits());
+        if(node.getChildren() == null) return visits;
+        for(MCTSNode child : node.getChildren()){
+            if(child == null) continue;
+            Point childPos = new Point(pos.x + child.getMoveToThisState().getX(), pos.y + child.getMoveToThisState().getY());
+            calculateVisits(child, childPos, visits);
+        }
+        return visits;
     }
 }
 

@@ -4,6 +4,8 @@ import FastGame.Action;
 import FastGame.CoopGame;
 import gamesrc.GameState;
 
+import java.awt.*;
+
 /**
  * Created by pwillic on 23/06/2015.
  */
@@ -21,5 +23,9 @@ public abstract class Controller {
 
     public String getSimpleName(){
         return this.getClass().getSimpleName();
+    }
+
+    public void paint(Graphics g, Point pos, int gridSize){
+        // Default is to do nothing
     }
 }
