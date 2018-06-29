@@ -45,8 +45,8 @@ public class ReadableGame {
         frame.setVisible(true);
 
 		/*List<Controller> controllers = Arrays.asList(
-				new MCTS(true, 500),
-				new MCTS(true, 250),
+				new DrawingMCTS(true, 500),
+				new DrawingMCTS(true, 250),
 				new RandomController(),
 				new WASDController()
 				);*/

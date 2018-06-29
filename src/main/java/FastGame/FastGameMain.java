@@ -1,10 +1,6 @@
 package FastGame;
 
 import Controllers.*;
-import Controllers.VariGA.VariGA;
-import Controllers.astar.AStarBetter;
-import Controllers.ga.GAController;
-import gamesrc.GameState;
 
 import javax.swing.*;
 
@@ -22,7 +18,7 @@ public class FastGameMain {
 
 //        Controller c1 = new GAController(true);
 
-        Controller c1 = new MCTS(true, 1000, 10, 45);
+//        Controller c1 = new PathMCTS(true, 10000, 10, 45);
 //        Controller c1 = new VariGA(true, 2000);
 //        Controller c1 = new RandomController();
 
@@ -30,15 +26,15 @@ public class FastGameMain {
 //        Controller c1 = new RandomController();
 //          Controller c1 = new NoOp();
 
-//        Controller c1 = wasd;
+        Controller c1 = wasd;
 //        Controller c2 = new GAController(false);
-        Controller c2 = new MCTS(false, 1000, 10, 45);
+//        Controller c2 = new DrawingMCTS(false, 1000, 10, 45);
 //            Controller c2 = new VariGA(false, 2000);
 //        Controller c2 = new RandomController(1);
-//        Controller c2 = arrows;
+        Controller c2 = arrows;
 //        Controller c2 = new NoOp();
 
-        CoopGame game = new CoopGame("data/maps/level1.txt", true);
+        CoopGame game = new CoopGame("data/maps/level1.txt", false);
 
         Viewer viewer = new ControllerViewer(game, c1, null);
         viewer.addKeyListener(wasd);
@@ -55,10 +51,12 @@ public class FastGameMain {
             game.update(c1.get(game.getClone()), c2.get(game.getClone()));
             ticks++;
 //            viewer.paintImmediately(viewer.getBounds());
-            ViewSaver.saveToFile(viewer, "../../../views/" + ticks + ".png");
+//            ViewSaver.saveToFile(viewer, "../../../views/level1/" + ticks + ".png");
             viewer.repaint();
-//            Thread.sleep(40);
+            Thread.sleep(1000);
         }
+        frame.setVisible(false);
+        frame.dispose();
         System.out.println(ticks);
     }
 }

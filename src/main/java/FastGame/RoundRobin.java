@@ -2,7 +2,7 @@ package FastGame;
 
 import Controllers.AStar;
 import Controllers.Controller;
-import Controllers.MCTS;
+import Controllers.DrawingMCTS;
 import Controllers.RandomController;
 import Controllers.ga.GAController;
 import utils.GenerateCSV;
@@ -27,16 +27,16 @@ public class RoundRobin {
         };
 
         Controller[] player1List = new Controller[]{
-                new MCTS(true, 500),
-                new MCTS(true, 200),
+                new DrawingMCTS(true, 500),
+                new DrawingMCTS(true, 200),
                 new GAController(true),
                 new AStar(true),
                 new RandomController(0)
         };
 
         Controller[] player2List = new Controller[] {
-                new MCTS(false, 500),
-                new MCTS(false, 200),
+                new DrawingMCTS(false, 500),
+                new DrawingMCTS(false, 200),
                 new GAController(false),
                 new AStar(false),
                 new RandomController(1)

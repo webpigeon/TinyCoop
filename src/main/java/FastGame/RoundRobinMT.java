@@ -1,8 +1,7 @@
 package FastGame;
 
-import Controllers.AStar;
 import Controllers.Controller;
-import Controllers.MCTS;
+import Controllers.DrawingMCTS;
 import Controllers.RandomController;
 import Controllers.VariGA.VariGA;
 import Controllers.ga.GAController;
@@ -34,18 +33,18 @@ public class RoundRobinMT {
         };
 
         Controller[] player1List = new Controller[]{
-                new MCTS(true, 500, 10, 45),
-                new MCTS(true, 75, 3, 15),
-                new MCTS(true, 200),
+                new DrawingMCTS(true, 500, 10, 45),
+                new DrawingMCTS(true, 75, 3, 15),
+                new DrawingMCTS(true, 200),
                 new VariGA(true, 500),
                 new GAController(true),
                 new RandomController(0)
         };
 
         Controller[] player2List = new Controller[] {
-                new MCTS(false, 500, 10, 45),
-                new MCTS(false, 75, 3, 15),
-                new MCTS(false, 200),
+                new DrawingMCTS(false, 500, 10, 45),
+                new DrawingMCTS(false, 75, 3, 15),
+                new DrawingMCTS(false, 200),
                 new VariGA(false, 500),
                 new GAController(true),
                 new RandomController(1)

@@ -341,6 +341,7 @@ public class CoopGame implements GameState {
 	@Override
 	public Action[] getLegalActions(int playerID) {
         if(checkLegalActions) {
+            runCollisionDetection();
             Action[] actions = new Action[ALL_ACTIONS.length];
             int x = getAgentX(playerID);
             int y = getAgentY(playerID);
@@ -350,7 +351,7 @@ public class CoopGame implements GameState {
                 int newX = x + action.getX();
                 int newY = y + action.getY();
                 if (!WALKABLE[get(newX, newY, 0)]) continue;
-                if (get(newX, newY, DOOR) != 0 && doorOpen(getIDFromValue(get(newX, newY, DOOR)))) continue;
+                if (get(newX, newY, DOOR) != 0 && !doorOpen(getIDFromValue(get(newX, newY, DOOR)))) continue;
                 if (get(newX, newY, AGENT) != 0) continue;
                 actions[i] = action;
             }

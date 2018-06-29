@@ -1,10 +1,9 @@
 package FastGame;
 
 import Controllers.Controller;
-import Controllers.MCTS;
+import Controllers.DrawingMCTS;
 import Controllers.RandomController;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -14,13 +13,13 @@ public class Test {
 
     public static void main(String[] args) {
         //Controller m1 = new PlanningController();
-        Controller m2 = new MCTS(false, 500);
+        Controller m2 = new DrawingMCTS(false, 500);
         Controller r1 = new RandomController(0);
 
 
         //Controller c1 = m1;
 //        Controller c1 = new RandomController();
-        //        Controller c2 = new MCTS(false);
+        //        Controller c2 = new DrawingMCTS(false);
         Controller c2 = m2;
 
 
