@@ -1,3 +1,4 @@
+*.zip
 target/
 views/
 #Latex stuff

@@ -5,40 +5,32 @@ import FastGame.CoopGame;
 import gamesrc.GameState;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 /**
  * Created by pwillic on 23/06/2015.
  */
-public class AwareMCTS extends Controller {
+public class OneStepVisualMCTS extends Controller {
 
     protected Random random = new Random();
     private int maxUCTDepth = 5;
     private int maxRolloutDepth = 30;
     private int iterationLimit = 0;
-    private AwareMCTSNode root;
-    private int visualDepthLimit = 100;
+    private OneStepMCTSNode root;
 
     private boolean first;
 
-    public AwareMCTS(boolean first, int iterationLimit, int maxUCTDepth, int maxRolloutDepth, int visualDepthLimit) {
-        this.first = first;
-        this.iterationLimit = iterationLimit;
-        this.maxUCTDepth = maxUCTDepth;
-        this.maxRolloutDepth = maxRolloutDepth;
-        this.visualDepthLimit = visualDepthLimit;
-    }
-
-    public AwareMCTS(boolean first, int iterationLimit, int maxUCTDepth, int maxRolloutDepth) {
+    public OneStepVisualMCTS(boolean first, int iterationLimit, int maxUCTDepth, int maxRolloutDepth) {
         this.first = first;
         this.iterationLimit = iterationLimit;
         this.maxUCTDepth = maxUCTDepth;
         this.maxRolloutDepth = maxRolloutDepth;
     }
 
-    public AwareMCTS(boolean first, int iterationLimit){
+    public OneStepVisualMCTS(boolean first, int iterationLimit) {
         this.first = first;
         this.iterationLimit = iterationLimit;
     }
@@ -46,8 +38,8 @@ public class AwareMCTS extends Controller {
     @Override
     public Action get(GameState game) {
         CoopGame actualState = (CoopGame) game;
-        root = new AwareMCTSNode(2.0, this, game.getActionLength());
-        AwareMCTSNode travel;
+        root = new OneStepMCTSNode(2.0, this, game.getActionLength());
+        OneStepMCTSNode travel;
         CoopGame workingGame;
         int iterations = 0;
         while (iterations < iterationLimit) {
@@ -76,80 +68,19 @@ public class AwareMCTS extends Controller {
 
     @Override
     public String getSimpleName() {
-        return "AwareMCTS: (" + iterationLimit + ";" + maxUCTDepth + ";" + maxRolloutDepth + ")";
+        return "PathMCTS: (" + iterationLimit + ";" + maxUCTDepth + ";" + maxRolloutDepth + ")";
     }
 
     @Override
     public void paint(Graphics g, Point pos, int gridSize) {
-        Map<Point, Integer> visits = calculateVisits(root, new HashMap<>());
-        Map<Point, Double> scores = calculateScores(root, new HashMap<>());
 
-        Map<Point, Double> averages = new HashMap<>();
-        for(Map.Entry<Point, Double> entry : scores.entrySet()){
-            averages.put(entry.getKey(), entry.getValue() / visits.getOrDefault(entry.getKey(), 1));
-        }
+        OneStepMCTSNode[] children = root.getChildren();
 
-        int radius = gridSize / 3;
-        FontMetrics metrics = g.getFontMetrics();
-        // Draw these
-        for(Map.Entry<Point, Double> entry : averages.entrySet()){
-            Point location = entry.getKey();
-            if(location == null) continue;
-            int x = (int)((location.getX() * gridSize) + (gridSize / 2));
-            int y = (int)((location.getY() * gridSize) + (gridSize / 2));
-            g.setColor(Color.CYAN);
-            String visitString = String.format("%.3f", entry.getValue());
-//            int radius = (int)( (entry.getValue() / max) * maxRadius);
-            g.fillOval(x - radius, y - radius, radius * 2, radius * 2);
-            g.setColor(Color.BLACK);
-            int width = metrics.stringWidth(visitString);
-            int height = metrics.getHeight();
-            g.drawString(visitString, x - (width / 2), y + (height / 2));
-        }
-//        for(Map.Entry<Point, Integer> entry : visits.entrySet()){
-//            Point location = entry.getKey();
-//            int x = (int)((location.getX() * gridSize) + (gridSize / 2));
-//            int y = (int)((location.getY() * gridSize) + (gridSize / 2));
-//            g.setColor(Color.CYAN);
-//            String visitString = String.format("%d", entry.getValue());
-////            int radius = (int)( (entry.getValue() / max) * maxRadius);
-//            g.fillOval(x - radius, y - radius, radius * 2, radius * 2);
-//            g.setColor(Color.BLACK);
-//            int width = metrics.stringWidth(visitString);
-//            int height = metrics.getHeight();
-//            g.drawString(visitString, x - (width / 2), y + (height / 2));
-//        }
     }
 
-    public Map<Point, Integer> calculateVisits(AwareMCTSNode node, Map<Point, Integer> visits){
-        if(node.getCurrentDepth() > visualDepthLimit) return visits;
-        for(Map.Entry<Point, Integer> entry : node.getLocationVisits().entrySet()){
-            visits.merge(entry.getKey(), entry.getValue(), Integer::sum);
-        }
-        if(node.getChildren() == null) return visits;
-        for(AwareMCTSNode child : node.getChildren()){
-            if(child == null) continue;
-            System.out.println(child.getCurrentDepth() + " " + visualDepthLimit);
-            calculateVisits(child, visits);
-        }
-        return visits;
-    }
-
-    public Map<Point, Double> calculateScores(AwareMCTSNode node, Map<Point, Double> scores){
-        if(node.getCurrentDepth() > visualDepthLimit) return scores;
-        for(Map.Entry<Point, Double> entry : node.getLocationScores().entrySet()){
-            scores.merge(entry.getKey(), entry.getValue(), Double::sum);
-        }
-        if(node.getChildren() == null) return scores;
-        for(AwareMCTSNode child : node.getChildren()){
-            if(child == null) continue;
-            calculateScores(child, scores);
-        }
-        return scores;
-    }
 }
 
-class AwareMCTSNode {
+class OneStepMCTSNode {
 
     private static final double EPSILON = 1e-6;
 
@@ -161,17 +92,14 @@ class AwareMCTSNode {
     private int currentDepth;
     private int childrenExpandedSoFar = 0;
 
-    private AwareMCTSNode parent;
-    private AwareMCTSNode[] children;
+    private OneStepMCTSNode parent;
+    private OneStepMCTSNode[] children;
     private int childLength;
 
-    private Map<Point, Integer> locationVisits = new HashMap<>();
-    private Map<Point, Double> locationScores = new HashMap<>();
-    private Point lastLocation;
-    private AwareMCTS mcts;
+    private OneStepVisualMCTS mcts;
 
     // Root
-    public AwareMCTSNode(double explorationConstant, AwareMCTS mcts, int actionLength) {
+    public OneStepMCTSNode(double explorationConstant, OneStepVisualMCTS mcts, int actionLength) {
         this.explorationConstant = explorationConstant;
         this.currentDepth = 0;
         this.mcts = mcts;
@@ -179,7 +107,7 @@ class AwareMCTSNode {
     }
 
     // Child
-    public AwareMCTSNode(AwareMCTSNode parent, Action moveToThisState, int actionLength) {
+    public OneStepMCTSNode(OneStepMCTSNode parent, Action moveToThisState, int actionLength) {
         this.parent = parent;
         this.explorationConstant = parent.explorationConstant;
         this.moveToThisState = moveToThisState;
@@ -188,20 +116,8 @@ class AwareMCTSNode {
         this.childLength = actionLength;
     }
 
-    public void addLocationVisit(Point location){
-        locationVisits.merge(location, 1,Integer::sum);
-    }
-
-    public Map<Point, Integer> getLocationVisits() {
-        return locationVisits;
-    }
-
-    public Map<Point, Double> getLocationScores() {
-        return locationScores;
-    }
-
-    protected AwareMCTSNode select(CoopGame state) {
-        AwareMCTSNode current = this;
+    protected OneStepMCTSNode select(CoopGame state) {
+        OneStepMCTSNode current = this;
         while (current.currentDepth < mcts.getMaxUCTDepth() && !state.hasWon()) {
             if (current.isFullyExpanded()) {
                 current = current.selectBestChild();
@@ -210,27 +126,21 @@ class AwareMCTSNode {
                 } else {
                     state.update(Action.getRandom(0, state), current.getMoveToThisState());
                 }
-                Point location = state.getPos(mcts.isFirst() ? 0 : 1);
-                current.addLocationVisit(location);
-                current.lastLocation = location;
             } else {
                 /// Expand
-                AwareMCTSNode expandedChild = current.expand(state);
+                OneStepMCTSNode expandedChild = current.expand(state);
                 if (mcts.isFirst()) {
                     state.update(expandedChild.getMoveToThisState(), Action.getRandom(1, state));
                 } else {
                     state.update(Action.getRandom(0, state), expandedChild.getMoveToThisState());
                 }
-                Point location = state.getPos(mcts.isFirst() ? 0 : 1);
-                current.addLocationVisit(location);
-                current.lastLocation = location;
                 return expandedChild;
             }
         }
         return current;
     }
 
-    protected AwareMCTSNode selectBestChild() {
+    protected OneStepMCTSNode selectBestChild() {
         int selected = 0;
         double bestValue = children[0].calculateChild();
         for (int child = 1; child < children.length; child++) {
@@ -261,21 +171,20 @@ class AwareMCTSNode {
 
     public void updateValues(double value) {
         // All nodes are ours so lets go for it
-        AwareMCTSNode current = this;
+        OneStepMCTSNode current = this;
         while (current.parent != null) {
             current.totalValue += value;
             current.numberOfVisits++;
-            current.locationScores.merge(current.lastLocation, value, Double::sum);
             current = current.parent;
         }
         current.totalValue += value;
         current.numberOfVisits++;
     }
 
-    private AwareMCTSNode expand(CoopGame state) {
+    private OneStepMCTSNode expand(CoopGame state) {
         int bestAction = 0;
         double bestValue = -Double.MAX_VALUE;
-        if (children == null) children = new AwareMCTSNode[childLength];
+        if (children == null) children = new OneStepMCTSNode[childLength];
         Random random = mcts.random;
         for (int i = 0; i < children.length; i++) {
             double x = random.nextDouble();
@@ -284,9 +193,9 @@ class AwareMCTSNode {
                 bestValue = x;
             }
         }
- 
+
         Action[] allActions = state.getLegalActions(0);
-        children[bestAction] = new AwareMCTSNode(this, allActions[bestAction], state.getActionLength());
+        children[bestAction] = new OneStepMCTSNode(this, allActions[bestAction], state.getActionLength());
         childrenExpandedSoFar++;
         return children[bestAction];
     }
@@ -328,11 +237,11 @@ class AwareMCTSNode {
         return childrenExpandedSoFar;
     }
 
-    public AwareMCTSNode getParent() {
+    public OneStepMCTSNode getParent() {
         return parent;
     }
 
-    public AwareMCTSNode[] getChildren() {
+    public OneStepMCTSNode[] getChildren() {
         return children;
     }
 
